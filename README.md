@@ -25,13 +25,14 @@ python3 build.py --serve    # http://localhost:8000
 | `src/widgets/*.html` | Original HTML widgets (ICM calculator, games, membership applications), extracted unchanged |
 | `src/data/seo.json` | Live titles / meta descriptions / dates, preserved per URL |
 | `tools_images.py` | Builds responsive WebP sizes plus the light logo variant from the original uploads |
+| `tools/make_preview.py` | Packages the homepage as a labelled design preview (relative assets, static map, forms in preview mode) |
 | `tools/content_check.py` | Confirms every text string from the live page is present in the rebuilt page |
 | `docs/AUDIT.md` | Audit findings and issues needing a client decision |
 
 ## Design system
 
 - **Colour:** deep black `#0B0B0B`, charcoal `#151515`, card `#1D1D1D`, metallic gold `#C6A15B`, champagne `#D9BD83`, warm white `#F5F3EF`, muted `#A5A5A5`. The old green and cream are gone, and gold is reserved for calls to action, accents and icons.
-- **Type:** Cormorant Garamond for headings (gold italic for emphasis) and Inter for body text, on a fluid `clamp()` scale.
+- **Type:** Cinzel for headings (an engraved, casino-style serif; emphasis in gold foil) and Manrope for body text, on a fluid `clamp()` scale.
 - **Motion:** fade-up on scroll, a slow hero zoom, image zoom on hover and button lift. All of it is disabled under `prefers-reduced-motion`.
 - **Mobile:** an off-canvas menu with accordions, plus a sticky Call / Become a Member bar that appears after the hero. There's no horizontal scroll from 360px up.
 

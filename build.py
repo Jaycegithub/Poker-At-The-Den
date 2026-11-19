@@ -11,6 +11,7 @@ WordPress permalink structure exactly (e.g. /about-us/ -> dist/about-us/index.ht
 Requires: Python 3.9+, Jinja2.
 """
 import http.server
+import math
 import json
 import os
 import re
@@ -129,6 +130,10 @@ PAGES = {
 
 IMG_DIR = os.path.join(SRC, "assets", "img")
 
+# Nine seats around an oval poker table (dealer position at the top is left open).
+SEATS = [(round(50 + 50 * math.cos(math.radians(-54 + 36 * i)), 2),
+          round(50 + 50 * math.sin(math.radians(-54 + 36 * i)), 2)) for i in range(9)]
+
 
 def _widths(name):
     pat = re.compile(re.escape(name) + r"-(\d+)\.webp$")
@@ -173,7 +178,7 @@ def build():
         autoescape=select_autoescape(["html"]),
         trim_blocks=True, lstrip_blocks=True,
     )
-    env.globals.update(site=SITE, nav=NAV, img=img, icon=icon, widget=widget, site_url=SITE_URL,
+    env.globals.update(site=SITE, nav=NAV, seats=SEATS, img=img, icon=icon, widget=widget, site_url=SITE_URL,
                        build_date=date.today().isoformat())
 
     if os.path.isdir(DIST):

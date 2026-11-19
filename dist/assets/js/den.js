@@ -88,6 +88,9 @@
   /* Reveal on scroll */
   var els = document.querySelectorAll(".reveal");
   if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    doc.classList.add("js-reveal");
+    var vh = window.innerHeight;
+    els.forEach(function (el) { if (el.getBoundingClientRect().top < vh) el.classList.add("is-in"); });
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); }
@@ -105,6 +108,11 @@
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       if (!form.reportValidity()) return;
+      if (window.DEN_PREVIEW) {
+        status.textContent = "Design preview: this form isn\u2019t connected here. On the live site it sends your message to The Den.";
+        status.className = "form-status is-ok";
+        return;
+      }
       var btn = form.querySelector("[type=submit]");
       var label = btn.textContent;
       btn.disabled = true; btn.textContent = "Sending…";
