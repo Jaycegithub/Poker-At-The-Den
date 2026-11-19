@@ -25,6 +25,7 @@ python3 build.py --serve    # http://localhost:8000
 | `src/widgets/*.html` | Original HTML widgets (ICM calculator, games, membership applications), extracted unchanged |
 | `src/data/seo.json` | Live titles / meta descriptions / dates, preserved per URL |
 | `tools_images.py` | Builds responsive WebP sizes plus the light logo variant from the original uploads |
+| `tools/make_art.py` | Generates the original SVG illustrations (see docs/ARTWORK.md) |
 | `tools/make_preview.py` | Packages the homepage as a labelled design preview (relative assets, static map, forms in preview mode) |
 | `tools/content_check.py` | Confirms every text string from the live page is present in the rebuilt page |
 | `docs/AUDIT.md` | Audit findings and issues needing a client decision |

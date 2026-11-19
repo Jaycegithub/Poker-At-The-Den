@@ -160,6 +160,15 @@ def img(name, alt="", sizes="100vw", cls="", eager=False, width=None, height=Non
     return Markup("<img " + " ".join(attrs) + ">")
 
 
+def art(name, alt="", cls="", eager=False):
+    """An original SVG illustration from assets/img/art/."""
+    path = os.path.join(IMG_DIR, "art", name + ".svg")
+    head = open(path, encoding="utf-8").read(400)
+    w, h = re.search(r'viewBox="0 0 (\d+) (\d+)"', head).groups()
+    return Markup(f'<img src="/assets/img/art/{name}.svg" width="{w}" height="{h}" alt="{Markup.escape(alt)}"'
+                  + (' loading="eager"' if eager else ' loading="lazy"') + ' decoding="async"' + (f' class="{cls}"' if cls else "") + ">")
+
+
 def icon(name, cls=""):
     fill = name.startswith("suit-")
     c = "icon" + (" icon--fill" if fill else "") + (f" {cls}" if cls else "")
@@ -178,7 +187,7 @@ def build():
         autoescape=select_autoescape(["html"]),
         trim_blocks=True, lstrip_blocks=True,
     )
-    env.globals.update(site=SITE, nav=NAV, seats=SEATS, img=img, icon=icon, widget=widget, site_url=SITE_URL,
+    env.globals.update(site=SITE, nav=NAV, seats=SEATS, img=img, art=art, icon=icon, widget=widget, site_url=SITE_URL,
                        build_date=date.today().isoformat())
 
     if os.path.isdir(DIST):
