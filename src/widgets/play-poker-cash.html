@@ -1,0 +1,1296 @@
+
+<section class="poker-game-section">
+<div class="wrap">
+<div class="settings-card">
+<div class="settings-row">
+<div class="settings-group">
+<div class="settings-label">Game</div>
+<div class="pill-row" id="variantPills">
+<button class="pill" data-variant="holdem">Hold'em</button>
+<button class="pill" data-variant="omaha">Omaha</button>
+<button class="pill" data-variant="bigo">Big O</button>
+</div>
+</div>
+<div class="settings-group">
+<div class="settings-label">Stakes</div>
+<div class="pill-row" id="stakesPills">
+<button class="pill" data-stakes="1-2">1/2</button>
+<button class="pill" data-stakes="2-5">2/5</button>
+<button class="pill" data-stakes="5-10">5/10</button>
+<button class="pill" data-stakes="25-50">25/50</button>
+</div>
+</div>
+<div class="settings-group">
+<div class="settings-label"> </div>
+<div class="settings-actions">
+<button class="btn btn-ghost btn-small" id="resetSessionBtn">Reset Session</button>
+</div>
+</div>
+</div>
+<div class="settings-note" id="settingsNote">Everyone starts with 100 big blinds. Changes to game or stakes apply on the next hand. Any player whose stack falls to 1 big blind or below is automatically reloaded to 100 BB.</div>
+</div>
+<div class="result-banner" id="resultBanner">
+<div class="r-title" id="resultTitle"></div>
+<div class="result-list" id="resultList"></div>
+<div class="result-controls" id="resultControls"></div>
+</div>
+<div class="table-frame">
+<div class="table-grid">
+<div class="seat s3" id="seat-3"><div class="seat-name" id="name-3"></div><div class="seat-stack" id="stack-3"></div><div class="seat-cards" id="cards-3"></div><div class="seat-bet" id="bet-3"></div><div class="seat-status" id="status-3"></div></div>
+<div class="seat s4" id="seat-4"><div class="seat-name" id="name-4"></div><div class="seat-stack" id="stack-4"></div><div class="seat-cards" id="cards-4"></div><div class="seat-bet" id="bet-4"></div><div class="seat-status" id="status-4"></div></div>
+<div class="seat s2" id="seat-2"><div class="seat-name" id="name-2"></div><div class="seat-stack" id="stack-2"></div><div class="seat-cards" id="cards-2"></div><div class="seat-bet" id="bet-2"></div><div class="seat-status" id="status-2"></div></div>
+<div class="board-area">
+<div class="street-label" id="streetLabel">Preflop</div>
+<div class="board-cards" id="boardCards"></div>
+<div class="pot-display"><span id="potAmount">$0</span><div class="sub">Pot</div></div>
+</div>
+<div class="seat s5" id="seat-5"><div class="seat-name" id="name-5"></div><div class="seat-stack" id="stack-5"></div><div class="seat-cards" id="cards-5"></div><div class="seat-bet" id="bet-5"></div><div class="seat-status" id="status-5"></div></div>
+<div class="seat s1" id="seat-1"><div class="seat-name" id="name-1"></div><div class="seat-stack" id="stack-1"></div><div class="seat-cards" id="cards-1"></div><div class="seat-bet" id="bet-1"></div><div class="seat-status" id="status-1"></div></div>
+<div class="seat s0" id="seat-0"><div class="seat-name" id="name-0"></div><div class="seat-stack" id="stack-0"></div><div class="seat-cards" id="cards-0"></div><div class="seat-bet" id="bet-0"></div><div class="seat-status" id="status-0"></div></div>
+</div>
+</div>
+<div class="action-bar hidden" id="actionBar">
+<div class="action-row">
+<div class="action-buttons" id="actionButtons"></div>
+</div>
+<div class="raise-controls" id="raiseControls" style="display:none;">
+<span class="quick-sizes" id="quickSizes"></span>
+<input id="raiseSlider" max="1" min="0" step="0.01" type="range"/>
+<div class="raise-amount" id="raiseAmountLabel">$0</div>
+<button class="btn btn-gold btn-small" id="confirmRaiseBtn">Raise</button>
+</div>
+</div>
+<div class="panel-grid">
+<div class="panel-card">
+<h3>Hand Log</h3>
+<div class="log-empty" id="logEmpty">Nothing yet.</div>
+<div class="log-list" id="logList"></div>
+</div>
+<div class="panel-card">
+<h3>Table Info</h3>
+<div id="tableInfo" style="font-size:13.5px;color:#5c5346;"></div>
+</div>
+</div>
+</div>
+</section> 
+
+<script>
+/* ---- poker_eval.js ---- */
+// Hand evaluation engine for Hold'em / Omaha / Big O (5-card Omaha Hi-Lo).
+// The core 5-card evaluator (evaluate5/compareHands) is carried over verbatim
+// from the previously-validated poker hand-equity simulator.
+
+const SUITS = ['s', 'h', 'd', 'c'];
+const RANK_LABEL = { 14: 'A', 13: 'K', 12: 'Q', 11: 'J', 10: 'T', 9: '9', 8: '8', 7: '7', 6: '6', 5: '5', 4: '4', 3: '3', 2: '2' };
+const CATEGORY_NAMES = ['High Card', 'Pair', 'Two Pair', 'Three of a Kind', 'Straight', 'Flush', 'Full House', 'Four of a Kind', 'Straight Flush'];
+
+function makeDeck() {
+  const deck = [];
+  for (const s of SUITS) for (let r = 2; r <= 14; r++) deck.push({ r, s });
+  return deck;
+}
+function shuffle(arr, rng = Math.random) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function cardKey(c) { return c.r + c.s; }
+function cardLabel(c) { return RANK_LABEL[c.r] + c.s.toUpperCase(); }
+
+function evaluate5(cards) {
+  const ranks = cards.map(c => c.r).sort((a, b) => b - a);
+  const suits = cards.map(c => c.s);
+  const isFlush = suits.every(s => s === suits[0]);
+  const uniqRanks = [...new Set(ranks)];
+  let straightHigh = 0;
+  if (uniqRanks.length === 5) {
+    if (uniqRanks[0] - uniqRanks[4] === 4) straightHigh = uniqRanks[0];
+    else if (uniqRanks[0] === 14 && uniqRanks[1] === 5 && uniqRanks[2] === 4 && uniqRanks[3] === 3 && uniqRanks[4] === 2) straightHigh = 5;
+  }
+  const countMap = {};
+  ranks.forEach(r => countMap[r] = (countMap[r] || 0) + 1);
+  const groups = Object.entries(countMap).map(([r, c]) => ({ r: +r, c })).sort((a, b) => b.c - a.c || b.r - a.r);
+
+  if (isFlush && straightHigh) return [8, straightHigh];
+  if (groups[0].c === 4) return [7, groups[0].r, groups[1].r];
+  if (groups[0].c === 3 && groups[1] && groups[1].c === 2) return [6, groups[0].r, groups[1].r];
+  if (isFlush) return [5, ...ranks];
+  if (straightHigh) return [4, straightHigh];
+  if (groups[0].c === 3) return [3, groups[0].r, ...groups.slice(1).map(g => g.r)];
+  if (groups[0].c === 2 && groups[1] && groups[1].c === 2) {
+    const pairs = [groups[0].r, groups[1].r].sort((a, b) => b - a);
+    return [2, pairs[0], pairs[1], groups[2].r];
+  }
+  if (groups[0].c === 2) return [1, groups[0].r, ...groups.slice(1).map(g => g.r)];
+  return [0, ...ranks];
+}
+function compareHands(a, b) {
+  const len = Math.max(a.length, b.length);
+  for (let i = 0; i < len; i++) { const av = a[i] || 0, bv = b[i] || 0; if (av !== bv) return av - bv; }
+  return 0;
+}
+
+const COMBO_CACHE = {};
+function getCombos(n, k) {
+  const key = n + '_' + k;
+  if (!COMBO_CACHE[key]) {
+    const results = []; const combo = [];
+    (function backtrack(start) {
+      if (combo.length === k) { results.push(combo.slice()); return; }
+      for (let i = start; i < n; i++) { combo.push(i); backtrack(i + 1); combo.pop(); }
+    })(0);
+    COMBO_CACHE[key] = results;
+  }
+  return COMBO_CACHE[key];
+}
+function chooseCombos(arr, k) {
+  if (k === arr.length) return [arr.slice()];
+  return getCombos(arr.length, k).map(idx => idx.map(i => arr[i]));
+}
+
+// Unconstrained best-5-of-N (Hold'em: any 5 of hole+board combined).
+function bestHandUnconstrained(cards) {
+  if (cards.length === 5) return evaluate5(cards);
+  const combos = getCombos(cards.length, 5);
+  let best = null;
+  for (const combo of combos) {
+    const hand = combo.map(i => cards[i]);
+    const val = evaluate5(hand);
+    if (!best || compareHands(val, best) > 0) best = val;
+  }
+  return best;
+}
+
+// Constrained best-5 using exactly holeK from holeCards and boardK from boardCards
+// (Omaha / Big O rule: must use exactly 2 hole + 3 board).
+function bestHandConstrained(holeCards, boardCards, holeK, boardK) {
+  const holeCombos = chooseCombos(holeCards, holeK);
+  const boardCombos = chooseCombos(boardCards, boardK);
+  let best = null;
+  for (const hc of holeCombos) {
+    for (const bc of boardCombos) {
+      const five = hc.concat(bc);
+      const val = evaluate5(five);
+      if (!best || compareHands(val, best) > 0) best = val;
+    }
+  }
+  return best;
+}
+
+function bestHandHoldem(hole, board) {
+  return bestHandUnconstrained(hole.concat(board));
+}
+function bestHandOmaha(hole4, board5) {
+  return bestHandConstrained(hole4, board5, 2, 3);
+}
+function bestHandBigOHi(hole5, board5) {
+  return bestHandConstrained(hole5, board5, 2, 3);
+}
+
+// Ace-to-five low (8-or-better qualifier), same 2-hole+3-board constraint.
+function lowRank(r) { return r === 14 ? 1 : r; }
+function isLowerLow(a, b) {
+  for (let i = 0; i < 5; i++) { if (a[i] !== b[i]) return a[i] < b[i]; }
+  return false;
+}
+function bestLow8Constrained(holeCards, boardCards, holeK, boardK) {
+  const holeCombos = chooseCombos(holeCards, holeK);
+  const boardCombos = chooseCombos(boardCards, boardK);
+  let best = null;
+  for (const hc of holeCombos) {
+    for (const bc of boardCombos) {
+      const five = hc.concat(bc);
+      const lowRanks = five.map(c => lowRank(c.r));
+      if (new Set(lowRanks).size !== 5) continue;
+      if (Math.max(...lowRanks) > 8) continue;
+      const value = lowRanks.slice().sort((a, b) => b - a);
+      if (!best || isLowerLow(value, best)) best = value;
+    }
+  }
+  return best; // null => no qualifying low
+}
+function bestLowBigO(hole5, board5) {
+  return bestLow8Constrained(hole5, board5, 2, 3);
+}
+function lowLabel(lowValue) {
+  if (!lowValue) return null;
+  return lowValue.slice().sort((a, b) => a - b).map(r => (r === 1 ? 'A' : String(r))).join('-');
+}
+
+function categoryName(handValue) { return CATEGORY_NAMES[handValue[0]]; }
+
+const EV = {
+  SUITS, RANK_LABEL, CATEGORY_NAMES,
+  makeDeck, shuffle, cardKey, cardLabel,
+  evaluate5, compareHands, getCombos, chooseCombos,
+  bestHandUnconstrained, bestHandConstrained,
+  bestHandHoldem, bestHandOmaha, bestHandBigOHi,
+  lowRank, isLowerLow, bestLow8Constrained, bestLowBigO, lowLabel,
+  categoryName,
+};
+
+/* ---- poker_engine.js ---- */
+// 6-max cash-game engine: blinds, betting rounds (No-Limit / Pot-Limit sizing),
+// side pots, and showdown resolution (hi-only or hi/lo split for Big O).
+
+const VARIANT_HOLE_COUNT = { holdem: 2, omaha: 4, bigo: 5 };
+const VARIANT_STRUCTURE = { holdem: 'NL', omaha: 'PL', bigo: 'PL' };
+const STREETS = ['preflop', 'flop', 'turn', 'river'];
+
+function cloneSeats(seats) {
+  return seats.map(s => ({ ...s, hole: s.hole.slice() }));
+}
+function cloneState(state) {
+  return {
+    ...state,
+    seats: cloneSeats(state.seats),
+    board: state.board.slice(),
+    deck: state.deck.slice(),
+    acted: { ...state.acted },
+    handLog: state.handLog.slice(),
+  };
+}
+
+// seats input: array of { id, name, isHuman, stack } length 6, in fixed seat order.
+function startHand(seats, buttonSeat, variant, stakes, rng = Math.random) {
+  const holeCount = VARIANT_HOLE_COUNT[variant];
+  const deck = EV.shuffle(EV.makeDeck(), rng);
+  const s = seats.map(seat => ({
+    id: seat.id, name: seat.name, isHuman: seat.isHuman,
+    stack: seat.stack, hole: [], folded: false, allIn: false,
+    street: 0, total: 0, actedThisStreet: false,
+  }));
+
+  let state = {
+    variant, stakes, structure: VARIANT_STRUCTURE[variant],
+    seats: s, buttonSeat, deck, board: [],
+    streetIndex: 0, street: 'preflop',
+    currentBet: 0, lastRaiseSize: stakes.bb,
+    actingSeat: null, handOver: false, winners: null, handLog: [],
+  };
+
+  // Deal hole cards.
+  for (let i = 0; i < holeCount; i++) {
+    for (let k = 0; k < 6; k++) {
+      const seatIdx = (buttonSeat + 1 + k) % 6;
+      state.seats[seatIdx].hole.push(state.deck.shift());
+    }
+  }
+
+  // Post blinds (posting for less than the full amount if short-stacked).
+  const sbSeat = (buttonSeat + 1) % 6;
+  const bbSeat = (buttonSeat + 2) % 6;
+  postBlind(state, sbSeat, stakes.sb);
+  postBlind(state, bbSeat, stakes.bb);
+  state.currentBet = state.seats[bbSeat].street; // actual amount posted (handles short all-in blind)
+  state.lastRaiseSize = stakes.bb;
+
+  // UTG (button+3) acts first preflop; search is exclusive-of-reference, so
+  // referencing the BB seat (button+2) correctly lands on UTG itself.
+  return startBettingRound(state, bbSeat);
+}
+
+function postBlind(state, seatIdx, amount) {
+  const seat = state.seats[seatIdx];
+  const post = Math.min(amount, seat.stack);
+  seat.stack -= post;
+  seat.street += post;
+  seat.total += post;
+  if (seat.stack === 0) seat.allIn = true;
+  state.handLog.push(seat.name + ' posts ' + fmt(post));
+}
+
+function fmt(n) { return '$' + (Math.round(n * 100) / 100).toString().replace(/\.0$/, ''); }
+
+function activeSeats(state) {
+  return state.seats.map((s, i) => i).filter(i => !state.seats[i].folded);
+}
+function contestants(state) {
+  // seats still able to act (not folded, not all-in)
+  return state.seats.map((s, i) => i).filter(i => !state.seats[i].folded && !state.seats[i].allIn);
+}
+function potTotal(state) {
+  return state.seats.reduce((sum, s) => sum + s.total, 0);
+}
+
+function legalActions(state, seatIdx) {
+  const seat = state.seats[seatIdx];
+  if (seat.folded || seat.allIn) return { canAct: false };
+  const toCall = state.currentBet - seat.street;
+  const canCheck = toCall <= 0;
+  const canCall = toCall > 0;
+  const callAmount = Math.min(toCall, seat.stack);
+
+  const pot = potTotal(state);
+  const stackAfterCall = seat.stack - callAmount;
+  let minRaiseTo = state.currentBet + state.lastRaiseSize;
+  let maxRaiseTo;
+  if (state.structure === 'NL') {
+    maxRaiseTo = seat.street + seat.stack; // full shove
+  } else {
+    // Pot-Limit: max raise SIZE = pot after calling; max raise-TO = currentBet + that size.
+    const potAfterCall = pot + callAmount;
+    maxRaiseTo = state.currentBet + potAfterCall;
+    maxRaiseTo = Math.min(maxRaiseTo, seat.street + seat.stack); // can never exceed a shove
+  }
+  minRaiseTo = Math.min(minRaiseTo, seat.street + seat.stack); // if short-stacked, min raise = all-in
+  const canRaise = seat.street + seat.stack > state.currentBet; // has enough to at least call+more
+  const canGoAllIn = seat.stack > 0;
+
+  return {
+    canAct: true, canCheck, canCall, callAmount, canFold: toCall > 0,
+    canRaise: canRaise && seat.stack > callAmount, minRaiseTo, maxRaiseTo,
+    canGoAllIn, allInTo: seat.street + seat.stack,
+  };
+}
+
+// action: { type: 'fold' | 'check' | 'call' | 'raiseTo', amount? }
+function applyAction(state, seatIdx, action) {
+  const s = cloneState(state);
+  const seat = s.seats[seatIdx];
+  const legal = legalActions(s, seatIdx);
+  if (!legal.canAct) throw new Error('Seat cannot act (folded or all-in)');
+
+  if (action.type === 'fold') {
+    if (!legal.canFold) throw new Error('Cannot fold when there is nothing to call');
+    seat.folded = true;
+    s.handLog.push(seat.name + ' folds');
+  } else if (action.type === 'check') {
+    if (!legal.canCheck) throw new Error('Cannot check facing a bet');
+    s.handLog.push(seat.name + ' checks');
+  } else if (action.type === 'call') {
+    if (!legal.canCall) throw new Error('Nothing to call');
+    seat.stack -= legal.callAmount;
+    seat.street += legal.callAmount;
+    seat.total += legal.callAmount;
+    if (seat.stack === 0) seat.allIn = true;
+    s.handLog.push(seat.name + (seat.allIn ? ' calls all-in for ' + fmt(legal.callAmount) : ' calls ' + fmt(legal.callAmount)));
+  } else if (action.type === 'raiseTo') {
+    const to = action.amount;
+    const isAllIn = to >= legal.allInTo - 1e-9;
+    const effectiveTo = isAllIn ? legal.allInTo : to;
+    if (!isAllIn && (effectiveTo < legal.minRaiseTo - 1e-9 || effectiveTo > legal.maxRaiseTo + 1e-9)) {
+      throw new Error('Raise-to amount ' + to + ' is outside legal range [' + legal.minRaiseTo + ', ' + legal.maxRaiseTo + ']');
+    }
+    const raiseIncrement = effectiveTo - s.currentBet;
+    const addAmount = effectiveTo - seat.street;
+    seat.stack -= addAmount;
+    seat.street += addAmount;
+    seat.total += addAmount;
+    if (seat.stack <= 1e-9) { seat.stack = 0; seat.allIn = true; }
+
+    const wasFullRaise = raiseIncrement >= s.lastRaiseSize - 1e-9;
+    if (wasFullRaise) {
+      s.lastRaiseSize = raiseIncrement;
+      // Full raise reopens action for everyone else still in the hand.
+      for (const i of activeSeats(s)) if (i !== seatIdx && !s.seats[i].allIn) s.seats[i].actedThisStreet = false;
+    } else {
+      // Incomplete (all-in) raise: does not reopen betting for players who already
+      // called the previous full bet; they may still call this new higher amount but
+      // cannot re-raise. We approximate this by NOT resetting actedThisStreet for
+      // players who already acted at the prior bet level, matching standard cardroom rules.
+    }
+    s.currentBet = Math.max(s.currentBet, effectiveTo);
+    s.handLog.push(seat.name + (seat.allIn ? ' raises all-in to ' + fmt(effectiveTo) : ' raises to ' + fmt(effectiveTo)));
+  } else {
+    throw new Error('Unknown action type: ' + action.type);
+  }
+
+  seat.actedThisStreet = true;
+  return afterAction(s, seatIdx);
+}
+
+function bettingRoundClosed(state) {
+  const stillDeciding = contestants(state);
+  if (activeSeats(state).length <= 1) return true; // everyone but one folded
+  if (stillDeciding.length === 0) return true; // all remaining are all-in
+  return stillDeciding.every(i => state.seats[i].actedThisStreet && state.seats[i].street === state.currentBet);
+}
+
+// Finds the next seat (strictly after fromIdx, wrapping) that can still act.
+function nextSeatFrom(state, fromIdx) {
+  for (let k = 1; k <= 6; k++) {
+    const i = (fromIdx + k) % 6;
+    if (!state.seats[i].folded && !state.seats[i].allIn) return i;
+  }
+  return null;
+}
+
+// Begin a betting round: `referenceIdx` is the seat BEFORE the seat that should
+// act first (e.g. the BB seat when the first-to-act is UTG, or the button seat
+// when the first-to-act is the seat immediately to its left).
+function startBettingRound(state, referenceIdx) {
+  let s = state;
+  if (activeSeats(s).length <= 1) return finishByFold(s);
+  if (bettingRoundClosed(s)) return closeRound(s);
+  s.actingSeat = nextSeatFrom(s, referenceIdx);
+  return s;
+}
+
+// Called after `actedIdx` completes an action.
+function afterAction(state, actedIdx) {
+  let s = state;
+  if (activeSeats(s).length <= 1) return finishByFold(s);
+  if (bettingRoundClosed(s)) return closeRound(s);
+  s.actingSeat = nextSeatFrom(s, actedIdx);
+  return s;
+}
+
+// The current betting round has no further legal actions: either move to the
+// next street (dealing it and opening a fresh round), or, at the river, showdown.
+function closeRound(state) {
+  let s = state;
+  s.actingSeat = null;
+  if (s.street === 'river') return goToShowdown(s);
+  s = dealNextStreet(s);
+  return startBettingRound(s, s.buttonSeat);
+}
+
+function dealNextStreet(state) {
+  const s = cloneState(state);
+  s.streetIndex++;
+  s.street = STREETS[s.streetIndex];
+  for (const seat of s.seats) { seat.street = 0; seat.actedThisStreet = false; }
+  s.currentBet = 0;
+  s.lastRaiseSize = s.stakes.bb;
+  s.deck.shift(); // burn card, matching real dealing convention
+  if (s.street === 'flop') { s.board.push(s.deck.shift(), s.deck.shift(), s.deck.shift()); }
+  else { s.board.push(s.deck.shift()); }
+  s.handLog.push('--- ' + s.street.toUpperCase() + ': ' + s.board.map(EV.cardLabel).join(' ') + ' ---');
+  return s;
+}
+
+function dealRemainingBoard(state) {
+  let s = state;
+  while (s.streetIndex < STREETS.length - 1) s = dealNextStreet(s);
+  return s;
+}
+
+function finishByFold(state) {
+  const s = cloneState(state);
+  const winnerIdx = activeSeats(s)[0];
+  const amount = potTotal(s);
+  s.seats[winnerIdx].stack += amount;
+  s.handOver = true;
+  s.street = 'handover';
+  s.winners = [{ potAmount: amount, hi: [winnerIdx], lo: [], byFold: true }];
+  s.handLog.push(s.seats[winnerIdx].name + ' wins ' + fmt(amount) + ' (everyone else folded)');
+  return s;
+}
+
+function goToShowdown(state) {
+  let s = cloneState(state);
+  s = dealRemainingBoard(s);
+  s.street = 'showdown';
+  s.winners = resolveShowdown(s);
+  s.handOver = true;
+  return s;
+}
+
+function computeSidePots(seats) {
+  const contributors = seats.map((s, i) => ({ idx: i, total: s.total, folded: s.folded })).filter(s => s.total > 0);
+  const thresholds = [...new Set(contributors.map(s => s.total))].sort((a, b) => a - b);
+  const pots = [];
+  let prev = 0;
+  for (const t of thresholds) {
+    const layerSize = t - prev;
+    const payers = contributors.filter(s => s.total >= t - 1e-9);
+    const amount = layerSize * payers.length;
+    const eligible = payers.filter(s => !s.folded).map(s => s.idx);
+    if (amount > 1e-9) pots.push({ amount, eligible });
+    prev = t;
+  }
+  return pots;
+}
+
+// Distribute `amount` chips evenly among winners[], giving odd remainder chips
+// one-by-one to winners in seat order starting just after the button.
+function distribute(amount, winnerIdxs, buttonSeat, payouts) {
+  if (winnerIdxs.length === 0) return;
+  const share = Math.floor((amount / winnerIdxs.length) * 100) / 100;
+  let remainder = Math.round((amount - share * winnerIdxs.length) * 100) / 100;
+  const order = winnerIdxs.slice().sort((a, b) => {
+    const da = (a - buttonSeat + 6) % 6, db = (b - buttonSeat + 6) % 6;
+    return da - db;
+  });
+  for (const w of winnerIdxs) payouts[w] = (payouts[w] || 0) + share;
+  let cents = Math.round(remainder * 100);
+  let i = 0;
+  while (cents > 0 && order.length > 0) {
+    payouts[order[i % order.length]] += 0.01;
+    cents -= 1;
+    i++;
+  }
+}
+
+function resolveShowdown(state) {
+  const pots = computeSidePots(state.seats);
+  const payouts = {};
+  const details = [];
+  const hasLow = state.variant === 'bigo';
+
+  for (const pot of pots) {
+    const hiVals = pot.eligible.map(idx => ({
+      idx, val: state.variant === 'holdem'
+        ? EV.bestHandHoldem(state.seats[idx].hole, state.board)
+        : state.variant === 'omaha'
+          ? EV.bestHandOmaha(state.seats[idx].hole, state.board)
+          : EV.bestHandBigOHi(state.seats[idx].hole, state.board),
+    }));
+    let bestHi = hiVals[0].val;
+    for (const h of hiVals) if (EV.compareHands(h.val, bestHi) > 0) bestHi = h.val;
+    const hiWinners = hiVals.filter(h => EV.compareHands(h.val, bestHi) === 0).map(h => h.idx);
+
+    let loWinners = [];
+    let bestLow = null;
+    if (hasLow) {
+      const loVals = pot.eligible.map(idx => ({ idx, val: EV.bestLowBigO(state.seats[idx].hole, state.board) })).filter(l => l.val !== null);
+      if (loVals.length > 0) {
+        bestLow = loVals[0].val;
+        for (const l of loVals) if (EV.isLowerLow(l.val, bestLow)) bestLow = l.val;
+        loWinners = loVals.filter(l => JSON.stringify(l.val) === JSON.stringify(bestLow)).map(l => l.idx);
+      }
+    }
+
+    if (loWinners.length > 0) {
+      const hiShare = Math.round((pot.amount / 2) * 100) / 100;
+      const loShare = pot.amount - hiShare;
+      distribute(hiShare, hiWinners, state.buttonSeat, payouts);
+      distribute(loShare, loWinners, state.buttonSeat, payouts);
+      details.push({ potAmount: pot.amount, eligible: pot.eligible, hi: hiWinners, hiValue: bestHi, lo: loWinners, loValue: bestLow, split: true });
+    } else {
+      distribute(pot.amount, hiWinners, state.buttonSeat, payouts);
+      details.push({ potAmount: pot.amount, eligible: pot.eligible, hi: hiWinners, hiValue: bestHi, lo: [], loValue: null, split: false });
+    }
+  }
+
+  for (const idxStr of Object.keys(payouts)) {
+    state.seats[idxStr].stack += payouts[idxStr];
+  }
+  for (const d of details) {
+    const hiNames = d.hi.map(i => state.seats[i].name).join(', ');
+    if (d.split && d.lo.length > 0) {
+      const loNames = d.lo.map(i => state.seats[i].name).join(', ');
+      state.handLog.push('Pot ' + fmt(d.potAmount) + ' split: ' + hiNames + ' (hi) / ' + loNames + ' (lo)');
+    } else {
+      state.handLog.push(hiNames + ' win' + (d.hi.length === 1 ? 's' : '') + ' ' + fmt(d.potAmount) + (hasLow ? ' (no qualifying low; hi scoops)' : ''));
+    }
+  }
+  return details;
+}
+
+const PE = {
+  VARIANT_HOLE_COUNT, VARIANT_STRUCTURE, STREETS,
+  startHand, legalActions, applyAction, potTotal, activeSeats, contestants,
+  computeSidePots, resolveShowdown, fmt,
+};
+
+/* ---- poker_ai.js ---- */
+// Heuristic AI for the 6-max cash game. Not a full solver, but it goes beyond a
+// single "strength vs. pot odds" rule: each computer seat is assigned one of
+// three playing styles -- GTO (balanced, plays close to pot-odds-correct with a
+// mixed value/bluff raise frequency), LAG (loose-aggressive: wider opening
+// ranges, higher continuation-bet and bluff frequency, calls wider), and
+// Aggressive/TAG (tighter ranges but polarized, bigger bet sizing, folds more
+// to aggression) -- and, on every single decision, has a 12% chance to
+// deviate and play that one decision according to a *different* style than
+// its assigned one. That per-decision mixing is itself a page out of GTO
+// theory: a solver's strategy is a frequency distribution over actions, not a
+// single fixed rule, and mixing styles is a simple way to approximate that
+// unpredictability against a human opponent who would otherwise learn to read
+// a single fixed tendency.
+
+function clamp(x, lo, hi) { return Math.max(lo, Math.min(hi, x)); }
+
+function choose2(arr) {
+  const out = [];
+  for (let i = 0; i < arr.length; i++) for (let j = i + 1; j < arr.length; j++) out.push([arr[i], arr[j]]);
+  return out;
+}
+
+// ---------------------------------------------------------------------------
+// Playing styles. Each seat has a fixed base style; chooseAIAction rolls a
+// fresh style for every individual decision (see styleForDecision) so that
+// 12% of the time a seat's decision is made using a different style's
+// parameters instead of its own.
+// ---------------------------------------------------------------------------
+const STYLE_NAMES = ['gto', 'lag', 'agg'];
+
+const STYLES = {
+  gto: {
+    label: 'GTO',
+    openAdjust: 0,        // preflop tightening (+) / widening (-) of the effective strength needed
+    raiseThreshold: 0.66, // strength needed to consider a hand "value" territory
+    valueRaiseFreq: 0.55, // frequency of raising (vs. just calling/checking) with a value hand -- a solver mixes rather than always raising
+    cbetFreq: 0.66,       // frequency of continuation-betting as the prior street's aggressor when checked to
+    bluffFreq: 0.28,      // frequency of firing with air / a non-value hand
+    callWidth: 1.0,       // multiplier on how loosely this style defends vs. a bet (1.0 = close to breakeven pot odds)
+    sizeSmall: 0.42, sizeBig: 0.70,
+    aggression: 1.0,
+  },
+  lag: {
+    label: 'LAG',
+    openAdjust: -0.05,
+    raiseThreshold: 0.58,
+    valueRaiseFreq: 0.70,
+    cbetFreq: 0.82,
+    bluffFreq: 0.44,
+    callWidth: 1.15,
+    sizeSmall: 0.38, sizeBig: 0.85,
+    aggression: 1.3,
+  },
+  agg: {
+    label: 'Aggressive',
+    openAdjust: 0.02,
+    raiseThreshold: 0.62,
+    valueRaiseFreq: 0.66,
+    cbetFreq: 0.76,
+    bluffFreq: 0.20,
+    callWidth: 0.9,
+    sizeSmall: 0.55, sizeBig: 1.0,
+    aggression: 1.45,
+  },
+};
+
+// Fixed base-style rotation across the 6 seats (seat 0 is normally the human;
+// harmless if it's ever used for an AI seat too, e.g. in simulations/tests).
+const BASE_STYLE_ORDER = ['gto', 'lag', 'agg', 'lag', 'gto', 'agg'];
+function baseStyleForSeat(seatIdx) { return BASE_STYLE_ORDER[seatIdx % BASE_STYLE_ORDER.length]; }
+
+// 12% of the time, play THIS decision as a different style than the seat's base.
+function styleNameForDecision(seatIdx, rng) {
+  const base = baseStyleForSeat(seatIdx);
+  if (rng() < 0.12) {
+    const others = STYLE_NAMES.filter(s => s !== base);
+    return others[Math.floor(rng() * others.length) % others.length];
+  }
+  return base;
+}
+
+// Preflop position relative to the button: earlier positions tighten up,
+// later positions (and the button itself) open wider, matching standard
+// 6-max ranges. Small, deliberately conservative deltas -- position should
+// nudge the range, not overwhelm genuine hand strength.
+function positionAdjust(state, seatIdx) {
+  if (state.street !== 'preflop') return 0;
+  const offset = (seatIdx - state.buttonSeat + 6) % 6; // 0=BTN,1=SB,2=BB,3=UTG,4=MP,5=CO
+  switch (offset) {
+    case 3: return 0.05;   // UTG: tighten
+    case 4: return 0.025;  // MP
+    case 5: return -0.015; // CO: widen slightly
+    case 0: return -0.04;  // BTN: widest
+    case 1: return 0.01;   // SB
+    case 2: return -0.01;  // BB: getting a discount / pot odds to defend
+    default: return 0;
+  }
+}
+
+// Finds the seat that was last to bet/raise strictly within the CURRENT
+// street (returns null if nobody has bet yet this street, i.e. we'd be
+// opening the betting). Used to recognize check-raise / float opportunities.
+function lastAggressorOnStreet(state) {
+  const marker = '--- ' + state.street.toUpperCase();
+  for (let i = state.handLog.length - 1; i >= 0; i--) {
+    const line = state.handLog[i];
+    if (state.street !== 'preflop' && line.indexOf(marker) === 0) break;
+    if (state.street !== 'preflop' && line.indexOf('--- ') === 0) break;
+    const m = line.match(/^(.*?) raises( all-in)? to \$/);
+    if (m) {
+      const idx = state.seats.findIndex(s => s.name === m[1]);
+      if (idx >= 0) return idx;
+    }
+  }
+  return null;
+}
+
+// Finds the seat that was the aggressor on the street immediately BEFORE the
+// given one (e.g. pass 'flop' to find who raised preflop). Used for
+// continuation-betting logic.
+function lastAggressorBeforeStreet(state, streetName) {
+  const marker = '--- ' + streetName.toUpperCase();
+  const markerIdx = state.handLog.findIndex(l => l.indexOf(marker) === 0);
+  const end = markerIdx === -1 ? state.handLog.length : markerIdx;
+  for (let i = end - 1; i >= 0; i--) {
+    const line = state.handLog[i];
+    if (line.indexOf('--- ') === 0) break;
+    const m = line.match(/^(.*?) raises( all-in)? to \$/);
+    if (m) {
+      const idx = state.seats.findIndex(s => s.name === m[1]);
+      if (idx >= 0) return idx;
+    }
+  }
+  return null;
+}
+
+function preflopHoldem(hole) {
+  const [a, b] = hole.slice().sort((x, y) => y.r - x.r);
+  let score = (a.r + b.r) / 28 * 0.55;
+  if (a.r === b.r) score += 0.22 + (a.r / 14) * 0.18;
+  if (a.s === b.s) score += 0.07;
+  const gap = a.r - b.r;
+  if (gap === 0) { /* pair, already handled */ }
+  else if (gap === 1) score += 0.07;
+  else if (gap === 2) score += 0.04;
+  else if (gap === 3) score += 0.015;
+  return clamp(score, 0, 1);
+}
+
+function preflopOmahaLike(holeCards) {
+  const pairs = choose2(holeCards);
+  let synergy = 0;
+  for (const [a, b] of pairs) {
+    let s = 0;
+    if (a.r === b.r) s += 0.16;
+    if (a.s === b.s) s += 0.09;
+    const gap = Math.abs(a.r - b.r);
+    if (gap >= 1 && gap <= 3) s += (4 - gap) * 0.025;
+    s += ((a.r + b.r) / 28) * 0.05;
+    synergy += s;
+  }
+  let hi = synergy / pairs.length;
+  const maxR = Math.max(...holeCards.map(c => c.r));
+  hi += (maxR / 14) * 0.12;
+  hi = clamp(hi, 0, 1);
+
+  const lowCards = holeCards.filter(c => c.r <= 8 || c.r === 14);
+  const distinctLowRanks = new Set(lowCards.map(c => (c.r === 14 ? 1 : c.r))).size;
+  let lo = distinctLowRanks >= 2 ? (distinctLowRanks / 5) * 0.75 : 0;
+  if (lowCards.some(c => c.r === 14) && lowCards.some(c => c.r === 2)) lo += 0.1;
+  lo = clamp(lo, 0, 1);
+  return { hi, lo };
+}
+
+function remainingUnseen(hole, board) {
+  const used = new Set(hole.concat(board).map(EV.cardKey));
+  const unseen = [];
+  for (const s of EV.SUITS) for (let r = 2; r <= 14; r++) { const c = { r, s }; if (!used.has(EV.cardKey(c))) unseen.push(c); }
+  return unseen;
+}
+
+function variantBestHi(variant, hole, board) {
+  if (variant === 'holdem') return EV.bestHandHoldem(hole, board);
+  if (variant === 'omaha') return EV.bestHandOmaha(hole, board);
+  return EV.bestHandBigOHi(hole, board);
+}
+
+function equityEstimate(variant, hole, board) {
+  if (board.length === 0) {
+    if (variant === 'holdem') return preflopHoldem(hole);
+    const { hi, lo } = preflopOmahaLike(hole);
+    return variant === 'bigo' ? clamp(hi + lo * 0.55, 0, 1) : hi;
+  }
+  const bestVal = variantBestHi(variant, hole, board);
+  const madeScore = bestVal[0] / 8;
+  let drawBonus = 0;
+  if (board.length < 5) {
+    // Compare hand CATEGORY only (pair, two pair, straight, flush, ...), not the
+    // full tie-break array: with one extra card, a best-5-of-6 (or best-5-of-9
+    // for Omaha) selection can almost always swap in a marginally better kicker
+    // at the SAME category, which would otherwise count as "improving" for
+    // nearly every card and wash out the real signal (actual outs to a better
+    // category, i.e. a genuine draw).
+    const unseen = remainingUnseen(hole, board);
+    let improving = 0;
+    for (const c of unseen) {
+      const newBoard = board.concat([c]);
+      const newVal = variantBestHi(variant, hole, newBoard);
+      if (newVal[0] > bestVal[0]) improving++;
+    }
+    drawBonus = unseen.length > 0 ? (improving / unseen.length) : 0;
+  }
+  let loComponent = 0;
+  if (variant === 'bigo') {
+    const lowNow = EV.bestLowBigO(hole, board);
+    if (lowNow) {
+      loComponent = 0.32 + ((8 - Math.max(...lowNow)) / 8) * 0.18;
+    } else if (board.length < 5) {
+      const holeLow = hole.filter(c => c.r <= 8 || c.r === 14).length;
+      const boardLow = board.filter(c => c.r <= 8 || c.r === 14).length;
+      if (holeLow >= 2) loComponent = 0.08 * Math.min(2, holeLow - 1) * (boardLow >= 1 ? 1.4 : 1);
+    }
+  }
+  let overall = madeScore * 0.55 + drawBonus * 0.35 + loComponent * 0.4;
+  return clamp(overall, 0, 1);
+}
+
+function pickRaiseTo(legal, state, fraction) {
+  const { minRaiseTo, maxRaiseTo } = legal;
+  if (maxRaiseTo <= minRaiseTo) return maxRaiseTo;
+  const to = minRaiseTo + (maxRaiseTo - minRaiseTo) * clamp(fraction, 0, 1);
+  return Math.round(to * 100) / 100;
+}
+
+function chooseAIAction(state, seatIdx, rng = Math.random) {
+  const seat = state.seats[seatIdx];
+  const legal = PE.legalActions(state, seatIdx);
+  if (!legal.canAct) throw new Error('AI seat cannot act');
+
+  const style = STYLES[styleNameForDecision(seatIdx, rng)];
+
+  const equity = equityEstimate(state.variant, seat.hole, state.board);
+  const pot = PE.potTotal(state);
+  const toCall = legal.callAmount;
+  // Use the engine's own canCheck/canCall flags (not a re-derived toCall===0
+  // check) to decide whether we're facing a bet: floating-point drift can
+  // leave toCall as a tiny negative/positive residue (e.g. -1.4e-14) instead
+  // of an exact 0, and re-deriving from that residue can disagree with the
+  // engine about what's actually legal.
+  const facingBet = !legal.canCheck;
+  const potOdds = facingBet ? Math.max(toCall, 0) / (pot + Math.max(toCall, 0)) : 0;
+  const effStackBB = seat.stack / state.stakes.bb;
+
+  // Preflop: position + style widen/tighten the effective hand-strength bar.
+  // Postflop: only a much smaller style nudge applies (position no longer
+  // matters the same way once everyone has seen the same board).
+  const structAdjust = state.street === 'preflop'
+    ? (positionAdjust(state, seatIdx) + style.openAdjust)
+    : style.openAdjust * 0.4;
+
+  const noise = (rng() - 0.5) * 0.12;
+  const strength = clamp(equity + noise - structAdjust, 0, 1);
+
+  // Short-stacked and facing the option to open/shove: simplify to push-or-fold,
+  // which is standard (and safest) strategy at this depth. Looser styles shove
+  // a bit wider, tighter/aggressive styles shove a bit narrower.
+  const isOpenDecision = state.currentBet <= state.stakes.bb && state.street === 'preflop';
+  if (effStackBB <= 12 && legal.canRaise) {
+    const baseShove = isOpenDecision ? 0.42 : 0.55;
+    const shoveThreshold = clamp(baseShove - (style.aggression - 1) * 0.05, 0.30, 0.60);
+    if (strength >= shoveThreshold) {
+      return { type: 'raiseTo', amount: legal.maxRaiseTo };
+    }
+    if (!facingBet) return { type: 'check' };
+    if (strength >= shoveThreshold - 0.16 * style.callWidth && potOdds < strength * style.callWidth) return { type: 'call' };
+    return legal.canFold ? { type: 'fold' } : { type: 'call' };
+  }
+
+  // Deeper-stack heuristic play.
+  if (!facingBet) {
+    // Nobody has bet yet this street (or checked to us). Decide whether to bet
+    // for value, continuation-bet as the prior street's aggressor, or bluff.
+    const wasAggressor = state.street !== 'preflop' && lastAggressorBeforeStreet(state, state.street) === seatIdx;
+    let betFreq;
+    let sizeFrac;
+    if (strength >= style.raiseThreshold) {
+      betFreq = style.valueRaiseFreq;
+      sizeFrac = style.sizeBig;
+    } else if (wasAggressor) {
+      // Continuation bet: fire a range, weighted a bit by genuine backup equity.
+      betFreq = style.cbetFreq * (0.55 + strength * 0.6);
+      sizeFrac = style.sizeSmall;
+    } else {
+      // Pure/semi-bluff: mostly with some backup equity (a draw), rarely stone air.
+      betFreq = style.bluffFreq * (0.25 + clamp(strength, 0, 0.45));
+      sizeFrac = style.sizeSmall;
+    }
+    betFreq = clamp(betFreq, 0, 0.92);
+    if (legal.canRaise && rng() < betFreq) {
+      return { type: 'raiseTo', amount: pickRaiseTo(legal, state, sizeFrac) };
+    }
+    return { type: 'check' };
+  }
+
+  // Facing a bet.
+  if (strength >= style.raiseThreshold && legal.canRaise) {
+    // Mix: raise for value most of the time, but sometimes just call (trap /
+    // slowplay) to stay unpredictable -- a pure "always raise the nuts"
+    // strategy is exploitable.
+    if (rng() < style.valueRaiseFreq) {
+      return { type: 'raiseTo', amount: pickRaiseTo(legal, state, style.sizeSmall + (style.sizeBig - style.sizeSmall) * strength) };
+    }
+    return { type: 'call' };
+  }
+  if (strength * style.callWidth + 0.05 >= potOdds) {
+    // A profitable (or close to it) call. Occasionally raise as a semi-bluff /
+    // float instead of just calling, sized smaller than a value raise.
+    if (legal.canRaise && rng() < style.bluffFreq * 0.35) {
+      return { type: 'raiseTo', amount: pickRaiseTo(legal, state, style.sizeSmall * 0.7) };
+    }
+    return { type: 'call' };
+  }
+  // Below a defensible price: occasionally raise as a pure bluff to represent
+  // strength (a real, if infrequent, part of a balanced strategy), else fold.
+  if (legal.canRaise && rng() < style.bluffFreq * 0.12) {
+    return { type: 'raiseTo', amount: pickRaiseTo(legal, state, style.sizeBig) };
+  }
+  return legal.canFold ? { type: 'fold' } : { type: 'call' };
+}
+
+/* ---- poker_session.js ---- */
+// Between-hands table bookkeeping: auto top-up for busted/near-zero stacks,
+// and BB-preserving stack conversion when the stakes change.
+const TOPUP_BB = 100;
+const TOPUP_THRESHOLD_BB = 1; // reload once a stack falls to <= 1 big blind
+
+function round2(n) { return Math.round(n * 100) / 100; }
+
+// seats: [{ ...seat, stack }], oldStakes/newStakes: {sb, bb}
+function settleBetweenHands(seats, oldStakes, newStakes) {
+  return seats.map(seat => {
+    const oldBB = oldStakes.bb;
+    const thresholdChips = oldBB * TOPUP_THRESHOLD_BB;
+    if (seat.stack <= thresholdChips + 1e-9) {
+      return { ...seat, stack: round2(TOPUP_BB * newStakes.bb) };
+    }
+    const bbCount = seat.stack / oldBB;
+    return { ...seat, stack: round2(bbCount * newStakes.bb) };
+  });
+}
+
+function rotateButton(buttonSeat) {
+  return (buttonSeat + 1) % 6;
+}
+
+/* =========================================================================
+   UI
+   ========================================================================= */
+
+const STAKES_MAP = {
+  '1-2': { sb: 1, bb: 2 },
+  '2-5': { sb: 2, bb: 5 },
+  '5-10': { sb: 5, bb: 10 },
+  '25-50': { sb: 25, bb: 50 },
+};
+const VARIANT_LABEL = { holdem: "Hold'em", omaha: 'Omaha', bigo: 'Big O' };
+const AI_NAMES = ['Marcus', 'Elena', 'Chip', 'Dana', 'Ray'];
+const RED_SUITS = ['h', 'd'];
+const SUIT_GLYPH = { s: '♠', h: '♥', d: '♦', c: '♣' };
+
+let currentVariant = 'holdem';
+let currentStakesKey = '1-2';
+let pendingVariant = currentVariant;
+let pendingStakesKey = currentStakesKey;
+let seats = null;
+let buttonSeat = 0;
+let state = null;
+let sessionLog = [];
+let loggedCount = 0;
+let uiLocked = false;
+let winnerHighlightSeats = [];
+let raiseControlsOpen = false;
+
+function seatName(i) { return i === 0 ? 'You' : AI_NAMES[i - 1]; }
+
+function buildCardDiv(card, cls) {
+  const el = document.createElement('div');
+  el.className = cls + ' ' + (RED_SUITS.includes(card.s) ? 'red' : 'black');
+  if (cls === 'card') {
+    const corner = document.createElement('div');
+    corner.className = 'corner';
+    corner.textContent = EV.RANK_LABEL[card.r] + SUIT_GLYPH[card.s];
+    const pip = document.createElement('div');
+    pip.className = 'pip';
+    pip.textContent = SUIT_GLYPH[card.s];
+    el.appendChild(corner);
+    el.appendChild(pip);
+  } else {
+    el.textContent = EV.RANK_LABEL[card.r] + SUIT_GLYPH[card.s];
+  }
+  return el;
+}
+function buildCardBack(cls) {
+  const el = document.createElement('div');
+  el.className = cls + ' back';
+  return el;
+}
+
+function initSeats() {
+  const stakes = STAKES_MAP[currentStakesKey];
+  seats = [{ id: 0, name: 'You', isHuman: true, stack: stakes.bb * 100 }]
+    .concat(AI_NAMES.map((nm, i) => ({ id: i + 1, name: nm, isHuman: false, stack: stakes.bb * 100 })));
+  buttonSeat = 0;
+}
+
+function dealNextHand() {
+  const newStakes = STAKES_MAP[pendingStakesKey];
+  const oldStakes = STAKES_MAP[currentStakesKey];
+  if (seats === null) {
+    currentVariant = pendingVariant; currentStakesKey = pendingStakesKey;
+    initSeats();
+  } else {
+    seats = settleBetweenHands(seats, oldStakes, newStakes);
+    currentVariant = pendingVariant; currentStakesKey = pendingStakesKey;
+  }
+  document.getElementById('resultBanner').classList.remove('open');
+  winnerHighlightSeats = [];
+  sessionLog.push('=== New Hand — ' + VARIANT_LABEL[currentVariant] + ', $' + STAKES_MAP[currentStakesKey].sb + '/$' + STAKES_MAP[currentStakesKey].bb + ' ===');
+  state = startHand(seats, buttonSeat, currentVariant, STAKES_MAP[currentStakesKey], Math.random);
+  loggedCount = 0;
+  pullLog();
+  render();
+  uiLocked = false;
+  processTurn();
+}
+
+function pullLog() {
+  if (!state) return;
+  const fresh = state.handLog.slice(loggedCount);
+  sessionLog = sessionLog.concat(fresh);
+  loggedCount = state.handLog.length;
+  if (sessionLog.length > 300) sessionLog = sessionLog.slice(sessionLog.length - 300);
+}
+
+function processTurn() {
+  pullLog();
+  render();
+  if (state.handOver) { finalizeHand(); return; }
+  if (state.actingSeat === 0) {
+    uiLocked = false;
+    renderActionBar();
+    return;
+  }
+  uiLocked = true;
+  renderActionBar();
+  setTimeout(() => {
+    const action = chooseAIAction(state, state.actingSeat, Math.random);
+    state = applyAction(state, state.actingSeat, action);
+    processTurn();
+  }, 700);
+}
+
+function finalizeHand() {
+  const stakes = STAKES_MAP[currentStakesKey];
+  const resultTitle = document.getElementById('resultTitle');
+  const resultList = document.getElementById('resultList');
+  const resultControls = document.getElementById('resultControls');
+  resultList.innerHTML = '';
+  winnerHighlightSeats = [];
+
+  if (state.winners[0].byFold) {
+    resultTitle.textContent = seatName(state.winners[0].hi[0]) + ' Wins the Pot';
+    winnerHighlightSeats = [state.winners[0].hi[0]];
+  } else {
+    resultTitle.textContent = 'Showdown';
+    for (const idx of activeSeats(state)) winnerHighlightSeats.push(idx); // placeholder, replaced below
+    winnerHighlightSeats = [];
+    // Reveal each showdown participant's hand.
+    for (const idx of activeSeats(state)) {
+      const row = document.createElement('div');
+      row.className = 'result-row';
+      const seat = state.seats[idx];
+      const hiVal = currentVariant === 'holdem' ? EV.bestHandHoldem(seat.hole, state.board)
+        : currentVariant === 'omaha' ? EV.bestHandOmaha(seat.hole, state.board)
+        : EV.bestHandBigOHi(seat.hole, state.board);
+      let desc = seatName(idx) + ': ' + EV.categoryName(hiVal);
+      if (currentVariant === 'bigo') {
+        const lowVal = EV.bestLowBigO(seat.hole, state.board);
+        desc += lowVal ? ' / Low ' + EV.lowLabel(lowVal) : ' / No Low';
+      }
+      row.innerHTML = '<span>' + desc + '</span><span>' + seat.hole.map(c => EV.RANK_LABEL[c.r] + SUIT_GLYPH[c.s]).join(' ') + '</span>';
+      resultList.appendChild(row);
+    }
+    for (const pot of state.winners) {
+      const row = document.createElement('div');
+      row.className = 'result-row';
+      const hiNames = pot.hi.map(seatName).join(', ');
+      if (pot.split && pot.lo.length > 0) {
+        const loNames = pot.lo.map(seatName).join(', ');
+        row.innerHTML = '<span>Pot ' + fmt(pot.potAmount) + '</span><span>' + hiNames + ' (hi) / ' + loNames + ' (lo)</span>';
+      } else {
+        row.innerHTML = '<span>Pot ' + fmt(pot.potAmount) + '</span><span>' + hiNames + (currentVariant === 'bigo' ? ' (no qualifying low — scoops)' : '') + '</span>';
+      }
+      resultList.appendChild(row);
+      for (const w of pot.hi) winnerHighlightSeats.push(w);
+      for (const w of pot.lo) winnerHighlightSeats.push(w);
+    }
+  }
+
+  resultControls.innerHTML = '';
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-gold';
+  btn.textContent = 'Deal Next Hand';
+  btn.id = 'dealNextBtn';
+  btn.addEventListener('click', () => {
+    buttonSeat = rotateButton(buttonSeat);
+    dealNextHand();
+  });
+  resultControls.appendChild(btn);
+  document.getElementById('resultBanner').classList.add('open');
+  updateSettingsEnabled();
+  render();
+}
+
+function updateSettingsEnabled() {
+  const midHand = !!(state && !state.handOver);
+  document.querySelectorAll('#variantPills .pill').forEach(b => b.disabled = midHand);
+  document.querySelectorAll('#stakesPills .pill').forEach(b => b.disabled = midHand);
+}
+
+function render() {
+  updateSettingsEnabled();
+  const stakes = STAKES_MAP[currentStakesKey];
+  const displaySeats = state ? state.seats : seats;
+  for (let i = 0; i < 6; i++) {
+    const seatEl = document.getElementById('seat-' + i);
+    const nameEl = document.getElementById('name-' + i);
+    const stackEl = document.getElementById('stack-' + i);
+    const cardsEl = document.getElementById('cards-' + i);
+    const betEl = document.getElementById('bet-' + i);
+    const statusEl = document.getElementById('status-' + i);
+    if (!displaySeats) { nameEl.textContent = seatName(i); continue; }
+    const seat = displaySeats[i];
+    const bSeat = state ? state.buttonSeat : buttonSeat;
+    let tag = '';
+    if (state && state.street !== 'handover') {
+      const sbSeat = (bSeat + 1) % 6, bbSeat = (bSeat + 2) % 6;
+      if (i === sbSeat) tag = ' <span style="color:#8a9a8c;font-size:10px;">(SB)</span>';
+      if (i === bbSeat) tag = ' <span style="color:#8a9a8c;font-size:10px;">(BB)</span>';
+    }
+    nameEl.innerHTML = seatName(i) + (bSeat === i ? ' <span class="dbtn">D</span>' : '') + tag;
+    stackEl.textContent = fmt(seat.stack);
+    cardsEl.innerHTML = '';
+    const holeCount = state ? VARIANT_HOLE_COUNT[currentVariant] : VARIANT_HOLE_COUNT[pendingVariant];
+    if (state && seat.hole && seat.hole.length > 0 && !(state.street !== 'showdown' && !seat.isHuman && false)) {
+      const revealAtShowdown = state.street === 'showdown' && !seat.folded;
+      if (seat.isHuman || revealAtShowdown) {
+        for (const c of seat.hole) cardsEl.appendChild(buildCardDiv(c, 'card'));
+      } else if (!seat.folded) {
+        for (let k = 0; k < holeCount; k++) cardsEl.appendChild(buildCardBack('mini-card'));
+      }
+    }
+    betEl.textContent = state && seat.street > 0 ? fmt(seat.street) : '';
+    statusEl.textContent = state ? (seat.folded ? 'Folded' : seat.allIn ? 'All-In' : '') : '';
+    seatEl.classList.toggle('active-turn', !!(state && !state.handOver && state.actingSeat === i));
+    seatEl.classList.toggle('folded', !!(state && seat.folded));
+    seatEl.classList.toggle('winner-glow', winnerHighlightSeats.includes(i));
+  }
+
+  const boardCards = document.getElementById('boardCards');
+  boardCards.innerHTML = '';
+  if (state) for (const c of state.board) boardCards.appendChild(buildCardDiv(c, 'card'));
+  document.getElementById('potAmount').textContent = state ? fmt(potTotal(state)) : '$0';
+  document.getElementById('streetLabel').textContent = state ? (state.street === 'handover' ? 'Hand Complete' : state.street.toUpperCase()) : 'Ready to Deal';
+
+  const logList = document.getElementById('logList');
+  const logEmpty = document.getElementById('logEmpty');
+  logEmpty.style.display = sessionLog.length === 0 ? 'block' : 'none';
+  logList.innerHTML = sessionLog.map(t => '<div class="log-row' + (t.indexOf('===') === 0 || t.indexOf('---') === 0 ? ' street' : '') + '">' + t + '</div>').join('');
+  logList.scrollTop = logList.scrollHeight;
+
+  const structure = VARIANT_STRUCTURE[currentVariant];
+  document.getElementById('tableInfo').innerHTML =
+    'Game: <strong>' + VARIANT_LABEL[currentVariant] + '</strong> (' + (structure === 'NL' ? 'No-Limit' : 'Pot-Limit') + ')<br>' +
+    'Stakes: <strong>$' + stakes.sb + '/$' + stakes.bb + '</strong><br>' +
+    'Starting / top-up stack: <strong>100 BB (' + fmt(stakes.bb * 100) + ')</strong><br>' +
+    'Seats: You vs. ' + AI_NAMES.join(', ');
+}
+
+function renderActionBar() {
+  const bar = document.getElementById('actionBar');
+  const buttonsWrap = document.getElementById('actionButtons');
+  const raiseControls = document.getElementById('raiseControls');
+  buttonsWrap.innerHTML = '';
+  raiseControls.style.display = 'none';
+  raiseControlsOpen = false;
+
+  if (!state || state.handOver || state.actingSeat !== 0) { bar.classList.add('hidden'); return; }
+  bar.classList.remove('hidden');
+  const legal = legalActions(state, 0);
+
+  const foldBtn = document.createElement('button');
+  foldBtn.className = 'btn btn-red btn-small';
+  foldBtn.textContent = 'Fold';
+  foldBtn.disabled = !legal.canFold;
+  foldBtn.addEventListener('click', () => { humanAct({ type: 'fold' }); });
+  buttonsWrap.appendChild(foldBtn);
+
+  const callBtn = document.createElement('button');
+  callBtn.className = 'btn btn-ghost btn-small';
+  callBtn.textContent = legal.canCheck ? 'Check' : 'Call ' + fmt(legal.callAmount);
+  callBtn.addEventListener('click', () => { humanAct(legal.canCheck ? { type: 'check' } : { type: 'call' }); });
+  buttonsWrap.appendChild(callBtn);
+
+  if (legal.canRaise) {
+    const raiseBtn = document.createElement('button');
+    raiseBtn.className = 'btn btn-gold btn-small';
+    raiseBtn.textContent = state.currentBet === 0 ? 'Bet' : 'Raise';
+    raiseBtn.addEventListener('click', () => { toggleRaiseControls(legal); });
+    buttonsWrap.appendChild(raiseBtn);
+  }
+}
+
+function toggleRaiseControls(legal) {
+  const raiseControls = document.getElementById('raiseControls');
+  raiseControlsOpen = !raiseControlsOpen;
+  if (!raiseControlsOpen) { raiseControls.style.display = 'none'; return; }
+  raiseControls.style.display = 'flex';
+  buildRaiseControls(legal);
+}
+
+function buildRaiseControls(legal) {
+  const slider = document.getElementById('raiseSlider');
+  const label = document.getElementById('raiseAmountLabel');
+  const quickWrap = document.getElementById('quickSizes');
+  const stakes = STAKES_MAP[currentStakesKey];
+  const structure = VARIANT_STRUCTURE[currentVariant];
+  const min = legal.minRaiseTo, max = legal.maxRaiseTo;
+  const step = Math.max(stakes.bb / 20, 0.25);
+
+  slider.min = min; slider.max = max; slider.step = step;
+  slider.value = min; slider.disabled = max <= min + 1e-9;
+  label.textContent = fmt(min);
+  slider.oninput = () => { label.textContent = fmt(parseFloat(slider.value)); };
+
+  quickWrap.innerHTML = '';
+  const pot = potTotal(state);
+  const potAfterCall = pot + legal.callAmount;
+  const sizes = structure === 'NL'
+    ? [['Min', min], ['1/2 Pot', state.currentBet + potAfterCall * 0.5], ['Pot', state.currentBet + potAfterCall], ['All-In', max]]
+    : [['Min', min], ['1/2 Pot', state.currentBet + potAfterCall * 0.5], ['3/4 Pot', state.currentBet + potAfterCall * 0.75], ['Max (Pot)', max]];
+  for (const [label2, raw] of sizes) {
+    const val = Math.max(min, Math.min(max, Math.round(raw * 100) / 100));
+    const b = document.createElement('button');
+    b.className = 'btn btn-ghost btn-small';
+    b.textContent = label2;
+    b.addEventListener('click', () => { slider.value = val; label.textContent = fmt(val); });
+    quickWrap.appendChild(b);
+  }
+
+  document.getElementById('confirmRaiseBtn').onclick = () => {
+    const amount = parseFloat(slider.value);
+    humanAct({ type: 'raiseTo', amount });
+  };
+}
+
+function humanAct(action) {
+  if (uiLocked || !state || state.actingSeat !== 0) return;
+  state = applyAction(state, 0, action);
+  document.getElementById('raiseControls').style.display = 'none';
+  raiseControlsOpen = false;
+  processTurn();
+}
+
+/* ---------- Settings wiring ---------- */
+document.querySelectorAll('#variantPills .pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.disabled) return;
+    pendingVariant = btn.dataset.variant;
+    document.querySelectorAll('#variantPills .pill').forEach(b => b.classList.toggle('active', b === btn));
+    if (!state) { currentVariant = pendingVariant; render(); }
+  });
+});
+document.querySelectorAll('#stakesPills .pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.disabled) return;
+    pendingStakesKey = btn.dataset.stakes;
+    document.querySelectorAll('#stakesPills .pill').forEach(b => b.classList.toggle('active', b === btn));
+    if (!state) { currentStakesKey = pendingStakesKey; if (seats) seats = settleBetweenHands(seats, STAKES_MAP[currentStakesKey], STAKES_MAP[currentStakesKey]); render(); }
+  });
+});
+document.getElementById('resetSessionBtn').addEventListener('click', () => {
+  const ok = window.confirm('Reset the whole session? Everyone reloads to 100 big blinds at 1/2 Hold\'em and the button returns to seat 1.');
+  if (!ok) return;
+  seats = null; buttonSeat = 0; state = null; sessionLog = []; loggedCount = 0; winnerHighlightSeats = [];
+  currentVariant = 'holdem'; pendingVariant = 'holdem';
+  currentStakesKey = '1-2'; pendingStakesKey = '1-2';
+  document.querySelectorAll('#variantPills .pill').forEach(b => b.classList.toggle('active', b.dataset.variant === 'holdem'));
+  document.querySelectorAll('#stakesPills .pill').forEach(b => b.classList.toggle('active', b.dataset.stakes === '1-2'));
+  document.getElementById('resultBanner').classList.remove('open');
+  dealNextHand();
+});
+
+/* ---------- Init ---------- */
+document.querySelector('#variantPills .pill[data-variant="holdem"]').classList.add('active');
+document.querySelector('#stakesPills .pill[data-stakes="1-2"]').classList.add('active');
+dealNextHand();
+</script> 

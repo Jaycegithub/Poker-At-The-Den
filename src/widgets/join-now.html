@@ -1,0 +1,1499 @@
+
+<!-- ================================================================
+     THE DEN — PRIVATE MEMBERSHIP APPLICATION FORM
+     Elementor Global Styling Version
+================================================================= -->
+<div id="den-app-root">
+<style>
+/* ================================================================
+   THE DEN MEMBERSHIP FORM
+   Uses Elementor Global Typography & Colors
+================================================================= */
+
+#den-app-root {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+    color: var(--e-global-color-text);
+}
+
+#den-app-root *,
+#den-app-root *::before,
+#den-app-root *::after {
+    box-sizing: border-box;
+}
+
+
+/* ================================================================
+   FORM CARD
+================================================================= */
+
+#den-app-root .den-card {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    background: transparent;
+
+    border: 0;
+    border-radius: 0 !important;
+    box-shadow: none;
+
+    overflow: visible;
+}
+
+
+/* ================================================================
+   BODY
+================================================================= */
+
+#den-app-root .den-body {
+    padding: 0;
+}
+
+
+/* ================================================================
+   FIELDSETS
+================================================================= */
+
+#den-app-root fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0 0 42px;
+}
+
+#den-app-root fieldset:last-of-type {
+    margin-bottom: 30px;
+}
+
+
+/* ================================================================
+   SECTION TITLES
+================================================================= */
+
+#den-app-root legend {
+    display: block;
+    width: 100%;
+
+    margin: 0 0 24px;
+    padding: 0 0 12px;
+
+    font-family: var(--e-global-typography-primary-font-family), Sans-serif;
+    font-size: var(--e-global-typography-a7460eb-font-size);
+    font-weight: var(--e-global-typography-primary-font-weight);
+    line-height: var(--e-global-typography-primary-line-height);
+    color: var(--e-global-color-primary);
+
+    letter-spacing: var(--e-global-typography-primary-letter-spacing);
+    text-transform: var(--e-global-typography-primary-text-transform);
+
+    border-bottom: 1px solid var(--e-global-color-text);
+
+    position: relative;
+}
+
+#den-app-root legend::after {
+    content: '';
+    position: absolute;
+
+    left: 0;
+    bottom: -1px;
+
+    width: 55px;
+    height: 2px;
+
+    background-color: var(--e-global-color-accent);
+}
+
+
+/* ================================================================
+   ROWS
+================================================================= */
+
+#den-app-root .den-row {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 20px;
+
+    margin-bottom: 20px;
+}
+
+#den-app-root .den-field {
+    flex: 1 1 250px;
+    min-width: 0;
+}
+
+#den-app-root .den-field.den-small {
+    flex: 0 1 130px;
+}
+
+
+/* ================================================================
+   LABELS
+================================================================= */
+
+#den-app-root label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+    color: var(--e-global-color-text);
+
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+#den-app-root label .den-req {
+    color: var(--e-global-color-accent);
+}
+
+
+/* ================================================================
+   INPUTS
+================================================================= */
+
+#den-app-root input[type="text"],
+#den-app-root input[type="email"],
+#den-app-root input[type="tel"],
+#den-app-root input[type="date"],
+#den-app-root input[type="password"] {
+
+    display: block;
+    width: 100%;
+    height: auto;
+
+    box-sizing: border-box;
+
+    padding: 12px 15px;
+
+    background-color: #fff;
+
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+    color: var(--e-global-color-text);
+
+    border-radius: 0 !important;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+
+/* Input hover */
+
+#den-app-root input:hover {
+    border-radius: 0 !important;
+}
+
+
+/* Input focus */
+
+#den-app-root input:focus {
+    outline: none;
+
+    border-radius: 0 !important;
+
+    border-color: var(--e-global-color-accent);
+
+    box-shadow: none;
+
+    background-color: #fff;
+}
+
+
+/* Placeholder */
+
+#den-app-root input::placeholder {
+    color: var(--e-global-color-text);
+    opacity: 0.55;
+}
+
+
+/* Autofill */
+
+#den-app-root input:-webkit-autofill {
+    border-radius: 0 !important;
+}
+
+
+/* ================================================================
+   MEMBERSHIP OPTIONS
+================================================================= */
+
+#den-app-root .den-membership-options {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-top: 18px;
+}
+
+
+/* Radio card */
+
+#den-app-root .den-radio-card {
+    display: flex;
+    align-items: center;
+
+    min-height: 58px;
+
+    margin: 0;
+    padding: 14px 16px;
+
+    background: #fff;
+
+    border: 1px solid var(--e-global-color-text);
+
+    border-radius: 0 !important;
+
+    color: var(--e-global-color-text);
+
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+/* Radio card hover */
+
+#den-app-root .den-radio-card:hover {
+    border-color: var(--e-global-color-accent);
+
+    transform: translateY(-1px);
+}
+
+
+/* Selected radio card */
+
+#den-app-root .den-radio-card:has(input:checked) {
+    border-color: var(--e-global-color-accent);
+
+    background-color: var(--e-global-color-primary);
+
+    color: var(--e-global-color-accent);
+
+    box-shadow: none;
+}
+
+
+/* Radio */
+
+#den-app-root .den-radio-card input {
+    width: 17px;
+    height: 17px;
+
+    margin: 0 11px 0 0;
+
+    padding: 0;
+
+    flex-shrink: 0;
+
+    accent-color: var(--e-global-color-accent);
+}
+
+
+/* ================================================================
+   NOTICE
+================================================================= */
+
+#den-app-root .den-notice {
+    margin-top: 18px;
+
+    padding: 16px 18px;
+
+    background-color: var(--e-global-color-primary);
+
+    border-left: 3px solid var(--e-global-color-accent);
+
+    border-top: 1px solid var(--e-global-color-text);
+    border-right: 1px solid var(--e-global-color-text);
+    border-bottom: 1px solid var(--e-global-color-text);
+
+    border-radius: 0 !important;
+
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+
+    color: white;
+}
+
+
+/* ================================================================
+   INTRO TEXT
+================================================================= */
+
+#den-app-root fieldset > p {
+    margin-top: 0;
+
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+
+    color: var(--e-global-color-text);
+}
+
+
+/* ================================================================
+   LEGAL AGREEMENT
+================================================================= */
+
+#den-app-root .den-legal-box {
+
+    background-color: #fff;
+
+    border: 1px solid var(--e-global-color-text);
+
+    border-radius: 0 !important;
+
+    padding: 24px;
+
+    max-height: 360px;
+
+    overflow-y: auto;
+
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+
+    color: var(--e-global-color-text);
+
+    scrollbar-width: thin;
+}
+
+
+/* Scrollbar */
+
+#den-app-root .den-legal-box::-webkit-scrollbar {
+    width: 7px;
+}
+
+#den-app-root .den-legal-box::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#den-app-root .den-legal-box::-webkit-scrollbar-thumb {
+    background: var(--e-global-color-accent);
+
+    border-radius: 0;
+}
+
+
+/* Legal headings */
+
+#den-app-root .den-legal-box h3 {
+
+    margin: 22px 0 7px;
+
+    font-family: var(--e-global-typography-primary-font-family), Sans-serif;
+    font-size: var( --e-global-typography-e951c9e-font-size );
+    font-weight: var(--e-global-typography-primary-font-weight);
+    line-height: var(--e-global-typography-primary-line-height);
+
+    color: var(--e-global-color-primary);
+}
+
+#den-app-root .den-legal-box h3:first-child {
+    margin-top: 0;
+}
+
+
+/* Legal paragraphs */
+
+#den-app-root .den-legal-box p {
+    margin: 0 0 12px;
+}
+
+
+/* Legal list */
+
+#den-app-root .den-legal-box ul {
+    margin: 0 0 14px 20px;
+    padding: 0;
+}
+
+#den-app-root .den-legal-box li {
+    margin-bottom: 5px;
+}
+
+
+/* ================================================================
+   AGREEMENT CHECKBOX
+================================================================= */
+
+#den-app-root .den-checkbox-row {
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 12px;
+
+    margin-top: 20px;
+
+    padding: 17px;
+
+    background-color: var(--e-global-color-primary);
+
+    border: 1px solid var(--e-global-color-text);
+
+    border-radius: 0 !important;
+}
+
+
+/* Checkbox */
+
+#den-app-root .den-checkbox-row input {
+
+    width: 18px;
+    height: 18px;
+
+    margin: 2px 0 0;
+
+    padding: 0;
+
+    flex-shrink: 0;
+
+    accent-color: var(--e-global-color-accent);
+}
+
+
+/* Checkbox label */
+
+#den-app-root .den-checkbox-row label {
+
+    margin: 0;
+
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+
+    color: white;
+
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+
+/* ================================================================
+   CERTIFICATION LIST
+================================================================= */
+
+#den-app-root .den-cert-list {
+
+    margin: 0 0 24px;
+
+    padding-left: 21px;
+
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+
+    color: var(--e-global-color-text);
+}
+
+#den-app-root .den-cert-list li {
+    padding-left: 4px;
+    margin-bottom: 7px;
+}
+
+
+/* ================================================================
+   SIGNATURE
+================================================================= */
+
+#den-app-root .den-sig-wrap {
+
+    padding: 10px;
+
+    background-color: #fff;
+
+    border: 1px solid var(--e-global-color-text);
+
+    border-radius: 0 !important;
+}
+
+
+/* Signature canvas */
+
+#den-app-root canvas#den-sig-pad {
+
+    display: block;
+
+    width: 100%;
+    height: 170px;
+
+    background-color: #fff;
+
+    border: 1px dashed var(--e-global-color-text);
+
+    border-radius: 0 !important;
+
+    touch-action: none;
+
+    cursor: crosshair;
+}
+
+
+/* Signature controls */
+
+#den-app-root .den-sig-controls {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-top: 9px;
+
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
+
+    color: var(--e-global-color-text);
+}
+
+
+/* Clear button */
+
+#den-app-root .den-sig-controls button {
+
+    padding: 6px 11px;
+
+    background-color: transparent;
+
+    border: 1px solid var(--e-global-color-text);
+
+    border-radius: 0 !important;
+
+    color: var(--e-global-color-text);
+
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: 12px;
+    font-weight: var(--e-global-typography-text-font-weight);
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+
+/* Clear button hover */
+
+#den-app-root .den-sig-controls button:hover {
+
+    background-color: var(--e-global-color-accent);
+
+    border-color: var(--e-global-color-accent);
+
+    color: var(--e-global-color-primary);
+
+    border-radius: 0 !important;
+}
+
+
+/* ================================================================
+   SIGNATURE ERROR
+================================================================= */
+
+#den-app-root .den-field-err {
+
+    display: none;
+
+    margin-top: 7px;
+
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
+
+    color: var(--e-global-color-accent);
+}
+
+
+/* ================================================================
+   SUBMIT BUTTON
+   Matches Elementor Login Button
+================================================================= */
+
+#den-app-root .den-submit-btn {
+
+    display: inline-block;
+
+    width: 100%;
+
+    min-height: 58px;
+
+    padding: 12px 25px;
+
+    background-color: var(--e-global-color-accent);
+
+    border: 0;
+
+    border-radius: 0 !important;
+
+    font-family: var(--e-global-typography-7c7e1b0-font-family), Sans-serif;
+    font-size: var(--e-global-typography-7c7e1b0-font-size);
+    font-weight: var(--e-global-typography-7c7e1b0-font-weight);
+    text-transform: var(--e-global-typography-7c7e1b0-text-transform);
+    line-height: var(--e-global-typography-7c7e1b0-line-height);
+    letter-spacing: var(--e-global-typography-7c7e1b0-letter-spacing);
+
+    fill: var(--e-global-color-primary);
+    color: var(--e-global-color-primary);
+
+    cursor: pointer;
+
+    box-shadow: none;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        opacity 0.2s ease;
+}
+
+
+/* Submit hover */
+
+#den-app-root .den-submit-btn:hover:not(:disabled) {
+
+    background-color: var(--e-global-color-primary);
+
+    color: var(--e-global-color-accent);
+
+    border-radius: 0 !important;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+
+/* Submit disabled */
+
+#den-app-root .den-submit-btn:disabled {
+
+    opacity: 0.6;
+
+    cursor: not-allowed;
+}
+
+
+/* ================================================================
+   STATUS
+================================================================= */
+
+#den-app-root .den-status {
+
+    display: none;
+
+    margin-top: 18px;
+
+    padding: 15px 17px;
+
+    border-radius: 0 !important;
+
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+}
+
+#den-app-root .den-status.den-visible {
+    display: block;
+}
+
+
+/* Success */
+
+#den-app-root .den-status.den-ok {
+
+    background-color: var(--e-global-color-primary);
+
+    border: 1px solid var(--e-global-color-accent);
+
+    color: var(--e-global-color-accent);
+}
+
+
+/* Error */
+
+#den-app-root .den-status.den-err {
+
+    background-color: var(--e-global-color-primary);
+
+    border: 1px solid var(--e-global-color-accent);
+
+    color: var(--e-global-color-accent);
+}
+
+
+/* ================================================================
+   HONEYPOT
+================================================================= */
+
+#den-app-root .den-hp {
+
+    position: absolute;
+
+    left: -9999px;
+    top: -9999px;
+}
+
+
+/* ================================================================
+   MOBILE
+================================================================= */
+
+@media (max-width: 767px) {
+
+    #den-app-root .den-body {
+        padding: 0;
+    }
+
+    #den-app-root fieldset {
+        margin-bottom: 34px;
+    }
+
+    #den-app-root legend {
+        margin-bottom: 20px;
+    }
+
+    #den-app-root .den-row {
+
+        display: block;
+
+        margin-bottom: 0;
+    }
+
+    #den-app-root .den-field,
+    #den-app-root .den-field.den-small {
+
+        width: 100%;
+
+        margin-bottom: 17px;
+    }
+
+    #den-app-root .den-membership-options {
+
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+    }
+
+    #den-app-root .den-legal-box {
+
+        max-height: 320px;
+
+        padding: 19px;
+    }
+
+    #den-app-root canvas#den-sig-pad {
+
+        height: 150px;
+    }
+
+    #den-app-root .den-sig-controls {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    #den-app-root .den-sig-controls button {
+
+        width: 100%;
+    }
+
+    #den-app-root .den-submit-btn {
+
+        min-height: 56px;
+    }
+}
+
+
+/* ================================================================
+   SMALL MOBILE
+================================================================= */
+
+@media (max-width: 480px) {
+
+    #den-app-root .den-body {
+        padding: 0;
+    }
+
+    #den-app-root input[type="text"],
+    #den-app-root input[type="email"],
+    #den-app-root input[type="tel"],
+    #den-app-root input[type="date"] {
+
+        padding: 11px 14px;
+    }
+
+    #den-app-root .den-checkbox-row {
+
+        padding: 14px;
+    }
+}
+</style>
+<form class="den-card" id="den-membership-form" novalidate="">
+<div class="den-body">
+<div id="den-form-fields">
+<!-- Honeypot -->
+<div aria-hidden="true" class="den-hp">
+<label for="den-website">
+                    Leave blank
+                </label>
+<input autocomplete="off" id="den-website" name="den_website" tabindex="-1" type="text"/>
+</div>
+<!-- ==========================================================
+                 APPLICANT INFORMATION
+            =========================================================== -->
+<fieldset>
+<legend>Applicant Information</legend>
+<div class="den-row">
+<div class="den-field">
+<label for="den-full-name">
+                            Full Legal Name
+                            <span class="den-req">*</span>
+</label>
+<input autocomplete="name" id="den-full-name" name="full_name" required="" type="text"/>
+</div>
+<div class="den-field">
+<label for="den-nickname">
+                            Preferred Name / Nickname
+                        </label>
+<input autocomplete="nickname" id="den-nickname" name="nickname" type="text"/>
+</div>
+</div>
+<div class="den-row">
+<div class="den-field den-small">
+<label for="den-dob">
+                            Date of Birth
+                            <span class="den-req">*</span>
+</label>
+<input autocomplete="bday" id="den-dob" name="dob" required="" type="date"/>
+</div>
+<div class="den-field">
+<label for="den-phone">
+                            Phone Number
+                            <span class="den-req">*</span>
+</label>
+<input autocomplete="tel" id="den-phone" name="phone" required="" type="tel"/>
+</div>
+<div class="den-field">
+<label for="den-email">
+                            Email Address
+                            <span class="den-req">*</span>
+</label>
+<input autocomplete="email" id="den-email" name="email" required="" type="email"/>
+</div>
+</div>
+<div class="den-row">
+<div class="den-field" style="flex-basis:100%;">
+<label for="den-address">
+                            Street Address
+                            <span class="den-req">*</span>
+</label>
+<input autocomplete="street-address" id="den-address" name="address" required="" type="text"/>
+</div>
+</div>
+<div class="den-row">
+<div class="den-field">
+<label for="den-city">
+                            City
+                            <span class="den-req">*</span>
+</label>
+<input autocomplete="address-level2" id="den-city" name="city" required="" type="text"/>
+</div>
+<div class="den-field den-small">
+<label for="den-state">
+                            State
+                            <span class="den-req">*</span>
+</label>
+<input autocomplete="address-level1" id="den-state" maxlength="2" name="state" required="" style="text-transform:uppercase;" type="text" value="TX"/>
+</div>
+<div class="den-field den-small">
+<label for="den-zip">
+                            ZIP
+                            <span class="den-req">*</span>
+</label>
+<input autocomplete="postal-code" id="den-zip" inputmode="numeric" name="zip" pattern="[0-9]{5}(-[0-9]{4})?" required="" type="text"/>
+</div>
+</div>
+<div class="den-row">
+<div class="den-field">
+<label for="den-ec-name">
+                            Emergency Contact Name
+                            <span class="den-req">*</span>
+</label>
+<input id="den-ec-name" name="emergency_contact_name" required="" type="text"/>
+</div>
+<div class="den-field">
+<label for="den-ec-phone">
+                            Emergency Contact Phone
+                            <span class="den-req">*</span>
+</label>
+<input id="den-ec-phone" name="emergency_contact_phone" required="" type="tel"/>
+</div>
+</div>
+</fieldset>
+<!-- ==========================================================
+                 MEMBERSHIP TYPE
+            =========================================================== -->
+<fieldset>
+<legend>Membership Type</legend>
+<p>
+                    Please select the membership being requested:
+                    <span class="den-req">*</span>
+</p>
+<div class="den-membership-options" id="den-membership-options">
+<label class="den-radio-card">
+<input name="membership_type" required="" type="radio" value="Weekly Membership"/>
+
+                        Weekly Membership - $15
+
+                    </label>
+<label class="den-radio-card">
+<input name="membership_type" type="radio" value="Monthly Membership"/>
+
+                        Monthly Membership - $35
+
+                    </label>
+<label class="den-radio-card">
+<input name="membership_type" type="radio" value="Annual Membership"/>
+
+                        Annual Membership - $275
+
+                    </label>
+<label class="den-radio-card">
+<input name="membership_type" type="radio" value="Founders Membership"/>
+
+                        Founders Membership - $2500 Normally $5000
+
+                    </label>
+<label class="den-radio-card">
+<input name="membership_type" type="radio" value="Social Membership"/>
+
+                        Social Membership - $5
+
+                    </label>
+<label class="den-radio-card">
+<input name="membership_type" type="radio" value="Senior Membership (60+)"/>
+
+                        Senior Membership (60+) - $5
+
+                    </label>
+</div>
+<div class="den-notice">
+
+                    Membership privileges are subject to the applicable
+                    membership level, current club rules, policies, dues,
+                    fees, and benefit structure established by The Den.
+                    Membership does not create an ownership interest in
+                    The Den unless expressly established under a separate
+                    written ownership or investment agreement.
+
+                </div>
+</fieldset>
+<!-- ==========================================================
+                 MEMBER AGREEMENT
+            =========================================================== -->
+<fieldset>
+<legend>Member Agreement &amp; Acknowledgments</legend>
+<p>
+                    By signing this application, I acknowledge, understand,
+                    and agree to the following. Please read in full before
+                    signing below.
+                </p>
+<div class="den-legal-box" id="den-legal-box" tabindex="0">
+<h3>1. Private Membership</h3>
+<p>
+                        The Den is operated as a private membership-based
+                        social club. Membership is personal to the member
+                        and may not be transferred, loaned, shared, sold,
+                        assigned, or used by another individual unless
+                        expressly authorized in writing by The Den.
+                        Membership does not guarantee admission at all times
+                        and may be restricted or terminated in accordance
+                        with club rules.
+                    </p>
+<h3>2. Member Identification &amp; Check-In</h3>
+<p>
+                        Members must properly check in upon entering The Den
+                        and may be required to present identification or
+                        membership credentials. A person who enters the
+                        premises without completing the required membership
+                        or guest check-in process is not entitled to receive
+                        membership services or privileges. Membership
+                        credentials remain subject to verification by
+                        The Den. The Den reserves the right to deny access
+                        to any person who cannot establish valid membership
+                        or authorized guest status.
+                    </p>
+<h3>3. Guests</h3>
+<p>
+                        Guests must comply with all guest registration and
+                        access procedures established by The Den. A member
+                        may be held responsible for the conduct of guests
+                        admitted under that member's sponsorship or invitation.
+                        Guest privileges may be limited or revoked at any time.
+                    </p>
+<h3>4. Alcohol / BYOB Acknowledgment</h3>
+<p>
+                        I understand that The Den operates under a
+                        bring-your-own-beverage model where permitted by
+                        applicable law and club policy. Any alcoholic beverage
+                        brought onto the premises by a member remains the
+                        property of that individual member. Alcohol may not
+                        be sold, transferred, shared, distributed, or provided
+                        in violation of law or club policy.
+                    </p>
+<p>
+                        Members bringing alcoholic beverages onto the premises
+                        must comply with The Den's alcohol check-in,
+                        identification, storage, possession, and service
+                        procedures. Alcohol brought into the club may be
+                        required to be presented to designated staff or
+                        management for check-in and identification. Alcohol
+                        may be labeled or otherwise associated with the
+                        individual member who owns it.
+                    </p>
+<p>
+                        The Den may establish procedures regarding storage,
+                        handling, service times, legal service hours, and
+                        removal of alcoholic beverages. Club staff may only
+                        pour or otherwise handle alcohol consistent with
+                        The Den's policies and applicable law. A member may
+                        not use another member's stored alcoholic beverages
+                        without authorization and compliance with club policy.
+                    </p>
+<p>
+                        Failure to follow The Den's alcohol procedures may
+                        result in suspension or termination of membership.
+                        Members are responsible for consuming alcohol
+                        responsibly. The Den reserves the right to refuse
+                        alcohol-related service or access to any person who
+                        appears intoxicated or whose conduct presents a
+                        safety or compliance concern.
+                    </p>
+<h3>5. Member Conduct</h3>
+<p>
+                        Members and guests are expected to conduct themselves
+                        in a respectful, lawful, and sportsmanlike manner.
+                        The following behavior may result in warning,
+                        suspension, removal, or termination of membership:
+                    </p>
+<ul>
+<li>Threatening, intimidating, abusive, or violent behavior;</li>
+<li>Harassment or discrimination;</li>
+<li>Cheating, collusion, theft, fraud, or dishonesty;</li>
+<li>Intentional damage to club property;</li>
+<li>Disruption of club operations;</li>
+<li>Violation of poker rules or tournament rules;</li>
+<li>Violation of alcohol policies;</li>
+<li>Unauthorized access to restricted areas;</li>
+<li>Conduct that creates a safety, legal, or compliance risk;</li>
+<li>Failure to follow lawful instructions of management or security;</li>
+<li>Any violation of The Den's membership rules or house policies.</li>
+</ul>
+<p>
+                        The Den reserves the right to remove any individual
+                        from the premises when management reasonably determines
+                        that removal is necessary for safety, compliance,
+                        security, or orderly operation of the club.
+                    </p>
+<h3>6. Poker &amp; Gaming Activities</h3>
+<p>
+                        I understand that poker activities conducted at
+                        The Den are governed by club rules, applicable
+                        membership requirements, tournament rules where
+                        applicable, and applicable law. Members are expected
+                        to protect the integrity of all games. Cheating,
+                        collusion, chip manipulation, soft play intended to
+                        improperly affect a game, theft, fraudulent activity,
+                        or other conduct compromising game integrity is
+                        prohibited. Decisions made by authorized floor
+                        personnel or management regarding game integrity,
+                        rules interpretation, seating, disputes, or player
+                        conduct are subject to The Den's established procedures.
+                    </p>
+<h3>7. Membership Dues, Fees &amp; Club Charges</h3>
+<p>
+                        I understand that membership dues, access charges,
+                        hourly charges, tournament fees, food and beverage
+                        charges, merchandise purchases, or other lawful
+                        charges may apply depending upon the services I
+                        choose to use. Membership fees are not wagers and
+                        do not represent an ownership interest in poker games
+                        or gambling proceeds. Unless otherwise required by
+                        law or expressly stated in writing, membership dues
+                        and fees are non-refundable once earned or used.
+                    </p>
+<h3>8. Personal Property</h3>
+<p>
+                        I am responsible for my own money, chips, electronics,
+                        clothing, alcohol, bags, vehicles, and other personal
+                        property. The Den is not responsible for lost,
+                        misplaced, stolen, or unattended personal property
+                        except to the extent responsibility is imposed by
+                        applicable law. Members should immediately report
+                        suspected theft or missing property to management
+                        or security.
+                    </p>
+<h3>9. Assumption of Risk &amp; Liability</h3>
+<p>
+                        I understand that participation in social, recreational,
+                        dining, poker, entertainment, and other club activities
+                        involves ordinary risks associated with being in a
+                        public or private entertainment environment. I
+                        voluntarily assume ordinary risks associated with my
+                        participation and presence at The Den. I agree to
+                        follow club safety rules and immediately notify
+                        management of dangerous conditions, injuries,
+                        accidents, or security concerns. Nothing in this
+                        agreement is intended to waive any right or
+                        responsibility that cannot legally be waived under
+                        applicable law.
+                    </p>
+<h3>10. Weapons &amp; Security</h3>
+<p>
+                        Weapons are prohibited on The Den premises except as
+                        specifically authorized by The Den's written security
+                        policy or applicable law. The Den's policy permits
+                        weapons carried by authorized armed security personnel
+                        performing assigned security duties. On-duty
+                        law-enforcement personnel acting within the scope of
+                        their official duties are not prohibited from carrying
+                        weapons as permitted by law. Regular employees,
+                        including employees handling cash or working in cage
+                        operations, are not authorized to carry weapons merely
+                        because of their employment. The Den reserves the right
+                        to establish additional security procedures and to
+                        require compliance with those procedures as a condition
+                        of entry or continued membership.
+                    </p>
+<h3>11. Photography, Video, Media &amp; Likeness</h3>
+<p>
+                        I understand that photography, video recording,
+                        livestreaming, interviews, promotional recording,
+                        and other media activity may occur at The Den. I
+                        authorize The Den, its affiliates, representatives,
+                        contractors, marketing partners, and authorized media
+                        providers to photograph, record, reproduce, publish,
+                        display, distribute, broadcast, stream, or otherwise
+                        use my name, image, likeness, voice, appearance,
+                        statements or interviews, and participation in
+                        activities or events at The Den. Such material may
+                        be used for legitimate club-related purposes including
+                        advertising, marketing, social media, digital media,
+                        websites, print materials, broadcast media,
+                        livestreaming, sponsorship, promotional content,
+                        public relations, and historical or archival purposes.
+                    </p>
+<p>
+                        I understand that I will not receive compensation,
+                        royalties, fees, or any other financial benefit
+                        resulting from such use. I waive any right to inspect
+                        or approve the final photograph, video, advertisement,
+                        publication, or other finished media in which my
+                        likeness appears. This authorization does not permit
+                        The Den to intentionally portray me in a knowingly
+                        false or defamatory manner.
+                    </p>
+<h3>12. Electronic Communications</h3>
+<p>
+                        I authorize The Den to communicate with me regarding
+                        membership, club operations, tournaments, promotions,
+                        events, reservations, announcements, account matters,
+                        and other club-related information through reasonable
+                        communication methods, including email, telephone,
+                        or text messaging. I understand that I may request
+                        removal from promotional communications where applicable.
+                    </p>
+<h3>13. Club Rules &amp; Policy Changes</h3>
+<p>
+                        I acknowledge that The Den may establish and amend
+                        reasonable membership rules, operational policies,
+                        safety procedures, poker rules, tournament rules,
+                        alcohol procedures, codes of conduct, and other club
+                        policies. Current policies made available by the club
+                        are incorporated into my membership obligations.
+                        Continued use of the club after reasonable notice of
+                        a policy change constitutes acceptance of the revised
+                        policy to the extent permitted by law.
+                    </p>
+<h3>14. Suspension or Termination</h3>
+<p>
+                        The Den may suspend, restrict, or terminate membership
+                        for violation of club rules, misconduct, fraud, safety
+                        concerns, threats, illegal activity, game-integrity
+                        concerns, failure to pay amounts properly due, or
+                        other material violations of the membership agreement.
+                        Immediate removal may occur when management determines
+                        that continued presence presents a safety, security,
+                        compliance, or operational concern. Termination of
+                        membership does not excuse outstanding lawful charges
+                        incurred before termination.
+                    </p>
+</div>
+<div class="den-checkbox-row">
+<input id="den-agree" name="agree" required="" type="checkbox"/>
+<label for="den-agree">
+
+                        I have read, understood, and agree to all sections
+                        (1–14) of the Member Agreement &amp; Acknowledgments
+                        above, including the alcohol policy, assumption of
+                        risk, and media/likeness authorization.
+
+                        <span class="den-req">*</span>
+</label>
+</div>
+</fieldset>
+<!-- ==========================================================
+                 MEMBER CERTIFICATION
+            =========================================================== -->
+<fieldset>
+<legend>Member Certification</legend>
+<p>
+                    By signing below, I certify that:
+                </p>
+<ol class="den-cert-list">
+<li>
+                        The information provided in this application is true
+                        and accurate to the best of my knowledge.
+                    </li>
+<li>
+                        I am applying voluntarily for membership in The Den.
+                    </li>
+<li>
+                        I have had the opportunity to review this application
+                        and ask questions.
+                    </li>
+<li>
+                        I agree to comply with The Den's membership rules,
+                        poker rules, alcohol procedures, security policies,
+                        and other applicable club policies.
+                    </li>
+<li>
+                        I understand that violation of these requirements
+                        may result in suspension or termination of membership.
+                    </li>
+<li>
+                        I understand that membership is a privilege and does
+                        not create an ownership interest in The Den.
+                    </li>
+<li>
+                        I acknowledge the media and likeness authorization
+                        contained in this application.
+                    </li>
+</ol>
+<div class="den-row">
+<div class="den-field">
+<label for="den-print-name">
+
+                            Applicant Printed Name
+
+                            <span class="den-req">*</span>
+</label>
+<input id="den-print-name" name="printed_name" required="" type="text"/>
+</div>
+<div class="den-field" style="flex-basis:170px;">
+<label for="den-sign-date">
+                            Date
+                        </label>
+<input id="den-sign-date" name="sign_date" readonly="" style="font-size:13px;" type="text"/>
+</div>
+</div>
+<label style="margin-top:6px;">
+
+                    Applicant Signature
+
+                    <span class="den-req">*</span>
+</label>
+<div class="den-sig-wrap">
+<canvas id="den-sig-pad"></canvas>
+<div class="den-sig-controls">
+<span>
+                            Sign above with your mouse or finger
+                        </span>
+<button id="den-sig-clear" type="button">
+                            Clear Signature
+                        </button>
+</div>
+</div>
+<div class="den-field-err" id="den-sig-error">
+                    Please provide your signature before submitting.
+                </div>
+<input id="den-signature-data" name="signature_data" type="hidden"/>
+</fieldset>
+<!-- ==========================================================
+                 SUBMIT
+            =========================================================== -->
+<button class="den-submit-btn" id="den-submit-btn" type="submit">
+                Submit Application
+            </button>
+</div>
+<div class="den-status" id="den-status"></div>
+</div>
+</form>
+</div>
+
+
+<script>
+(function () {
+  var root = document.getElementById('den-app-root');
+  var form = document.getElementById('den-membership-form');
+  var statusBox = document.getElementById('den-status');
+  var submitBtn = document.getElementById('den-submit-btn');
+
+  // Default the signature date to today (local, human-readable).
+  var dateField = document.getElementById('den-sign-date');
+  dateField.value = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+  // Force the state field to uppercase as typed.
+  var stateField = document.getElementById('den-state');
+  stateField.addEventListener('input', function () {
+    stateField.value = stateField.value.toUpperCase();
+  });
+
+  // ---- Signature pad (vanilla canvas, mouse + touch via Pointer Events) ----
+  var canvas = document.getElementById('den-sig-pad');
+  var ctx = canvas.getContext('2d');
+  var drawing = false;
+  var hasSignature = false;
+  var sigError = document.getElementById('den-sig-error');
+
+  function sizeCanvas() {
+    var ratio = window.devicePixelRatio || 1;
+    var rect = canvas.getBoundingClientRect();
+    var prevData = hasSignature ? canvas.toDataURL() : null;
+    canvas.width = rect.width * ratio;
+    canvas.height = rect.height * ratio;
+    ctx.scale(ratio, ratio);
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = '#1c1c1c';
+    if (prevData) {
+      var img = new Image();
+      img.onload = function () { ctx.drawImage(img, 0, 0, rect.width, rect.height); };
+      img.src = prevData;
+    }
+  }
+  sizeCanvas();
+  window.addEventListener('resize', sizeCanvas);
+
+  function getPos(e) {
+    var rect = canvas.getBoundingClientRect();
+    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  }
+  canvas.addEventListener('pointerdown', function (e) {
+    drawing = true;
+    hasSignature = true;
+    sigError.style.display = 'none';
+    var p = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+    canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    var p = getPos(e);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+  });
+  ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (evt) {
+    canvas.addEventListener(evt, function () { drawing = false; });
+  });
+  document.getElementById('den-sig-clear').addEventListener('click', function () {
+    var rect = canvas.getBoundingClientRect();
+    ctx.clearRect(0, 0, rect.width, rect.height);
+    hasSignature = false;
+  });
+
+  // ---- Submit handler ----
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    statusBox.className = 'den-status';
+    statusBox.textContent = '';
+
+    if (!form.checkValidity()) {
+      var firstInvalid = form.querySelector(':invalid');
+      statusBox.className = 'den-status den-visible den-err';
+      statusBox.textContent = 'Please complete all required fields — jumping you to the first one now.';
+      if (firstInvalid) {
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstInvalid.focus({ preventScroll: true });
+      }
+      setTimeout(function () { form.reportValidity(); }, 350);
+      return;
+    }
+    if (!hasSignature) {
+      sigError.style.display = 'block';
+      canvas.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    document.getElementById('den-signature-data').value = canvas.toDataURL('image/png');
+
+    var formData = new FormData(form);
+    formData.append('action', 'den_membership_submit');
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting…';
+
+    fetch('/wp-admin/admin-ajax.php', {
+      method: 'POST',
+      body: formData,
+      credentials: 'same-origin'
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data && data.success) {
+          document.getElementById('den-form-fields').style.display = 'none';
+          statusBox.className = 'den-status den-visible den-ok';
+          statusBox.textContent = 'Thank you — your application has been submitted. The Den will follow up with you shortly.';
+          statusBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          throw new Error((data && data.data && data.data.message) || 'Submission failed.');
+        }
+      })
+      .catch(function (err) {
+        statusBox.className = 'den-status den-visible den-err';
+        statusBox.textContent = 'Sorry, something went wrong submitting your application (' + err.message + '). Please try again or contact The Den directly.';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Application';
+      });
+  });
+})();
+</script>

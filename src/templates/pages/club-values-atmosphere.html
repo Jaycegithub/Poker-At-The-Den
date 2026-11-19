@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% import "partials/macros.html" as m with context %}
+{% block content %}
+{% call m.page_hero('The way we play', 'Where poker meets integrity, comfort, and community.', image='The-Den-Poker-Lounge-Image-11', image_alt='A private poker table set with chips beneath warm wall sconces', section=section, label='Club Values') %}
+  <p class="lede">At the Den Poker Lounge Social, we’re more than just a place to play—we’re a club built on purpose. Every game, every interaction, and every decision is guided by the values that shape who we are. Whether you’re here for high-stakes action or a laid-back tournament night, you’ll feel the difference the moment you walk in.</p>
+  <div class="btn-row">
+    <a class="btn btn--gold" href="/contact-us/">Get In Touch {{ icon('arrow') }}</a>
+  </div>
+{% endcall %}
+
+<section class="section" aria-labelledby="values-title">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <p class="eyebrow">Our core values</p>
+        <h2 id="values-title">Guided by <em>what matters.</em></h2>
+      </div>
+      <p class="section-head__text">Guiding principles that shape our culture, elevate gameplay, and ensure every member feels valued and respected.</p>
+    </div>
+    <div class="values reveal">
+      {% for ic, t, d in [
+        ('shield', 'Integrity', 'We do the right thing, every time. From how we manage games to how we treat players and staff, we operate with honesty, transparency, and respect.'),
+        ('heart', 'Hospitality', 'Everyone who walks through our doors should feel welcome, respected, and part of something special. We treat our members like valued guests and our guests like future members.'),
+        ('users', 'Community', 'We believe poker brings people together. Our clubs are built to foster connection, friendship, and shared experiences both on and off the felt.'),
+        ('award', 'Excellence', 'We don’t settle for average. From dealer training to member services, we strive to raise the bar in how private poker is played and experienced.'),
+        ('repeat', 'Consistency', 'Structure and predictability are at the heart of our club. Players know what to expect when they walk in—fair rulings, trained staff, and professionally run games.'),
+        ('growth', 'Growth', 'We’re committed to growing the game and growing with it—investing in our team, our technology, and our presence across Texas to deliver the best possible experience.')] %}
+      <article class="value">
+        <div class="value__top"><span class="icon-badge">{{ icon(ic) }}</span><span class="value__n">0{{ loop.index }}</span></div>
+        <h3>{{ t }}</h3>
+        <p>{{ d }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt section--line" aria-labelledby="atmo-title">
+  <div class="container">
+    <div class="split split--wide-right">
+      <div class="reveal">
+        <div class="frame frame--portrait frame--outline">{{ img('The-Den-Poker-Lounge-Image-6', 'Black-and-gold poker chips and cards arranged on a table', sizes='(max-width: 900px) 92vw, 38vw') }}</div>
+      </div>
+      <div class="reveal" style="--d:.1s">
+        <p class="eyebrow">Our atmosphere</p>
+        <h2 id="atmo-title">Comfort for <em>the long game..</em></h2>
+        <p class="lede">A welcoming, upscale environment designed for comfort, focus, and unforgettable poker experiences every time you visit.</p>
+        <div class="biz-list mt-2">
+          {% for ic, t, d in [
+            ('lock', 'Private Yet Approachable', 'Our club combines a members only venue with warmth—plush chairs, clean layouts, and inviting decor create a space that’s both professional and comfortable.'),
+            ('tv', 'Immersive & Entertaining', 'Watch your favorite sports on big-screen TVs visible from every seat. Whether you\'re playing or waiting, the energy never drops.'),
+            ('coffee', 'Focused & Friendly', 'It’s poker without the noise. Clean tables, respectful players, and complimentary refreshments help you stay focused and refreshed.')] %}
+          <div class="biz">
+            <span class="biz__n">0{{ loop.index }}</span>
+            <span class="icon-badge">{{ icon(ic) }}</span>
+            <div><h3>{{ t }}</h3><p>{{ d }}</p></div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

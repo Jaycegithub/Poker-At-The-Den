@@ -1,0 +1,90 @@
+{# Shared layout for Poker / Chess / Dominoes / Spades. Content comes from `g` defined in each page. #}
+{% call m.page_hero(g.hero.eyebrow, g.hero.title, image=g.hero.get('image'), image_alt=g.hero.get('image_alt', ''), section=section, label=g.hero.label) %}
+  <p class="lede">{{ g.hero.lede }}</p>
+  <p class="tagline mt-2">{{ g.hero.tagline }}</p>
+  <div class="btn-row">
+    <a class="btn btn--gold" href="/membership/">Become A Member {{ icon('arrow') }}</a>
+    <a class="btn btn--ghost" href="{{ g.hero.play_href }}">{{ icon('play') }} {{ g.hero.play_label }}</a>
+  </div>
+{% endcall %}
+
+{% for part in g.parts %}
+<section class="section{% if loop.index is even %} section--alt section--line{% endif %}" aria-labelledby="part-{{ loop.index }}">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <p class="eyebrow">{{ part.eyebrow }}</p>
+        <h2 id="part-{{ loop.index }}">{{ part.title }}</h2>
+      </div>
+      <p class="section-head__text">{{ part.intro }}</p>
+    </div>
+    <div>
+      {% for f in part.features %}
+      {% call m.feature('0' ~ loop.index, f.title, f.sub, f.get('chips', []), f.get('note')) %}
+        {% for para in f.paras %}<p>{{ para }}</p>{% endfor %}
+      {% endcall %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endfor %}
+
+<section class="section section--line" aria-labelledby="cmp-title">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <p class="eyebrow">{{ g.compare.eyebrow }}</p>
+        <h2 id="cmp-title">{{ g.compare.title }}</h2>
+      </div>
+      <div class="btn-row" style="justify-content:flex-start"><a class="btn btn--ghost" href="/contact-us/">Get In Touch {{ icon('arrow') }}</a></div>
+    </div>
+    <div class="compare reveal">
+      <div class="compare__col">
+        <div class="compare__label"><span class="icon-badge">{{ icon(g.compare.a_icon) }}</span>{{ g.compare.a_label }}</div>
+        {% for r in g.compare.rows %}{{ m.cmp(r[0], r[1]) }}{% endfor %}
+      </div>
+      <div class="compare__col">
+        <div class="compare__label"><span class="icon-badge">{{ icon(g.compare.b_icon) }}</span>{{ g.compare.b_label }}</div>
+        {% for r in g.compare.rows %}{{ m.cmp(r[2], r[3]) }}{% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt section--line" aria-labelledby="new-title">
+  <div class="container">
+    <div class="split">
+      <div class="reveal">
+        <p class="eyebrow">{{ g.newto.eyebrow }}</p>
+        <h2 id="new-title">{{ g.newto.title }}</h2>
+        {% for para in g.newto.paras %}<p{% if loop.first %} class="lede"{% endif %}>{{ para }}</p>{% endfor %}
+        <div class="card card--glass mt-2" style="display:flex;gap:1.2rem;align-items:center;flex-wrap:wrap;justify-content:space-between">
+          <div>
+            <p class="muted mb-0">{{ g.newto.q }}</p>
+            <p class="quote-line">{{ g.newto.a }}</p>
+          </div>
+          <a class="btn btn--gold" href="/membership/">Become A Member {{ icon('arrow') }}</a>
+        </div>
+      </div>
+      <div class="reveal" style="--d:.1s">
+        <div class="frame-stack"><div class="frame frame--portrait frame--outline">{{ img(g.newto.image, g.newto.alt, sizes='(max-width: 900px) 92vw, 42vw') }}</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-label="More about {{ g.hero.label }}">
+  <div class="container">
+    <div class="grid grid-2">
+      {% for c in g.closers %}
+      <article class="card {% if loop.last %}card--glass{% endif %} reveal" style="--d:{{ loop.index0 * 0.1 }}s; padding:clamp(2rem, 1.4rem + 2vw, 3.5rem); {% if loop.last %}border-color:var(--line-gold); background:linear-gradient(160deg, rgba(198,161,91,.12), transparent 60%), var(--card);{% endif %}">
+        <p class="eyebrow">{{ c.eyebrow }}</p>
+        <h2 style="font-size:var(--step-3)">{{ c.title }}</h2>
+        <p class="lede">{{ c.text }}</p>
+        {% if c.get('tagline') %}<p class="tagline mt-2">{{ c.tagline }}</p>{% endif %}
+        {% if c.get('phone') %}<div class="btn-row mt-2"><a class="btn btn--ghost" href="{{ site.phone_href }}">{{ icon('phone') }} {{ site.phone }}</a></div>{% endif %}
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% import "partials/macros.html" as m with context %}
+{% set g = {
+ 'hero': {'eyebrow': 'Play. Connect. Compete.', 'title': 'Poker Has a Seat at The Den.', 'label': 'Poker',
+   'image': 'The-Den-Poker-Lounge-Image-4', 'image_alt': 'A stack of black-and-gold poker chips on a dark table',
+   'lede': "Whether you're here for a tournament, looking for a live-action game, or just want to pull up a chair with people who love the game as much as you do, The Den gives you a place to play. From No Limit Hold'em to Omaha and Big O, there's always another hand to play, another decision to make, and another reason to stay awhile.",
+   'tagline': 'Come for the cards. Stay for the community.',
+   'play_href': '/play-poker-cash/', 'play_label': 'Play Poker Cash'},
+ 'parts': [
+  {'eyebrow': 'Two Ways to Play', 'title': 'Tournament Poker or Live Action?',
+   'intro': 'Poker at The Den comes in two different flavors. Choose the structure and competition of a tournament, or settle into a live-action game where you can come and go on your own schedule.',
+   'features': [
+    {'title': 'Poker Tournaments', 'sub': 'One entry. One starting stack. One goal.',
+     'paras': ['Tournament players begin with a set amount of tournament chips and compete as blinds increase throughout the event. As players lose their chips, the field gets smaller until the final players are competing for the top spots.',
+               'Some tournaments may allow re-entry, add-ons, late registration or special formats depending on the event. The result is poker with a beginning, an ending, and plenty of pressure in between.'],
+     'chips': ['Competitive Structure', 'Increasing', 'Final Tables', 'Special Events', 'Guaranteed Prize Pools', 'Championship-Style Poker']},
+    {'title': 'Live Action Games', 'sub': 'Take a seat. Play your game.',
+     'paras': ["Live-action poker — often called a cash game — doesn't have a finish line. Players buy into the game, chips represent their live playing value, and you can generally join or leave the table according to the game and house rules.",
+               'Blinds normally remain the same instead of increasing like they do in tournaments. That makes live action perfect for players who want to settle in, play at their own pace and enjoy the game without waiting for a scheduled tournament.'],
+     'note': 'Come for an hour. Stay for the night.'}]},
+  {'eyebrow': 'Find Your Game', 'title': 'More Than One Way to Play Poker',
+   'intro': 'Different games create completely different experiences. Some reward patience. Some create massive draws. Some generate action almost immediately. Find the game that fits you.',
+   'features': [
+    {'title': "No Limit Hold'em", 'sub': 'The game everybody knows. The game nobody completely masters.',
+     'paras': ['Each player receives two private hole cards, followed by five community cards dealt to the table. Your goal is to make the best five-card poker hand using any combination of your hole cards and the community cards — or convince everyone else to fold before the hand gets that far.',
+               'The words No Limit are what make the game special. At almost any point in the hand, a player may wager all of the chips in front of them. That means one decision can change everything.'],
+     'chips': ['2 Hole Cards', '5 Community Cards', 'No Limit Betting'], 'note': 'Simple to learn. A lifetime to master.'},
+    {'title': 'Pot Limit Omaha', 'sub': 'More cards. More possibilities. More action.',
+     'paras': ["Omaha starts with something Hold'em players notice immediately: you receive four hole cards instead of two. But there's an important rule — to make your final five-card hand, you must use exactly 2 cards from your hand and exactly 3 cards from the board. No more. No less.",
+               "With four starting cards, players have many more combinations, draws and possibilities than they do in Hold'em — that frequently means bigger hands, bigger draws and plenty of action. Omaha is typically played Pot Limit, meaning the maximum wager is based on the current size of the pot."],
+     'chips': ['4 Hole Cards', 'Use Exactly 2', 'Use Exactly 3 Board Cards'], 'note': "If Hold'em makes you think, Omaha gives you even more to think about."},
+    {'title': 'Big O', 'sub': 'Omaha gets bigger.',
+     'paras': ['Big O takes the foundation of Omaha and adds another card. Each player receives five hole cards. The game is typically played as Omaha Hi-Lo, which means the pot may be divided between the best high hand and the best qualifying low hand. Just like Omaha, you must use exactly 2 cards from your hand and exactly 3 cards from the board.',
+               'The additional starting card creates even more combinations, more draws and more ways to make a hand. And because players may be competing for both the high and low sides of the pot, Big O introduces an entirely different level of strategy.'],
+     'chips': ['5 Hole Cards', 'High + Qualifying Low', 'Use Exactly 2 From Your Hand'], 'note': 'More cards. More possibilities. More action.'}]}],
+ 'compare': {'eyebrow': 'Cash Game or Tournament?', 'title': 'Same Cards. Completely Different Experience.',
+   'a_label': 'Live Action', 'a_icon': 'chip', 'b_label': 'Tournament', 'b_icon': 'trophy',
+   'rows': [
+     ('Join an active game', 'Buy into the table and play whenever a seat is available.', 'Start together', 'Players begin with tournament chips and compete through progressively increasing blind levels.'),
+     ('Blinds stay consistent', "Games continue until players decide they're finished or the game closes.", 'Blinds increase', 'As the tournament progresses, the pressure increases with it.'),
+     ('Play at your pace', 'Come for a few hands or settle in for a long session.', 'Play for the finish', 'Survive the field, make the final table and compete for the top spots.')]},
+ 'newto': {'eyebrow': 'New to Poker?', 'title': 'Pull Up a Chair',
+   'paras': ["You don't have to be a professional to enjoy poker at The Den. Poker is a game of decisions, competition and conversation — and every experienced player started by learning their first hand.",
+             "If you're new to the game, ask our team about the games currently running and which game may be the best place to start."],
+   'q': "And if you already know exactly what you're looking for?", 'a': 'Your seat is waiting.',
+   'image': 'The-Den-Poker-Lounge-8-1', 'alt': 'A player seated at the poker table with chip stacks in front of her'},
+ 'closers': [
+   {'eyebrow': "What's Playing Today?", 'title': 'Follow the Action.', 'phone': True,
+    'text': 'Poker schedules can change as games open, tables fill and tournaments begin. For current games, waitlists, tournament information and live poker availability, check with our team on-site or by phone.'},
+   {'eyebrow': "There's Always Another Hand", 'title': 'Poker Brings Competition to the Table.',
+    'text': 'The Den brings everything around it. Meet fellow players. Test your strategy. Find your regular game. Play the tournament. Stay for another orbit.'}]
+} %}
+{% block content %}{% include "partials/game_page.html" %}{% endblock %}

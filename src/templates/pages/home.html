@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+{% import "partials/macros.html" as m with context %}
+{% block head %}<link rel="preload" as="image" href="/assets/img/The-Den-Poker-Lounge-Image-8-1456.webp" imagesrcset="/assets/img/The-Den-Poker-Lounge-Image-8-480.webp 480w, /assets/img/The-Den-Poker-Lounge-Image-8-960.webp 960w, /assets/img/The-Den-Poker-Lounge-Image-8-1456.webp 1456w" imagesizes="100vw">{% endblock %}
+{% block content %}
+
+{# ============ HERO ============ #}
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__media">{{ img('The-Den-Poker-Lounge-Image-8', 'Guests gathered around poker tables in a dark, wood-panelled lounge', sizes='100vw', eager=True) }}</div>
+  <div class="container container--wide">
+    <div class="hero__content">
+      <p class="eyebrow reveal">A private social club in Rowlett</p>
+      <h1 id="hero-title" class="reveal" style="--d:.1s">Welcome, <em>grab a seat.</em></h1>
+      <p class="hero__lede reveal" style="--d:.2s">The Den is a private social club built for games, conversation, connection, and community. Play a hand, meet someone new, make a business connection, watch the game, or simply pull up a chair.</p>
+      <p class="hero__loc reveal" style="--d:.25s">{{ icon('pin') }} located in Rowlett, 20 min east of downtown Dallas</p>
+      <div class="btn-row reveal" style="--d:.3s">
+        <a class="btn btn--gold" href="/membership/">Become A Member {{ icon('arrow') }}</a>
+        <a class="btn btn--ghost" href="/contact-us/">See What’s Happening</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero__aside" aria-hidden="true">
+    <div class="suits">{{ icon('suit-spade') }}{{ icon('suit-heart') }}{{ icon('suit-club') }}{{ icon('suit-diamond') }}</div>
+    <span>Open 7 days a week</span>
+    <span class="scroll-cue">Scroll</span>
+  </div>
+</section>
+
+{# ============ INTRO ============ #}
+<section class="section" aria-labelledby="intro-title">
+  <div class="container">
+    <div class="split split--wide-right">
+      <div class="reveal">
+        <div class="frame-stack">
+          <div class="frame frame--portrait frame--outline">{{ img('The-Den-Poker-Lounge-Image-7', 'Poker chips and cards on a black-and-gold table', sizes='(max-width: 900px) 92vw, 40vw') }}</div>
+        </div>
+      </div>
+      <div class="reveal" style="--d:.1s">
+        <p class="eyebrow">What is The Den?</p>
+        <h2 id="intro-title">Your club. <em>Your people.</em> Your seat.</h2>
+        <p class="lede">The Den is where serious action meets serious fun. It is a private social club for people who want more from their week: more games, more conversation, more ways to connect, and more reasons to come back.</p>
+        <div class="pullquote mt-3">
+          <blockquote>Come for the cards. Stay because it feels like your table has been waiting on you.</blockquote>
+          <cite>The Den, Rowlett</cite>
+        </div>
+        <div class="btn-row mt-3">
+          <a class="btn btn--ghost" href="/about-us/">Meet the Club {{ icon('arrow') }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============ PILLARS ============ #}
+<section class="section section--alt section--line" aria-labelledby="pillars-title">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <p class="eyebrow">The club in four words</p>
+        <h2 id="pillars-title">There’s more than <em>one way in.</em></h2>
+      </div>
+      <p class="section-head__text">A good club gives you room to be exactly who you are—and a reason to come back as someone new.</p>
+    </div>
+    <div class="pillars">
+      {% for word, ic, title, text in [
+        ('Play', 'cards', 'Make a game of it.', 'No Limit Hold’em, chess, dominoes, spades, and the kind of friendly competition that keeps the room moving.'),
+        ('Connect', 'chat', 'Meet your people.', 'A place for new faces, familiar faces, and the conversations that turn a room into a community.'),
+        ('Business', 'briefcase', 'Bring your work here.', 'Meet a client, catch up with a colleague, or host a working session in a setting with room to think.'),
+        ('Socialize', 'glass', 'Stay for the evening.', 'Watch parties, mixers, member events, and a calendar built around having a reason to come back.')] %}
+      <article class="pillar reveal" style="--d:{{ loop.index0 * 0.08 }}s">
+        <div class="pillar__top"><span class="icon-badge">{{ icon(ic) }}</span><span class="card__num">0{{ loop.index }}</span></div>
+        <p class="pillar__word">{{ word }}</p>
+        <h3>{{ title }}</h3>
+        <p>{{ text }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# ============ GAMES ============ #}
+<section class="section" aria-labelledby="games-title">
+  <div class="container container--wide">
+    <div class="section-head reveal">
+      <h2 id="games-title">Come for the cards. <em>Stay for the community.</em></h2>
+      <p class="section-head__text">Members can enjoy No Limit Hold’em along with classic social games that make it easy to find your table.</p>
+    </div>
+    <div class="games">
+      {% for href, kicker, title, text, image, alt, suit in [
+        ('/poker/', 'Poker', 'Poker', 'The classic action that keeps the tables full and the room alive.', 'The-Den-Poker-Lounge-Image-6', 'Stacks of black and gold poker chips beside playing cards', 'suit-spade'),
+        ('/chess/', 'Social game', 'Chess', 'Slow down, think ahead, and find a different kind of competition.', 'The-Den-Poker-Lounge-1-1', 'A focused player seated at a table in a dimly lit lounge', 'suit-club'),
+        ('/dominoes/', 'Social game', 'Dominoes', 'A familiar table, a little strategy, and plenty of room for conversation.', 'The-Den-Poker-Lounge-10', 'A player in a dark cap studying the table', 'suit-diamond'),
+        ('/spades/', 'Social game', 'Spades', 'Bring your partner, find your table, and stay for another hand.', 'The-Den-Poker-Lounge-5-1', 'A player resting her chin on her hand, considering her next move', 'suit-heart')] %}
+      <a class="game reveal" href="{{ href }}" style="--d:{{ loop.index0 * 0.08 }}s">
+        <div class="game__media">{{ img(image, alt, sizes='(max-width: 600px) 92vw, (max-width: 1100px) 46vw, 24vw') }}</div>
+        <span class="game__num">0{{ loop.index }}</span>
+        <span class="game__suit">{{ icon(suit) }}</span>
+        <p class="game__kicker">{{ kicker }}</p>
+        <h3>{{ title }}</h3>
+        <p>{{ text }}</p>
+        <span class="link-arrow">Explore {{ title }} {{ icon('arrow') }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# ============ SOCIAL & EVENTS ============ #}
+<section class="section section--alt section--line" aria-labelledby="social-title">
+  <div class="container">
+    <div class="split">
+      <div class="reveal" style="position:relative">
+        <div class="grid duo" style="align-items:end">
+          <div class="frame frame--tall">{{ img('The-Den-Poker-Lounge-9-1', 'A guest seated at the table during an evening at the club', sizes='(max-width: 900px) 45vw, 22vw') }}</div>
+          <div class="frame frame--tall" style="margin-bottom:3rem">{{ img('The-Den-Poker-Lounge-7-1', 'A smiling guest in a cream jacket at the poker table', sizes='(max-width: 900px) 45vw, 22vw') }}</div>
+        </div>
+      </div>
+      <div class="reveal" style="--d:.1s">
+        <p class="eyebrow">Social &amp; events</p>
+        <h2 id="social-title">Make room <em>for more.</em></h2>
+        <p class="lede">New member meet &amp; greets, singles socials, member mixers, watch parties, trivia, community nights, private gatherings, and the kind of events that make a club feel like your own.</p>
+        <ul class="chips mt-2">
+          <li><a class="chip" href="/community-events/">Member socials</a></li>
+          <li><a class="chip" href="/private-gatherings/">Watch parties</a></li>
+          <li><a class="chip" href="/community-events/">Community events</a></li>
+          <li><a class="chip" href="/private-gatherings/">Private gatherings</a></li>
+        </ul>
+        <div class="btn-row mt-3">
+          <a class="btn btn--ghost" href="/club-values-atmosphere/">Explore the atmosphere {{ icon('arrow') }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============ BUSINESS ============ #}
+<section class="section" aria-labelledby="biz-title">
+  <div class="container">
+    <div class="split split--top">
+      <div class="reveal">
+        <p class="eyebrow">Business happens here</p>
+        <h2 id="biz-title">Bring your work <em>with you.</em></h2>
+        <p class="lede">Meet a client. Catch up with a colleague. Hold a strategy session. Interview a candidate. Meet your networking group. The Den gives business and professional connection a more human setting.</p>
+        <div class="btn-row mt-2">
+          <a class="btn btn--gold" href="/contact-us/">Plan a visit {{ icon('arrow') }}</a>
+          <a class="link-arrow" href="/networking/">Networking at The Den {{ icon('arrow') }}</a>
+        </div>
+      </div>
+      <div class="reveal" style="--d:.1s">
+        <div class="biz-list" style="background:var(--line)">
+          {% for ic, title, text in [('briefcase','Client meetings','A comfortable setting for conversations that matter.'),('handshake','Networking nights','Meet professionals, entrepreneurs, and new connections.'),('users','Small gatherings','Bring your team together without losing the room’s energy.')] %}
+          <div class="biz" style="background:var(--bg)">
+            <span class="biz__n">0{{ loop.index }}</span>
+            <span class="icon-badge">{{ icon(ic) }}</span>
+            <div><h3>{{ title }}</h3><p>{{ text }}</p></div>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="frame frame--land mt-2">{{ img('The-Den-Poker-Lounge-Image-9', 'Professionals in conversation around a table in a private lounge', sizes='(max-width: 900px) 92vw, 45vw') }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============ POKER ============ #}
+<section class="section poker-band section--line" aria-labelledby="poker-title">
+  <div class="poker-band__media">{{ img('The-Den-Poker-Lounge-Image-11', 'An empty poker table with leather chairs under warm overhead light', sizes='100vw') }}</div>
+  <div class="container">
+    <div class="split">
+      <div aria-hidden="true"></div>
+      <div class="reveal">
+        <p class="eyebrow">Poker at The Den</p>
+        <h2 id="poker-title">A major part <em>of the story.</em></h2>
+        <p class="lede">No Limit Hold’em is one of the ways members play, compete, and find their people at The Den. For live games, waitlists, and authoritative schedule information, check PokerAtlas.</p>
+        <div class="btn-row mt-2">
+          <a class="btn btn--gold" href="/tournaments/">Explore tournaments {{ icon('arrow') }}</a>
+          <a class="btn btn--ghost" href="/poker/">Poker at The Den</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============ MEMBERSHIP ============ #}
+<section class="section" aria-labelledby="member-title">
+  <div class="container container--wide">
+    <div class="member-band reveal">
+      <div class="member-band__media">{{ img('The-Den-Poker-Lounge-Image-4', 'A stack of gold-rimmed chips and playing cards on a black table', sizes='100vw') }}</div>
+      <div class="member-band__inner">
+        <div>
+          <p class="eyebrow">Membership</p>
+          <h2 id="member-title">One membership. <em>Many ways to belong.</em></h2>
+          <p class="lede">Membership opens the door to the full club: social games, No Limit Hold’em, networking events, member socials, watch parties, business gatherings, community programming, and eligible poker action.</p>
+          <div class="btn-row mt-2">
+            <a class="btn btn--gold" href="/membership/">Explore membership {{ icon('arrow') }}</a>
+            <a class="btn btn--ghost" href="/why-join/">Why Join</a>
+          </div>
+        </div>
+        <div class="member-band__card">
+          <h3>Membership opens the door to</h3>
+          {{ m.list(['Social games', 'No Limit Hold’em', 'Networking events', 'Member socials', 'Watch parties', 'Business gatherings', 'Community programming', 'Eligible poker action'], 'list--cols') }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============ VALUES ============ #}
+<section class="section section--alt section--line section--glow" aria-labelledby="values-title">
+  <div class="container">
+    <div class="center reveal">
+      <h2 id="values-title">A place <em>to belong.</em></h2>
+      <p class="lede" style="margin-inline:auto">Integrity, hospitality, community, excellence, consistency, and growth shape how The Den shows up. The room works best when everyone has a reason to feel welcome.</p>
+    </div>
+    <ul class="ribbon mt-3 reveal" style="--d:.1s" aria-label="Club values">
+      {% for v, ic in [('Integrity','shield'),('Hospitality','heart'),('Community','users'),('Excellence','award'),('Consistency','repeat'),('Growth','growth')] %}
+      <li><span class="ribbon__n">0{{ loop.index }}</span>{{ icon(ic) }}<span class="ribbon__v">{{ v }}</span></li>
+      {% endfor %}
+    </ul>
+    <div class="center mt-3 reveal" style="--d:.15s"><a class="btn btn--ghost" href="/club-values-atmosphere/">Read our club values {{ icon('arrow') }}</a></div>
+    <div class="container--narrow mt-4 reveal" style="margin-inline:auto">
+      <figure class="pullquote" style="margin:0">
+        <blockquote>There is always a reason to come to The Den, and there is a seat for me there.</blockquote>
+        <cite>- The Den Poker Lounge</cite>
+      </figure>
+    </div>
+  </div>
+</section>
+
+{# ============ LOCATION ============ #}
+<section class="section" aria-labelledby="loc-title">
+  <div class="container">
+    <div class="split">
+      <div class="reveal">
+        <p class="eyebrow">Poker at The Den</p>
+        <h2 id="loc-title">Meet us <em>in Rowlett.</em></h2>
+        <p class="lede">Located in the Rowlett / East Dallas / Lake Ray Hubbard area, The Den is open 7 days a week. Reach out for current hours, club details, and what’s happening next.</p>
+        <div class="btn-row mt-2">
+          <a class="btn btn--ghost" href="/faqs/">Read the FAQs {{ icon('arrow') }}</a>
+          <a class="link-arrow" href="/explore-rowlett/">Explore Rowlett {{ icon('arrow') }}</a>
+        </div>
+      </div>
+      <div class="reveal" style="--d:.1s">{{ m.map_embed(site.address_home) }}</div>
+    </div>
+  </div>
+</section>
+
+{# ============ CONTACT ============ #}
+<section class="section section--alt section--line" aria-labelledby="contact-title" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="reveal">
+        <p class="eyebrow">Come see us</p>
+        <h2 id="contact-title">Ready to join <em>the action?</em></h2>
+        <p class="lede">Get in touch with us today.</p>
+        <div class="mt-2">{{ m.contact_list(site.address_home) }}</div>
+      </div>
+      <div class="reveal" style="--d:.1s">
+        {{ m.elementor_form('2277', '142fbcb', 'Home - The Den Poker Lounge', 'VIP Invite', None, 'Ready to experience Rowlett’s premier poker club? Join our community of passionate players today.') }}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

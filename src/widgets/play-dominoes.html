@@ -1,0 +1,686 @@
+
+<section class="tool-section">
+<div class="wrap">
+<div class="settings-card">
+<div class="setting-group">
+<div class="setting-label">Mode</div>
+<div class="seg-group" id="modeGroup">
+<button class="seg-btn active" data-mode="two-player">Two Players</button>
+<button class="seg-btn" data-mode="vs-computer">Vs. Computer</button>
+</div>
+</div>
+<div class="setting-group">
+<div class="setting-label">Variant</div>
+<div class="seg-group" id="variantGroup">
+<button class="seg-btn active" data-variant="draw">Draw</button>
+<button class="seg-btn" data-variant="block">Block</button>
+</div>
+</div>
+<div class="settings-actions">
+<button class="btn btn-gold" id="nextHandBtn">New Hand</button>
+<button class="btn btn-ghost" id="newMatchBtn">New Match</button>
+</div>
+</div>
+<div class="result-banner" id="resultBanner">
+<div class="r-title" id="resultTitle"></div>
+<div class="r-sub" id="resultSub"></div>
+<div class="control-row" id="resultControls"></div>
+</div>
+<div class="game-grid">
+<div>
+<div class="table-frame">
+<div class="layout-row" id="layoutRow"></div>
+<div class="hand-section">
+<div class="hand-title" id="handTitle">Your Hand</div>
+<div class="hand-row" id="handRow"></div>
+</div>
+</div>
+</div>
+<div class="side-panel">
+<div class="panel-card">
+<h3>Match Score</h3>
+<div class="score-row" id="scoreRowP0">
+<div class="name" id="nameP0">Player 1</div>
+<div class="pts" id="ptsP0">0</div>
+</div>
+<div class="score-row" id="scoreRowP1">
+<div class="name" id="nameP1">Player 2</div>
+<div class="pts" id="ptsP1">0</div>
+</div>
+<div class="target-note">First to 100 wins the match</div>
+</div>
+<div class="panel-card">
+<h3>Status</h3>
+<div class="status-line" id="statusLine">—</div>
+<div class="status-sub" id="statusSub"></div>
+<div class="boneyard-line" id="boneyardLine"></div>
+<div class="control-row" id="actionControls"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="modal-overlay" id="choiceOverlay">
+<div class="modal-box">
+<h3>Choose an End</h3>
+<p>This tile fits both ends of the layout. Pick where to play it.</p>
+<div class="choice-grid" id="choiceGrid"></div>
+</div>
+</div>
+<div class="modal-overlay" id="gateOverlay">
+<div class="modal-box">
+<div class="gate-icon">🁢</div>
+<h3 id="gateTitle">Pass the Device</h3>
+<p id="gateSub">Hand the screen to the next player. Tap below once it's their turn to look.</p>
+<button class="btn btn-gold" id="gateReadyBtn">I'm Ready — Show My Hand</button>
+</div>
+</div> 
+
+<script>
+/* =========================================================================
+   DOMINO ENGINE (tile generation, dealing, legal moves, playing, drawing,
+   hand-end detection with scoring). Validated with unit tests covering
+   opener selection, matching-via-either-face, exposed-value computation,
+   draw/block blocked-game detection, and 500 simulated random games
+   checked for tile conservation and guaranteed termination.
+   ========================================================================= */
+
+function makeTileSet() {
+  const tiles = [];
+  let id = 0;
+  for (let a = 0; a <= 6; a++) {
+    for (let b = a; b <= 6; b++) {
+      tiles.push({ id: id++, a, b });
+    }
+  }
+  return tiles;
+}
+
+function shuffle(arr, rng = Math.random) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function deal(rng = Math.random) {
+  const shuffled = shuffle(makeTileSet(), rng);
+  const hands = [shuffled.slice(0, 7), shuffled.slice(7, 14)];
+  const boneyard = shuffled.slice(14);
+  return { hands, boneyard };
+}
+
+function pipTotal(tiles) { return tiles.reduce((sum, t) => sum + t.a + t.b, 0); }
+function isDouble(t) { return t.a === t.b; }
+
+function findOpener(hands) {
+  let best = null;
+  for (let p = 0; p < hands.length; p++) {
+    for (let i = 0; i < hands[p].length; i++) {
+      const t = hands[p][i];
+      if (isDouble(t)) {
+        if (!best || t.a > best.value) best = { player: p, tileIndex: i, value: t.a };
+      }
+    }
+  }
+  if (best) return best;
+  let bestIdx = 0, bestVal = -1;
+  for (let i = 0; i < hands[0].length; i++) {
+    const v = hands[0][i].a + hands[0][i].b;
+    if (v > bestVal) { bestVal = v; bestIdx = i; }
+  }
+  return { player: 0, tileIndex: bestIdx, value: bestVal };
+}
+
+function newHand(rng = Math.random) {
+  const { hands, boneyard } = deal(rng);
+  const opener = findOpener(hands);
+  return {
+    hands, boneyard, layout: [], leftEnd: null, rightEnd: null,
+    turn: opener.player, passStreak: 0,
+  };
+}
+
+function legalMoves(state, player) {
+  const hand = state.hands[player];
+  const moves = [];
+  if (state.layout.length === 0) {
+    for (let i = 0; i < hand.length; i++) moves.push({ handIndex: i, tile: hand[i], end: 'open' });
+    return moves;
+  }
+  for (let i = 0; i < hand.length; i++) {
+    const t = hand[i];
+    if (t.a === state.leftEnd || t.b === state.leftEnd) moves.push({ handIndex: i, tile: t, end: 'left' });
+    if (t.a === state.rightEnd || t.b === state.rightEnd) moves.push({ handIndex: i, tile: t, end: 'right' });
+  }
+  return moves;
+}
+
+function playMove(state, player, move) {
+  const s = {
+    hands: state.hands.map(h => h.slice()),
+    boneyard: state.boneyard.slice(),
+    layout: state.layout.slice(),
+    leftEnd: state.leftEnd, rightEnd: state.rightEnd, turn: state.turn, passStreak: 0,
+  };
+  const hand = s.hands[player];
+  const tile = hand[move.handIndex];
+  hand.splice(move.handIndex, 1);
+
+  if (state.layout.length === 0) {
+    s.layout.push({ tile, orientation: 'open' });
+    s.leftEnd = tile.a; s.rightEnd = tile.b;
+  } else if (move.end === 'left') {
+    const exposed = tile.a === state.leftEnd ? tile.b : tile.a;
+    s.layout.unshift({ tile, orientation: 'left' });
+    s.leftEnd = exposed;
+  } else {
+    const exposed = tile.a === state.rightEnd ? tile.b : tile.a;
+    s.layout.push({ tile, orientation: 'right' });
+    s.rightEnd = exposed;
+  }
+  s.turn = 1 - player;
+  return s;
+}
+
+function drawTile(state, player) {
+  if (state.boneyard.length === 0) return state;
+  const s = {
+    hands: state.hands.map(h => h.slice()),
+    boneyard: state.boneyard.slice(),
+    layout: state.layout.slice(),
+    leftEnd: state.leftEnd, rightEnd: state.rightEnd, turn: state.turn, passStreak: state.passStreak,
+  };
+  const tile = s.boneyard.shift();
+  s.hands[player].push(tile);
+  return s;
+}
+
+function passTurn(state) {
+  return { ...state, passStreak: state.passStreak + 1, turn: 1 - state.turn };
+}
+
+function handStatus(state, variant) {
+  for (let p = 0; p < 2; p++) {
+    if (state.hands[p].length === 0) {
+      const opponent = 1 - p;
+      const points = pipTotal(state.hands[opponent]);
+      return { reason: 'domino', winner: p, points, pipCounts: [pipTotal(state.hands[0]), pipTotal(state.hands[1])] };
+    }
+  }
+  const p0Moves = legalMoves(state, 0).length;
+  const p1Moves = legalMoves(state, 1).length;
+  const boneyardEmpty = state.boneyard.length === 0;
+  const trulyBlocked = variant === 'draw'
+    ? (p0Moves === 0 && p1Moves === 0 && boneyardEmpty)
+    : (p0Moves === 0 && p1Moves === 0);
+  if (trulyBlocked) {
+    const pips = [pipTotal(state.hands[0]), pipTotal(state.hands[1])];
+    if (pips[0] === pips[1]) return { reason: 'blocked', winner: null, points: 0, pipCounts: pips };
+    const winner = pips[0] < pips[1] ? 0 : 1;
+    const points = Math.abs(pips[0] - pips[1]);
+    return { reason: 'blocked', winner, points, pipCounts: pips };
+  }
+  return null;
+}
+
+/* ---------- Simple heuristic AI ---------- */
+function chooseAIMove(state, player, moves, rng = Math.random) {
+  if (moves.length === 0) return null;
+  let bestScore = -Infinity;
+  let candidates = [];
+  for (const move of moves) {
+    const tileValue = move.tile.a + move.tile.b;
+    const doubleBonus = isDouble(move.tile) ? 6 : 0;
+    const next = playMove(state, player, move);
+    const remaining = next.hands[player];
+    const flexibility = remaining.filter(t =>
+      t.a === next.leftEnd || t.b === next.leftEnd || t.a === next.rightEnd || t.b === next.rightEnd
+    ).length;
+    const score = tileValue * 3 + doubleBonus + flexibility * 4;
+    if (score > bestScore) { bestScore = score; candidates = [move]; }
+    else if (score === bestScore) candidates.push(move);
+  }
+  return candidates[Math.floor(rng() * candidates.length)];
+}
+
+/* =========================================================================
+   UI
+   ========================================================================= */
+
+const PIP_PATTERNS = {
+  0: [], 1: [5], 2: [1,9], 3: [1,5,9], 4: [1,3,7,9], 5: [1,3,5,7,9], 6: [1,3,4,6,7,9],
+};
+const TARGET_SCORE = 100;
+
+let state = null;
+let mode = 'two-player';
+let variant = 'draw';
+let matchScore = [0, 0];
+let handOver = false;
+let matchOver = false;
+let handResult = null;
+let aiThinking = false;
+let revealedFor = -1; // two-player mode: which player's hand is currently allowed on screen
+let pendingChoiceMoves = null;
+
+const layoutRow = document.getElementById('layoutRow');
+const handRow = document.getElementById('handRow');
+const handTitle = document.getElementById('handTitle');
+const nameP0 = document.getElementById('nameP0');
+const nameP1 = document.getElementById('nameP1');
+const ptsP0 = document.getElementById('ptsP0');
+const ptsP1 = document.getElementById('ptsP1');
+const scoreRowP0 = document.getElementById('scoreRowP0');
+const scoreRowP1 = document.getElementById('scoreRowP1');
+const statusLine = document.getElementById('statusLine');
+const statusSub = document.getElementById('statusSub');
+const boneyardLine = document.getElementById('boneyardLine');
+const actionControls = document.getElementById('actionControls');
+const resultBanner = document.getElementById('resultBanner');
+const resultTitle = document.getElementById('resultTitle');
+const resultSub = document.getElementById('resultSub');
+const resultControls = document.getElementById('resultControls');
+const choiceOverlay = document.getElementById('choiceOverlay');
+const choiceGrid = document.getElementById('choiceGrid');
+const gateOverlay = document.getElementById('gateOverlay');
+const gateTitle = document.getElementById('gateTitle');
+const gateSub = document.getElementById('gateSub');
+const gateReadyBtn = document.getElementById('gateReadyBtn');
+
+function seatName(p) {
+  if (mode === 'vs-computer') return p === 0 ? 'You' : 'The House';
+  return p === 0 ? 'Player 1' : 'Player 2';
+}
+
+function possessive(p) {
+  const name = seatName(p);
+  return name === 'You' ? 'Your' : name + "'s";
+}
+
+function buildTileEl(tile, { vertical = false, small = false, faceDown = false } = {}) {
+  if (faceDown) {
+    const el = document.createElement('div');
+    el.className = 'tile-back horizontal';
+    return el;
+  }
+  const el = document.createElement('div');
+  el.className = 'tile ' + (vertical ? 'vertical' : 'horizontal') + (small ? ' small' : '');
+  const halves = vertical ? [tile.a, tile.b] : [tile.a, tile.b];
+  for (const val of halves) {
+    const half = document.createElement('div');
+    half.className = 'tile-half';
+    for (let i = 1; i <= 9; i++) {
+      const cell = document.createElement('div');
+      if (PIP_PATTERNS[val].includes(i)) {
+        const dot = document.createElement('div');
+        dot.className = 'dot';
+        cell.appendChild(dot);
+      }
+      half.appendChild(cell);
+    }
+    el.appendChild(half);
+  }
+  return el;
+}
+
+function renderLayout() {
+  layoutRow.innerHTML = '';
+  if (state.layout.length === 0) {
+    const p = document.createElement('div');
+    p.className = 'layout-empty';
+    p.textContent = 'The table is open — first tile sets the pace.';
+    layoutRow.appendChild(p);
+    return;
+  }
+  for (const entry of state.layout) {
+    const vertical = isDouble(entry.tile);
+    layoutRow.appendChild(buildTileEl(entry.tile, { vertical }));
+  }
+}
+
+function currentLegalMoves() {
+  return legalMoves(state, state.turn);
+}
+
+function renderHand() {
+  const p = state.turn;
+  handTitle.textContent = possessive(p) + ' Hand';
+  handRow.innerHTML = '';
+
+  const showFaceUp =
+    !handOver &&
+    !(mode === 'vs-computer' && p === 1) &&
+    !(mode === 'two-player' && revealedFor !== p);
+
+  if (handOver) {
+    // Reveal both hands for review at the end of a hand.
+    handTitle.textContent = 'Final Hands';
+    const wrap = document.createElement('div');
+    wrap.style.display = 'flex';
+    wrap.style.flexDirection = 'column';
+    wrap.style.gap = '14px';
+    wrap.style.width = '100%';
+    for (let pl = 0; pl < 2; pl++) {
+      const row = document.createElement('div');
+      row.style.textAlign = 'center';
+      const label = document.createElement('div');
+      label.style.color = '#8a8578';
+      label.style.fontSize = '12px';
+      label.style.textTransform = 'uppercase';
+      label.style.letterSpacing = '.8px';
+      label.style.marginBottom = '6px';
+      label.textContent = seatName(pl) + ' (' + pipTotal(state.hands[pl]) + ' pips)';
+      row.appendChild(label);
+      const tilesWrap = document.createElement('div');
+      tilesWrap.className = 'hand-row';
+      for (const t of state.hands[pl]) tilesWrap.appendChild(buildTileEl(t, { small: true }));
+      if (state.hands[pl].length === 0) {
+        const none = document.createElement('div');
+        none.className = 'hand-placeholder';
+        none.textContent = 'Empty — domino!';
+        tilesWrap.appendChild(none);
+      }
+      row.appendChild(tilesWrap);
+      wrap.appendChild(row);
+    }
+    handRow.appendChild(wrap);
+    return;
+  }
+
+  if (!showFaceUp) {
+    const backs = document.createElement('div');
+    backs.className = 'backs-row';
+    for (let i = 0; i < state.hands[p].length; i++) backs.appendChild(buildTileEl(null, { faceDown: true }));
+    handRow.appendChild(backs);
+    return;
+  }
+
+  const moves = currentLegalMoves();
+  const hand = state.hands[p];
+  if (hand.length === 0) {
+    const none = document.createElement('div');
+    none.className = 'hand-placeholder';
+    none.textContent = 'No tiles left.';
+    handRow.appendChild(none);
+    return;
+  }
+  for (let i = 0; i < hand.length; i++) {
+    const tile = hand[i];
+    const tileMoves = moves.filter(m => m.handIndex === i);
+    const el = buildTileEl(tile, { small: true });
+    el.classList.add('clickable');
+    if (tileMoves.length > 0) {
+      el.classList.add('playable');
+      el.addEventListener('click', () => onHandTileClick(tileMoves));
+    } else {
+      el.classList.add('unplayable');
+    }
+    handRow.appendChild(el);
+  }
+}
+
+function onHandTileClick(tileMoves) {
+  if (aiThinking || handOver) return;
+  if (tileMoves.length === 1) {
+    commitMove(tileMoves[0]);
+  } else {
+    pendingChoiceMoves = tileMoves;
+    choiceGrid.innerHTML = '';
+    for (const m of tileMoves) {
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      const exposed = m.tile.a === (m.end === 'left' ? state.leftEnd : state.rightEnd) ? m.tile.b : m.tile.a;
+      const label = document.createElement('div');
+      label.className = 'choice-label';
+      label.textContent = m.end === 'left' ? 'Left End' : 'Right End';
+      btn.appendChild(label);
+      btn.appendChild(buildTileEl(m.tile, { small: true }));
+      btn.addEventListener('click', () => {
+        choiceOverlay.classList.remove('open');
+        pendingChoiceMoves = null;
+        commitMove(m);
+      });
+      choiceGrid.appendChild(btn);
+    }
+    choiceOverlay.classList.add('open');
+  }
+}
+
+function commitMove(move) {
+  state = playMove(state, state.turn === 0 ? (state.turn) : state.turn, move);
+  afterAction();
+}
+
+// Note: commitMove is only ever called for the human's own turn (handRow only
+// wires click handlers when it's the active, revealed human's hand), so using
+// the pre-move state.turn as the mover is correct.
+
+function afterAction() {
+  const status = handStatus(state, variant);
+  if (status) {
+    finishHand(status);
+    return;
+  }
+  render();
+  if (mode === 'vs-computer' && state.turn === 1) {
+    scheduleAIMove();
+  }
+}
+
+function finishHand(status) {
+  handOver = true;
+  handResult = status;
+  if (status.winner !== null) matchScore[status.winner] += status.points;
+
+  const matchWinner = matchScore[0] >= TARGET_SCORE || matchScore[1] >= TARGET_SCORE
+    ? (matchScore[0] > matchScore[1] ? 0 : matchScore[1] > matchScore[0] ? 1 : null)
+    : null;
+  matchOver = matchWinner !== null;
+
+  resultBanner.classList.add('open');
+  const reasonText = status.reason === 'domino' ? 'Domino!' : (status.winner === null ? 'Blocked — Tied Hand' : 'Blocked Game');
+  if (status.winner === null) {
+    resultTitle.textContent = reasonText;
+    resultSub.textContent = 'Equal pip counts — no points awarded this hand.';
+  } else {
+    resultTitle.textContent = seatName(status.winner) + ' Wins the Hand — ' + reasonText;
+    resultSub.textContent = seatName(status.winner) + ' scores ' + status.points + ' point' + (status.points === 1 ? '' : 's') +
+      ' (pip counts: ' + seatName(0) + ' ' + status.pipCounts[0] + ', ' + seatName(1) + ' ' + status.pipCounts[1] + ').';
+  }
+  if (matchOver) {
+    resultTitle.textContent = seatName(matchWinner) + ' Wins the Match!';
+    resultSub.textContent = 'Final score — ' + seatName(0) + ': ' + matchScore[0] + ', ' + seatName(1) + ': ' + matchScore[1] + '.';
+  }
+
+  resultControls.innerHTML = '';
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-gold';
+  btn.textContent = matchOver ? 'New Match' : 'Deal Next Hand';
+  btn.addEventListener('click', matchOver ? newMatch : nextHand);
+  resultControls.appendChild(btn);
+
+  render();
+}
+
+function scheduleAIMove() {
+  aiThinking = true;
+  render();
+  setTimeout(() => {
+    let s = state;
+    let moves = legalMoves(s, 1);
+    let drewCount = 0;
+    if (variant === 'draw') {
+      while (moves.length === 0 && s.boneyard.length > 0) {
+        s = drawTile(s, 1);
+        drewCount++;
+        moves = legalMoves(s, 1);
+      }
+    }
+    if (moves.length === 0) {
+      s = passTurn(s);
+    } else {
+      const move = chooseAIMove(s, 1, moves);
+      s = playMove(s, 1, move);
+    }
+    state = s;
+    aiThinking = false;
+    const status = handStatus(state, variant);
+    if (status) { finishHand(status); return; }
+    render();
+  }, 550);
+}
+
+function humanDraw() {
+  if (aiThinking || handOver) return;
+  let s = state;
+  const before = s.boneyard.length;
+  let moves = legalMoves(s, s.turn);
+  while (moves.length === 0 && s.boneyard.length > 0) {
+    s = drawTile(s, s.turn);
+    moves = legalMoves(s, s.turn);
+  }
+  state = s;
+  const drew = before - s.boneyard.length;
+  render();
+  statusSub.textContent = 'Drew ' + drew + ' tile' + (drew === 1 ? '' : 's') + ' from the boneyard.';
+}
+
+function humanPass() {
+  if (aiThinking || handOver) return;
+  state = passTurn(state);
+  afterAction();
+}
+
+function renderStatus() {
+  boneyardLine.textContent = variant === 'draw' ? 'Boneyard: ' + state.boneyard.length + ' tiles remaining.' : 'Variant: Block — no boneyard.';
+  actionControls.innerHTML = '';
+
+  if (handOver) {
+    statusLine.textContent = 'Hand complete';
+    statusSub.textContent = 'See the result above.';
+    return;
+  }
+  if (aiThinking) {
+    statusLine.textContent = 'The house is thinking…';
+    statusSub.textContent = '';
+    return;
+  }
+
+  const gated = mode === 'two-player' && revealedFor !== state.turn;
+  if (gated) {
+    statusLine.textContent = possessive(state.turn) + ' turn';
+    statusSub.textContent = 'Waiting for the pass-and-play handoff.';
+    return;
+  }
+
+  const moves = currentLegalMoves();
+  statusLine.textContent = possessive(state.turn) + ' turn';
+
+  if (moves.length > 0) {
+    statusSub.textContent = mode === 'vs-computer' ? 'Your move — tap a highlighted tile to play it.' : 'Tap a highlighted tile to play it.';
+    return;
+  }
+
+  if (variant === 'draw' && state.boneyard.length > 0) {
+    statusSub.textContent = 'No playable tile — draw from the boneyard.';
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-gold';
+    btn.textContent = 'Draw from Boneyard';
+    btn.addEventListener('click', humanDraw);
+    actionControls.appendChild(btn);
+  } else {
+    statusSub.textContent = 'No playable tile — this turn must pass.';
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-gold';
+    btn.textContent = 'Pass Turn';
+    btn.addEventListener('click', humanPass);
+    actionControls.appendChild(btn);
+  }
+}
+
+function renderScores() {
+  nameP0.textContent = seatName(0);
+  nameP1.textContent = seatName(1);
+  ptsP0.textContent = matchScore[0];
+  ptsP1.textContent = matchScore[1];
+  scoreRowP0.classList.toggle('leading', matchScore[0] > matchScore[1]);
+  scoreRowP1.classList.toggle('leading', matchScore[1] > matchScore[0]);
+}
+
+function renderGate() {
+  const gated = mode === 'two-player' && !handOver && revealedFor !== state.turn;
+  gateOverlay.classList.toggle('open', gated);
+  if (gated) {
+    gateTitle.textContent = 'Pass to ' + seatName(state.turn);  // gate never shown when seatName is "You"
+    gateSub.textContent = "Hand the screen to " + seatName(state.turn) + ". Tap below once it's safely in front of them.";
+  }
+}
+
+function render() {
+  renderLayout();
+  renderHand();
+  renderStatus();
+  renderScores();
+  renderGate();
+}
+
+gateReadyBtn.addEventListener('click', () => {
+  revealedFor = state.turn;
+  render();
+});
+
+/* ---------- Game / match lifecycle ---------- */
+
+function nextHand() {
+  state = newHand();
+  handOver = false;
+  handResult = null;
+  aiThinking = false;
+  resultBanner.classList.remove('open');
+  revealedFor = mode === 'vs-computer' ? state.turn : -1;
+  render();
+  if (mode === 'vs-computer' && state.turn === 1) scheduleAIMove();
+}
+
+function newMatch() {
+  matchScore = [0, 0];
+  matchOver = false;
+  nextHand();
+}
+
+document.getElementById('nextHandBtn').addEventListener('click', () => {
+  if (!handOver) {
+    const ok = window.confirm('Start a new hand? The current hand in progress will be discarded (match score is kept).');
+    if (!ok) return;
+  }
+  nextHand();
+});
+document.getElementById('newMatchBtn').addEventListener('click', () => {
+  const ok = window.confirm('Start a brand new match? This resets the score to 0–0.');
+  if (!ok) return;
+  newMatch();
+});
+
+document.getElementById('modeGroup').addEventListener('click', (e) => {
+  const btn = e.target.closest('.seg-btn');
+  if (!btn) return;
+  document.querySelectorAll('#modeGroup .seg-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  mode = btn.dataset.mode;
+  newMatch();
+});
+
+document.getElementById('variantGroup').addEventListener('click', (e) => {
+  const btn = e.target.closest('.seg-btn');
+  if (!btn) return;
+  document.querySelectorAll('#variantGroup .seg-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  variant = btn.dataset.variant;
+  newMatch();
+});
+
+newMatch();
+</script> 

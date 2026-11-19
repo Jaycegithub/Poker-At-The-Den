@@ -1,0 +1,1173 @@
+
+<form id="founderForm" method="POST" novalidate="">
+<!-- Spam trap: leave hidden, real visitors never fill this in -->
+<input autocomplete="off" name="_gotcha" style="display:none" tabindex="-1" type="text"/>
+<input name="_subject" type="hidden" value="Founders Membership Application — The Den"/>
+<input id="applicationDate" name="application_date" type="hidden"/>
+<p class="form-error-banner" id="formErrorBanner">Something went wrong sending your application. Please try again, or email us directly.</p>
+<section class="section-block">
+<span class="eyebrow">01 — Applicant Details</span>
+<h2>Who you are.</h2>
+<div class="field-group">
+<div class="grid-2">
+<div>
+<label class="field-label" for="applicantName">Full Legal Name <span class="req">*</span></label>
+<input class="text-input" id="applicantName" name="name" placeholder="Your full legal name" required="" type="text"/>
+<p class="field-error" id="err-name"></p>
+</div>
+<div>
+<label class="field-label" for="applicantDOB">Date of Birth <span class="req">*</span></label>
+<input class="text-input" id="applicantDOB" name="date_of_birth" required="" type="date"/>
+<p class="field-error" id="err-dob"></p>
+</div>
+</div>
+</div>
+<div class="field-group">
+<div class="grid-2">
+<div>
+<label class="field-label" for="applicantEmail">Email <span class="req">*</span></label>
+<input class="text-input" id="applicantEmail" name="email" placeholder="you@example.com" required="" type="email"/>
+<p class="field-error" id="err-email"></p>
+</div>
+<div>
+<label class="field-label" for="applicantPhone">Phone <span class="req">*</span></label>
+<input class="text-input" id="applicantPhone" name="phone" placeholder="(214) 555-0134" required="" type="tel"/>
+<p class="field-error" id="err-phone"></p>
+</div>
+</div>
+</div>
+<div class="field-group">
+<label class="field-label" for="applicantStreet">Mailing Address <span class="req">*</span></label>
+<input class="text-input" id="applicantStreet" name="address_street" placeholder="Street address" required="" type="text"/>
+<p class="field-error" id="err-street"></p>
+</div>
+<div class="field-group">
+<div class="grid-3">
+<div>
+<label class="field-label" for="applicantCity">City <span class="req">*</span></label>
+<input class="text-input" id="applicantCity" name="address_city" placeholder="City" required="" type="text"/>
+<p class="field-error" id="err-city"></p>
+</div>
+<div>
+<label class="field-label" for="applicantState">State <span class="req">*</span></label>
+<input class="text-input" id="applicantState" maxlength="2" name="address_state" placeholder="TX" required="" style="text-transform:uppercase;" type="text"/>
+<p class="field-error" id="err-state"></p>
+</div>
+<div>
+<label class="field-label" for="applicantZip">ZIP <span class="req">*</span></label>
+<input class="text-input" id="applicantZip" inputmode="numeric" maxlength="10" name="address_zip" placeholder="75088" required="" type="text"/>
+<p class="field-error" id="err-zip"></p>
+</div>
+</div>
+</div>
+<div class="field-group">
+<label class="field-label" for="heardAbout">How did you hear about The Den? <span class="req">*</span></label>
+<select class="text-input" id="heardAbout" name="heard_about" required="">
+<option disabled="" selected="" value="">Select one</option>
+<option value="Referral from a member">Referral from a member</option>
+<option value="Social media">Social media</option>
+<option value="Search / website">Search / website</option>
+<option value="Event">Event</option>
+<option value="Other">Other</option>
+</select>
+<p class="field-error" id="err-heard"></p>
+</div>
+<div class="field-group" hidden="" id="referringWrap">
+<label class="field-label" for="referringMember">Referring Member's Name</label>
+<input class="text-input" id="referringMember" name="referring_member" placeholder="Member's full name" type="text"/>
+<p class="field-error" id="err-referring"></p>
+</div>
+</section>
+<section class="section-block">
+<fieldset>
+<legend class="choices-head">
+<span class="eyebrow">02 — Founder Number Preferences</span>
+<h2>Choose your Founder number.</h2>
+<p>Founders Membership numbers range from #001 through #050. Select three preferred Founder numbers, in order of preference.</p>
+<span class="range-badge num">#001 – #050</span>
+</legend>
+<div class="choice-row">
+<span class="choice-ord num">01</span>
+<div class="choice-name"><strong>First Choice</strong></div>
+<div>
+<div class="num-field" id="wrap-first">
+<span class="num-prefix">Nº</span>
+<input id="firstChoice" inputmode="numeric" maxlength="3" name="first_choice" placeholder="037" required="" type="text"/>
+</div>
+<p class="field-error" id="err-first"></p>
+</div>
+</div>
+<div class="choice-row">
+<span class="choice-ord num">02</span>
+<div class="choice-name"><strong>Second Choice</strong></div>
+<div>
+<div class="num-field" id="wrap-second">
+<span class="num-prefix">Nº</span>
+<input id="secondChoice" inputmode="numeric" maxlength="3" name="second_choice" placeholder="014" required="" type="text"/>
+</div>
+<p class="field-error" id="err-second"></p>
+</div>
+</div>
+<div class="choice-row">
+<span class="choice-ord num">03</span>
+<div class="choice-name"><strong>Third Choice</strong></div>
+<div>
+<div class="num-field" id="wrap-third">
+<span class="num-prefix">Nº</span>
+<input id="thirdChoice" inputmode="numeric" maxlength="3" name="third_choice" placeholder="029" required="" type="text"/>
+</div>
+<p class="field-error" id="err-third"></p>
+</div>
+</div>
+<p class="fine-note">
+          Founder numbers are assigned based on availability. If your first choice is unavailable, The Den will attempt to assign your second choice. If your second choice is unavailable, The Den will attempt to assign your third choice. If all three selected numbers are unavailable, The Den will assign an available Founder number on your behalf. Founder number assignments are final once approved and issued.
+        </p>
+</fieldset>
+</section>
+<section class="section-block">
+<span class="eyebrow">03 — Membership Fee</span>
+<h2>What your Founder number costs.</h2>
+<p class="dek">A one-time membership fee, set by when your application is approved — billed separately after approval, not collected on this form.</p>
+<div class="fee-list">
+<div class="fee-row"><span>Founders 1–10</span><span class="num">$2,500 each</span></div>
+<div class="fee-row"><span>Founders 11–25</span><span class="num">$5,000 each</span></div>
+<div class="fee-row"><span>Founders 26–50</span><span class="num">$7,500 each</span></div>
+</div>
+<p class="fee-foot">Complete terms are governed by the official Founding Membership Agreement.</p>
+</section>
+<section class="section-block" style="border-bottom:none;">
+<span class="eyebrow">04 — Membership Agreement &amp; Acknowledgment</span>
+<h2>Review and sign.</h2>
+<ul class="ack-list">
+<li class="ack-item is-primary">
+<input id="ackAgreement" name="acknowledgment_membership_agreement" required="" type="checkbox" value="Acknowledged"/>
+<label for="ackAgreement">I agree to The Den's Membership Agreement, Club Rules, and standards of conduct.</label>
+</li>
+<li class="ack-item">
+<input id="ack1" name="acknowledgment_select_three" required="" type="checkbox" value="Acknowledged"/>
+<label for="ack1">I understand that I may select up to three preferred Founder numbers.</label>
+</li>
+<li class="ack-item">
+<input id="ack2" name="acknowledgment_not_guaranteed" required="" type="checkbox" value="Acknowledged"/>
+<label for="ack2">I understand that none of my three preferred numbers are guaranteed.</label>
+</li>
+<li class="ack-item">
+<input id="ack3" name="acknowledgment_reassignment" required="" type="checkbox" value="Acknowledged"/>
+<label for="ack3">I understand that if all three of my preferred Founder numbers are unavailable, The Den will assign an available Founder number to me.</label>
+</li>
+<li class="ack-item">
+<input id="ack4" name="acknowledgment_final" required="" type="checkbox" value="Acknowledged"/>
+<label for="ack4">I understand that my assigned Founder number becomes my permanent Founder number once my Founders Membership is approved and issued.</label>
+</li>
+</ul>
+<p class="ack-error" id="err-ack">Please confirm every acknowledgment above before submitting.</p>
+<div class="signature-row">
+<div>
+<label class="field-label" for="signature">Signature <span class="req">*</span> <span class="opt">— type your full legal name</span></label>
+<input class="text-input signature-input" id="signature" name="signature" placeholder="Your full legal name" required="" type="text"/>
+<p class="field-error" id="err-signature"></p>
+</div>
+<div>
+<span class="field-label">Date</span>
+<div class="signature-date num" id="signatureDateDisplay">—</div>
+</div>
+</div>
+<p class="signature-note">By typing your name above and submitting this application, you are electronically signing it.</p>
+</section>
+<div class="submit-row">
+<button class="btn btn-gold" id="submitBtn" type="submit">
+      Submit Founders Membership Application
+    </button>
+<span class="submit-note">
+      All fields required unless marked optional
+    </span>
+</div>
+</form> 
+
+<script>
+(function () {
+
+  'use strict';
+
+  /*
+   * Make sure the form exists before doing anything.
+   */
+  var form = document.getElementById('founderForm');
+
+  if (!form) {
+    return;
+  }
+
+
+  /*
+   * Main elements.
+   */
+  var submitBtn = document.getElementById('submitBtn');
+  var errorBanner = document.getElementById('formErrorBanner');
+
+  var nameInput = document.getElementById('applicantName');
+  var dobInput = document.getElementById('applicantDOB');
+  var emailInput = document.getElementById('applicantEmail');
+  var phoneInput = document.getElementById('applicantPhone');
+  var streetInput = document.getElementById('applicantStreet');
+  var cityInput = document.getElementById('applicantCity');
+  var stateInput = document.getElementById('applicantState');
+  var zipInput = document.getElementById('applicantZip');
+
+  var heardSelect = document.getElementById('heardAbout');
+  var referringWrap = document.getElementById('referringWrap');
+  var referringInput = document.getElementById('referringMember');
+
+  var signatureInput = document.getElementById('signature');
+  var signatureDateDisplay = document.getElementById('signatureDateDisplay');
+  var applicationDateField = document.getElementById('applicationDate');
+
+
+  /*
+   * Founder number inputs.
+   */
+  var choiceInputs = {
+    first: document.getElementById('firstChoice'),
+    second: document.getElementById('secondChoice'),
+    third: document.getElementById('thirdChoice')
+  };
+
+
+  /*
+   * Founder number wrappers.
+   */
+  var choiceWraps = {
+    first: document.getElementById('wrap-first'),
+    second: document.getElementById('wrap-second'),
+    third: document.getElementById('wrap-third')
+  };
+
+
+  /*
+   * Acknowledgment checkboxes.
+   */
+  var ackBoxes = [
+    'ackAgreement',
+    'ack1',
+    'ack2',
+    'ack3',
+    'ack4'
+  ].map(function (id) {
+    return document.getElementById(id);
+  });
+
+
+  var ackError = document.getElementById('err-ack');
+
+
+  /*
+   * Today's date in YYYY-MM-DD format.
+   */
+  function todayISO() {
+
+    var d = new Date();
+
+    var mm = String(d.getMonth() + 1).padStart(2, '0');
+    var dd = String(d.getDate()).padStart(2, '0');
+
+    return d.getFullYear() + '-' + mm + '-' + dd;
+  }
+
+
+  /*
+   * Today's date in human-readable format.
+   */
+  function todayDisplay() {
+
+    var d = new Date();
+
+    return d.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+
+
+  /*
+   * Safely set today's application date.
+   */
+  if (applicationDateField) {
+    applicationDateField.value = todayISO();
+  }
+
+
+  /*
+   * Safely display today's signature date.
+   */
+  if (signatureDateDisplay) {
+    signatureDateDisplay.textContent = todayDisplay();
+  }
+
+
+  /*
+   * Referral field.
+   */
+  if (heardSelect && referringWrap && referringInput) {
+
+    heardSelect.addEventListener('change', function () {
+
+      var isReferral = this.value === 'Referral from a member';
+
+      referringWrap.hidden = !isReferral;
+
+      referringInput.required = isReferral;
+
+      if (!isReferral) {
+        referringInput.value = '';
+      }
+
+    });
+
+  }
+
+
+  /*
+   * Convert Founder number to 3 digits.
+   *
+   * Example:
+   * 1  -> 001
+   * 14 -> 014
+   * 50 -> 050
+   */
+  function pad3(value) {
+
+    var n = parseInt(value, 10);
+
+    if (isNaN(n)) {
+      return value;
+    }
+
+    return String(n).padStart(3, '0');
+  }
+
+
+  /*
+   * Format Founder numbers when leaving the field.
+   */
+  Object.keys(choiceInputs).forEach(function (key) {
+
+    if (!choiceInputs[key]) {
+      return;
+    }
+
+    choiceInputs[key].addEventListener('blur', function () {
+
+      if (this.value.trim() !== '') {
+        this.value = pad3(this.value.trim());
+      }
+
+    });
+
+  });
+
+
+  /*
+   * Field error helper.
+   */
+  function setFieldError(errId, message) {
+
+    var el = document.getElementById(errId);
+
+    if (!el) {
+      return;
+    }
+
+    el.textContent = message || '';
+
+    el.classList.toggle(
+      'is-visible',
+      !!message
+    );
+  }
+
+
+  /*
+   * Clear all validation errors.
+   */
+  function clearAllErrors() {
+
+    [
+      'err-name',
+      'err-dob',
+      'err-email',
+      'err-phone',
+      'err-street',
+      'err-city',
+      'err-state',
+      'err-zip',
+      'err-heard',
+      'err-referring',
+      'err-first',
+      'err-second',
+      'err-third',
+      'err-signature'
+    ].forEach(function (id) {
+
+      setFieldError(id, '');
+
+    });
+
+
+    if (ackError) {
+      ackError.classList.remove('is-visible');
+    }
+
+
+    [
+      nameInput,
+      dobInput,
+      emailInput,
+      phoneInput,
+      streetInput,
+      cityInput,
+      stateInput,
+      zipInput,
+      heardSelect,
+      referringInput,
+      signatureInput
+    ].forEach(function (el) {
+
+      if (el) {
+        el.classList.remove('has-error');
+      }
+
+    });
+
+
+    Object.keys(choiceWraps).forEach(function (key) {
+
+      if (choiceWraps[key]) {
+        choiceWraps[key].classList.remove('has-error');
+      }
+
+    });
+
+
+    if (errorBanner) {
+      errorBanner.classList.remove('is-visible');
+    }
+
+  }
+
+
+  /*
+   * Required text validation.
+   */
+  function requireText(input, errId, message) {
+
+    if (!input || !input.value.trim()) {
+
+      setFieldError(errId, message);
+
+      if (input) {
+        input.classList.add('has-error');
+      }
+
+      return false;
+    }
+
+    return true;
+  }
+
+
+  /*
+   * Validate entire form.
+   */
+  function validate() {
+
+    clearAllErrors();
+
+    var firstInvalid = null;
+    var ok = true;
+
+
+    function fail(element) {
+
+      ok = false;
+
+      if (!firstInvalid) {
+        firstInvalid = element;
+      }
+
+    }
+
+
+    /*
+     * Name.
+     */
+    if (
+      !requireText(
+        nameInput,
+        'err-name',
+        'Please enter your full legal name.'
+      )
+    ) {
+      fail(nameInput);
+    }
+
+
+    /*
+     * Date of birth.
+     */
+    if (!dobInput.value) {
+
+      setFieldError(
+        'err-dob',
+        'Please enter your date of birth.'
+      );
+
+      dobInput.classList.add('has-error');
+
+      fail(dobInput);
+
+    } else {
+
+      var dob = new Date(
+        dobInput.value + 'T00:00:00'
+      );
+
+      var today = new Date();
+
+      var age =
+        today.getFullYear() -
+        dob.getFullYear();
+
+      var monthDifference =
+        today.getMonth() -
+        dob.getMonth();
+
+      if (
+        monthDifference < 0 ||
+        (
+          monthDifference === 0 &&
+          today.getDate() < dob.getDate()
+        )
+      ) {
+        age--;
+      }
+
+
+      if (age < 21) {
+
+        setFieldError(
+          'err-dob',
+          'Applicants must be at least 21 years old.'
+        );
+
+        dobInput.classList.add('has-error');
+
+        fail(dobInput);
+
+      }
+
+    }
+
+
+    /*
+     * Email.
+     */
+    var emailOk =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+        emailInput.value.trim()
+      );
+
+    if (!emailOk) {
+
+      setFieldError(
+        'err-email',
+        'Please enter a valid email address.'
+      );
+
+      emailInput.classList.add('has-error');
+
+      fail(emailInput);
+
+    }
+
+
+    /*
+     * Phone.
+     */
+    var phoneDigits =
+      phoneInput.value.replace(/\D/g, '');
+
+    if (phoneDigits.length < 7) {
+
+      setFieldError(
+        'err-phone',
+        'Please enter a valid phone number.'
+      );
+
+      phoneInput.classList.add('has-error');
+
+      fail(phoneInput);
+
+    }
+
+
+    /*
+     * Address.
+     */
+    if (
+      !requireText(
+        streetInput,
+        'err-street',
+        'Please enter your street address.'
+      )
+    ) {
+      fail(streetInput);
+    }
+
+
+    if (
+      !requireText(
+        cityInput,
+        'err-city',
+        'Please enter your city.'
+      )
+    ) {
+      fail(cityInput);
+    }
+
+
+    if (
+      !requireText(
+        stateInput,
+        'err-state',
+        'Please enter your state.'
+      )
+    ) {
+
+      fail(stateInput);
+
+    } else {
+
+      stateInput.value =
+        stateInput.value
+          .trim()
+          .toUpperCase();
+
+    }
+
+
+    if (
+      !requireText(
+        zipInput,
+        'err-zip',
+        'Please enter your ZIP code.'
+      )
+    ) {
+      fail(zipInput);
+    }
+
+
+    /*
+     * How did you hear about us?
+     */
+    if (!heardSelect.value) {
+
+      setFieldError(
+        'err-heard',
+        'Please select an option.'
+      );
+
+      heardSelect.classList.add('has-error');
+
+      fail(heardSelect);
+
+    }
+
+
+    /*
+     * Referral.
+     */
+    if (
+      heardSelect.value === 'Referral from a member' &&
+      !referringInput.value.trim()
+    ) {
+
+      setFieldError(
+        'err-referring',
+        "Please enter the referring member's name."
+      );
+
+      referringInput.classList.add('has-error');
+
+      fail(referringInput);
+
+    }
+
+
+    /*
+     * Founder number choices.
+     */
+    var vals = {};
+
+    var labels = {
+      first: 'First',
+      second: 'Second',
+      third: 'Third'
+    };
+
+
+    Object.keys(choiceInputs).forEach(function (key) {
+
+      var input = choiceInputs[key];
+
+      if (!input) {
+        return;
+      }
+
+      var raw = input.value.trim();
+
+      var n = parseInt(raw, 10);
+
+
+      if (
+        !raw ||
+        isNaN(n) ||
+        n < 1 ||
+        n > 50
+      ) {
+
+        setFieldError(
+          'err-' + key,
+          labels[key] +
+          ' choice must be a number between 001 and 050.'
+        );
+
+        choiceWraps[key].classList.add('has-error');
+
+        fail(input);
+
+      } else {
+
+        vals[key] = n;
+
+      }
+
+    });
+
+
+    /*
+     * Prevent duplicate Founder numbers.
+     */
+    var seen = {};
+    var dupKeys = [];
+
+
+    Object.keys(vals).forEach(function (key) {
+
+      if (seen[vals[key]] !== undefined) {
+
+        dupKeys.push(
+          key,
+          seen[vals[key]]
+        );
+
+      }
+
+      seen[vals[key]] = key;
+
+    });
+
+
+    if (dupKeys.length) {
+
+      dupKeys.forEach(function (key) {
+
+        setFieldError(
+          'err-' + key,
+          'Each choice must be a different number.'
+        );
+
+        choiceWraps[key].classList.add(
+          'has-error'
+        );
+
+      });
+
+
+      fail(
+        choiceInputs[dupKeys[0]]
+      );
+
+    }
+
+
+    /*
+     * Signature.
+     */
+    if (
+      !requireText(
+        signatureInput,
+        'err-signature',
+        'Please type your full legal name to sign.'
+      )
+    ) {
+
+      fail(signatureInput);
+
+    }
+
+
+    /*
+     * Acknowledgments.
+     */
+    var allChecked = ackBoxes.every(
+      function (box) {
+        return box && box.checked;
+      }
+    );
+
+
+    if (!allChecked) {
+
+      if (ackError) {
+        ackError.classList.add('is-visible');
+      }
+
+      var firstUnchecked = ackBoxes.filter(
+        function (box) {
+          return box && !box.checked;
+        }
+      )[0];
+
+      fail(firstUnchecked);
+
+    }
+
+
+    /*
+     * Focus first invalid field.
+     */
+    if (!ok && firstInvalid) {
+
+      firstInvalid.focus();
+
+    }
+
+
+    return ok;
+
+  }
+
+
+  /*
+   * Submit form.
+   */
+  form.addEventListener(
+    'submit',
+    function (e) {
+
+      e.preventDefault();
+
+
+      /*
+       * Validate.
+       */
+      if (!validate()) {
+        return;
+      }
+
+
+      /*
+       * Disable submit button.
+       */
+      submitBtn.disabled = true;
+
+      submitBtn.textContent =
+        'Submitting…';
+
+
+      if (errorBanner) {
+        errorBanner.classList.remove(
+          'is-visible'
+        );
+      }
+
+
+      /*
+       * Build FormData.
+       */
+      var formData =
+        new FormData(form);
+
+
+      /*
+       * WordPress AJAX URL.
+       *
+       * This is the endpoint used by our PHP handler.
+       */
+      var ajaxUrl =
+        '/wp-admin/admin-ajax.php';
+
+
+      /*
+       * Tell WordPress which AJAX action to run.
+       */
+      formData.append(
+        'action',
+        'den_founder_application'
+      );
+
+
+      /*
+       * Submit to WordPress.
+       */
+      fetch(
+        ajaxUrl,
+        {
+          method: 'POST',
+          body: formData,
+          credentials: 'same-origin'
+        }
+      )
+      .then(function (response) {
+
+        return response.json()
+          .then(function (data) {
+
+            return {
+              ok: response.ok,
+              data: data
+            };
+
+          });
+
+      })
+      .then(function (result) {
+
+        /*
+         * PHP returned an error.
+         */
+        if (
+          !result.ok ||
+          !result.data ||
+          !result.data.success
+        ) {
+
+          var message =
+            'Something went wrong sending your application. Please try again, or email us directly.';
+
+          if (
+            result.data &&
+            result.data.data &&
+            result.data.data.message
+          ) {
+
+            message =
+              result.data.data.message;
+
+          }
+
+
+          throw new Error(message);
+
+        }
+
+
+        /*
+         * Successful submission.
+         */
+        showSuccess();
+
+      })
+      .catch(function (error) {
+
+        console.error(
+          'Founder application submission error:',
+          error
+        );
+
+
+        if (errorBanner) {
+
+          errorBanner.textContent =
+            error.message ||
+            'Something went wrong sending your application. Please try again, or email us directly.';
+
+          errorBanner.classList.add(
+            'is-visible'
+          );
+
+          errorBanner.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+          });
+
+        }
+
+
+        submitBtn.disabled = false;
+
+        submitBtn.textContent =
+          'Submit Founders Membership Application';
+
+      });
+
+    }
+  );
+
+
+  /*
+   * Show successful submission message.
+   *
+   * We create the success panel dynamically,
+   * so your HTML does NOT need successPanel,
+   * successCopy, or successSummary elements.
+   */
+  function showSuccess() {
+
+    var firstName =
+      nameInput.value
+        .trim()
+        .split(' ')[0];
+
+
+    /*
+     * Hide form.
+     */
+    form.style.display = 'none';
+
+
+    /*
+     * Create success panel.
+     */
+    var successPanel =
+      document.createElement('div');
+
+    successPanel.className =
+      'den-success-panel is-visible';
+
+
+    /*
+     * Create success heading.
+     */
+    var heading =
+      document.createElement('h2');
+
+    heading.textContent =
+      'Application Submitted';
+
+
+    /*
+     * Create success paragraph.
+     */
+    var paragraph =
+      document.createElement('p');
+
+    paragraph.textContent =
+      'Thank you, ' +
+      firstName +
+      '. The Den will review your application and follow up regarding approval, your one-time membership fee, and your assigned Founder number.';
+
+
+    /*
+     * Create summary.
+     */
+    var summary =
+      document.createElement('div');
+
+    summary.className =
+      'den-success-summary';
+
+
+    function addSummaryRow(
+      label,
+      value
+    ) {
+
+      var row =
+        document.createElement('div');
+
+      var labelEl =
+        document.createElement('span');
+
+      labelEl.textContent =
+        label;
+
+      var valueEl =
+        document.createElement('span');
+
+      valueEl.textContent =
+        value;
+
+      row.appendChild(labelEl);
+      row.appendChild(valueEl);
+
+      summary.appendChild(row);
+
+    }
+
+
+    addSummaryRow(
+      'Applicant',
+      nameInput.value.trim()
+    );
+
+
+    addSummaryRow(
+      'First Choice',
+      'Nº ' +
+      pad3(choiceInputs.first.value)
+    );
+
+
+    addSummaryRow(
+      'Second Choice',
+      'Nº ' +
+      pad3(choiceInputs.second.value)
+    );
+
+
+    addSummaryRow(
+      'Third Choice',
+      'Nº ' +
+      pad3(choiceInputs.third.value)
+    );
+
+
+    addSummaryRow(
+      'Signed',
+      signatureInput.value.trim() +
+      ' · ' +
+      todayDisplay()
+    );
+
+
+    /*
+     * Assemble success panel.
+     */
+    successPanel.appendChild(heading);
+    successPanel.appendChild(paragraph);
+    successPanel.appendChild(summary);
+
+
+    /*
+     * Insert after form.
+     */
+    form.parentNode.insertBefore(
+      successPanel,
+      form.nextSibling
+    );
+
+
+    /*
+     * Scroll to success message.
+     */
+    successPanel.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+
+  }
+
+})();
+</script> 

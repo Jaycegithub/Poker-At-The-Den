@@ -1,0 +1,119 @@
+{# ---------- Inner-page hero ---------- #}
+{% macro page_hero(eyebrow, title, image=None, image_alt='', section=None, label=None, plain=False, side_image=None, side_alt='') %}
+<section class="phero{% if plain or not image %} phero--plain{% endif %}">
+  {% if image and not plain %}<div class="phero__media">{{ img(image, image_alt, sizes='100vw', eager=True) }}</div>{% endif %}
+  <div class="container">
+    <ol class="crumbs reveal" aria-label="Breadcrumb">
+      <li><a href="/">Home</a></li>
+      {% if section %}<li>{{ section }}</li>{% endif %}
+      <li aria-current="page">{{ label }}</li>
+    </ol>
+    <div class="phero__inner">
+      <div class="phero__content reveal" style="--d:.08s">
+        {% if eyebrow %}<p class="eyebrow">{{ eyebrow }}</p>{% endif %}
+        <h1>{{ title }}</h1>
+        {{ caller() if caller }}
+      </div>
+      {% if side_image %}
+      <div class="phero__side reveal" style="--d:.18s">
+        <div class="frame frame--portrait frame--outline">{{ img(side_image, side_alt, sizes='(max-width: 900px) 80vw, 30vw', eager=True) }}</div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endmacro %}
+
+{# ---------- Contact details list ---------- #}
+{% macro contact_list(address) %}
+<ul class="contact-list">
+  <li><span class="icon-badge">{{ icon('phone') }}</span><div><small>Call</small><a href="{{ site.phone_href }}">{{ site.phone }}</a></div></li>
+  <li><span class="icon-badge">{{ icon('mail') }}</span><div><small>Email</small><a href="mailto:{{ site.email }}">{{ site.email }}</a></div></li>
+  <li><span class="icon-badge">{{ icon('pin') }}</span><div><small>Visit</small><span class="v">{{ address }}</span></div></li>
+  <li><span class="icon-badge">{{ icon('clock') }}</span><div><small>Hours</small><span class="v">{{ site.hours }}</span></div></li>
+</ul>
+{% endmacro %}
+
+{# ---------- Elementor Pro form (same field names / IDs as the live form) ---------- #}
+{% macro elementor_form(post_id, form_id, referer_title, eyebrow, title, intro, submit='Send Message') %}
+<div class="form-card">
+  {% if eyebrow %}<p class="eyebrow form-card__eyebrow">{{ eyebrow }}</p>{% endif %}
+  {% if title %}<h3>{{ title }}</h3>{% endif %}
+  {% if intro %}<p class="muted">{{ intro }}</p>{% endif %}
+  <form class="elementor-form" method="post" name="New Form" data-elementor-form novalidate>
+    <input type="hidden" name="post_id" value="{{ post_id }}">
+    <input type="hidden" name="form_id" value="{{ form_id }}">
+    <input type="hidden" name="referer_title" value="{{ referer_title }}">
+    <input type="hidden" name="queried_id" value="{{ post_id }}">
+    <div class="form-grid">
+      <div class="field full">
+        <label for="f-{{ form_id }}-name">Name</label>
+        <input id="f-{{ form_id }}-name" type="text" name="form_fields[name]" placeholder="Name" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="f-{{ form_id }}-phone">Phone <span class="req">*</span></label>
+        <input id="f-{{ form_id }}-phone" type="tel" name="form_fields[email]" placeholder="Phone" required autocomplete="tel" pattern="[0-9()#&+*\-=.\s]+" title="Only numbers and phone characters (#, -, *, etc) are accepted.">
+      </div>
+      <div class="field">
+        <label for="f-{{ form_id }}-email">Email <span class="req">*</span></label>
+        <input id="f-{{ form_id }}-email" type="email" name="form_fields[field_4e12a7d]" placeholder="Email" required autocomplete="email">
+      </div>
+      <div class="field full">
+        <label for="f-{{ form_id }}-msg">Message</label>
+        <textarea id="f-{{ form_id }}-msg" name="form_fields[message]" placeholder="Message" rows="4"></textarea>
+      </div>
+      <div class="full"><button class="btn btn--gold btn--block" type="submit">{{ submit }}</button></div>
+    </div>
+    <p class="form-status" role="status" aria-live="polite"></p>
+  </form>
+</div>
+{% endmacro %}
+
+{# ---------- Map (lazy) ---------- #}
+{% macro map_embed(label) %}
+<div class="map">
+  <iframe title="Map to The Den Poker Lounge" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+    src="https://maps.google.com/maps?q={{ site.map_query|urlencode }}&z=15&output=embed"></iframe>
+  <div class="map__pin">
+    <p>{{ label }}</p>
+    <a class="link-arrow" href="https://www.google.com/maps/dir/?api=1&destination={{ site.map_query|urlencode }}" target="_blank" rel="noopener">Directions {{ icon('arrow') }}</a>
+  </div>
+</div>
+{% endmacro %}
+
+{# ---------- Comparison item ---------- #}
+{% macro cmp(title, text) %}<div class="compare__item"><h4>{{ title }}</h4><p>{{ text }}</p></div>{% endmacro %}
+
+{# ---------- Numbered explanatory feature (game pages) ---------- #}
+{% macro feature(num, title, sub, chips=[], note=None) %}
+<article class="feature reveal">
+  <div class="feature__num" aria-hidden="true">{{ num }}</div>
+  <div class="feature__body">
+    <div class="feature__head">
+      <p class="eyebrow eyebrow--plain mb-0" style="margin-bottom:.8rem">{{ num }}</p>
+      <h3>{{ title }}</h3>
+      <p class="feature__sub">{{ sub }}</p>
+    </div>
+    <div class="feature__text">
+      {{ caller() }}
+      {% if chips %}<ul class="chips chips--gold">{% for c in chips %}<li class="chip">{{ c }}</li>{% endfor %}</ul>{% endif %}
+      {% if note %}<p class="feature__note">{{ note }}</p>{% endif %}
+    </div>
+  </div>
+</article>
+{% endmacro %}
+
+{# ---------- Chips list ---------- #}
+{% macro chips(items, cls='') %}<ul class="chips {{ cls }}">{% for c in items %}<li class="chip">{{ c }}</li>{% endfor %}</ul>{% endmacro %}
+
+{# ---------- Spade list ---------- #}
+{% macro list(items, cls='') %}<ul class="list {{ cls }}">{% for c in items %}<li>{{ c }}</li>{% endfor %}</ul>{% endmacro %}
+
+{# ---------- Game sub-nav for play pages ---------- #}
+{% macro game_switch() %}
+<nav class="game-switch" aria-label="Play a game">
+  {% for href, label in [('/play-poker-cash/','Poker Cash'),('/play-chess/','Chess'),('/play-dominoes/','Dominoes'),('/play-spades/','Spades'),('/icm-calculator/','ICM Calculator')] %}
+  <a href="{{ href }}"{% if href == path %} aria-current="page"{% endif %}>{{ label }}</a>
+  {% endfor %}
+</nav>
+{% endmacro %}

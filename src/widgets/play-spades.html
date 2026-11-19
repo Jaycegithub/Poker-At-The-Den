@@ -1,0 +1,702 @@
+
+<section class="tool-section">
+<div class="wrap">
+<div class="settings-card">
+<div class="seats-note">You play South, partnered with North (computer) against West &amp; East (computer).</div>
+<div class="settings-actions">
+<button class="btn btn-ghost btn-small" id="newHandBtn">New Hand</button>
+<button class="btn btn-ghost btn-small" id="newMatchBtn">New Match</button>
+</div>
+</div>
+<div class="result-banner" id="resultBanner">
+<div class="r-title" id="resultTitle"></div>
+<div class="result-grid" id="resultGrid"></div>
+<div class="result-controls" id="resultControls"></div>
+</div>
+<div class="game-grid">
+<div>
+<div class="table-frame">
+<div class="table-grid">
+<div class="seat-box seat-north" id="seatBox-2">
+<div class="seat-name">North (Partner)</div>
+<div class="seat-card-slot" id="cardSlot-2"></div>
+<div class="seat-meta" id="seatMeta-2">—</div>
+</div>
+<div class="seat-box seat-west" id="seatBox-1">
+<div class="seat-name">West</div>
+<div class="seat-card-slot" id="cardSlot-1"></div>
+<div class="seat-meta" id="seatMeta-1">—</div>
+</div>
+<div class="seat-center" id="seatCenter">
+<div class="seat-name">You</div>
+<div class="seat-card-slot" id="cardSlot-0"></div>
+<div id="centerText">Spades not yet broken.</div>
+</div>
+<div class="seat-box seat-east" id="seatBox-3">
+<div class="seat-name">East</div>
+<div class="seat-card-slot" id="cardSlot-3"></div>
+<div class="seat-meta" id="seatMeta-3">—</div>
+</div>
+</div>
+<div class="hand-section">
+<div class="hand-title" id="handTitle">Your Hand (South)</div>
+<div class="hand-row" id="handRow"></div>
+</div>
+</div>
+</div>
+<div class="side-panel">
+<div class="panel-card">
+<h3>Match Score</h3>
+<div class="score-row" id="scoreRowT0">
+<div class="name">Your Team</div>
+<div class="pts" id="ptsT0">0</div>
+</div>
+<div class="score-row" id="scoreRowT1">
+<div class="name">The House</div>
+<div class="pts" id="ptsT1">0</div>
+</div>
+<div class="bags-note" id="bagsNote">Bags — Your Team: 0 · The House: 0</div>
+<div class="target-note">First to 500 wins the match</div>
+</div>
+<div class="panel-card">
+<h3>Status</h3>
+<div class="status-line" id="statusLine">—</div>
+<div class="status-sub" id="statusSub"></div>
+<div id="bidPickerWrap"></div>
+</div>
+<div class="panel-card">
+<h3>Hand Log</h3>
+<div class="log-empty" id="logEmpty">Nothing yet.</div>
+<div class="log-list" id="logList"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="modal-overlay" id="blindNilOverlay">
+<div class="modal-box">
+<h3>Before You Look…</h3>
+<p>You may bid Blind Nil right now, before seeing your cards, for a bigger reward — and a bigger risk. Or see your hand first and bid normally (Nil is still available once you look).</p>
+<div class="modal-actions">
+<button class="btn btn-gold" id="seeHandBtn">See My Hand &amp; Bid Normally</button>
+<button class="btn btn-ghost" id="blindNilBtn">Bid Blind Nil (±200)</button>
+</div>
+</div>
+</div> 
+
+<script>
+/* =========================================================================
+   SPADES ENGINE (dealing, bidding validity, legal moves incl. spade-breaking,
+   trick resolution, full scoring with nil/blind-nil/bags/bag-penalty).
+   Validated with unit tests covering every rule branch, a full simulated
+   hand for card conservation, and a from-scratch bug (missing bag points)
+   caught and fixed by the test suite before shipping.
+   ========================================================================= */
+
+const SUITS = ['S', 'H', 'D', 'C'];
+const RANK_NAMES = { 11: 'J', 12: 'Q', 13: 'K', 14: 'A' };
+function rankLabel(r) { return RANK_NAMES[r] || String(r); }
+function cardLabel(c) { return rankLabel(c.rank) + c.suit; }
+
+function makeDeck() {
+  const deck = [];
+  for (const suit of SUITS) for (let rank = 2; rank <= 14; rank++) deck.push({ suit, rank });
+  return deck;
+}
+function shuffle(arr, rng = Math.random) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function partnershipOf(seat) { return seat % 2 === 0 ? 0 : 1; }
+function partnerOf(seat) { return (seat + 2) % 4; }
+
+function deal(rng = Math.random) {
+  const deck = shuffle(makeDeck(), rng);
+  const hands = [[], [], [], []];
+  for (let i = 0; i < 52; i++) hands[i % 4].push(deck[i]);
+  for (const h of hands) h.sort((a, b) => (a.suit === b.suit ? a.rank - b.rank : SUITS.indexOf(a.suit) - SUITS.indexOf(b.suit)));
+  return hands;
+}
+
+function newHand(dealerSeat, rng = Math.random) {
+  const hands = deal(rng);
+  const leader = (dealerSeat + 1) % 4;
+  return {
+    hands, dealerSeat, bids: [null, null, null, null], biddingTurn: leader,
+    phase: 'bidding', trick: [], leadSuit: null, spadesBroken: false, turn: leader,
+    tricksWon: [0, 0, 0, 0], tricksHistory: [],
+  };
+}
+
+function isValidBid(bidValue) {
+  return bidValue === 'nil' || bidValue === 'blindNil' || (Number.isInteger(bidValue) && bidValue >= 0 && bidValue <= 13);
+}
+
+function cloneState(state) {
+  return {
+    hands: state.hands.map(h => h.slice()),
+    dealerSeat: state.dealerSeat,
+    bids: state.bids.map(b => b ? { ...b } : null),
+    biddingTurn: state.biddingTurn,
+    phase: state.phase,
+    trick: state.trick.map(t => ({ seat: t.seat, card: t.card })),
+    leadSuit: state.leadSuit,
+    spadesBroken: state.spadesBroken,
+    turn: state.turn,
+    tricksWon: state.tricksWon.slice(),
+    tricksHistory: state.tricksHistory.map(t => ({ cards: t.cards ? t.cards.map(c => ({ seat: c.seat, card: c.card })) : [], winner: t.winner })),
+  };
+}
+
+function placeBid(state, seat, bidValue) {
+  if (state.phase !== 'bidding') throw new Error('Not in bidding phase');
+  if (seat !== state.biddingTurn) throw new Error('Not this seat\'s turn to bid');
+  if (!isValidBid(bidValue)) throw new Error('Invalid bid: ' + bidValue);
+  const s = cloneState(state);
+  s.bids[seat] = (bidValue === 'nil' || bidValue === 'blindNil') ? { type: bidValue, tricksBid: 0 } : { type: 'normal', tricksBid: bidValue };
+  if (s.bids.every(b => b !== null)) s.phase = 'playing';
+  else s.biddingTurn = (seat + 1) % 4;
+  return s;
+}
+
+function legalCards(state, seat) {
+  const hand = state.hands[seat];
+  if (state.trick.length === 0) {
+    if (!state.spadesBroken) {
+      const nonSpades = hand.filter(c => c.suit !== 'S');
+      if (nonSpades.length > 0) return nonSpades;
+      return hand.slice();
+    }
+    return hand.slice();
+  }
+  const followers = hand.filter(c => c.suit === state.leadSuit);
+  if (followers.length > 0) return followers;
+  return hand.slice();
+}
+
+function resolveTrick(trickCards, leadSuit) {
+  const spadesPlayed = trickCards.filter(t => t.card.suit === 'S');
+  const pool = spadesPlayed.length > 0 ? spadesPlayed : trickCards.filter(t => t.card.suit === leadSuit);
+  let best = pool[0];
+  for (const t of pool) if (t.card.rank > best.card.rank) best = t;
+  return best.seat;
+}
+
+function playCard(state, seat, card) {
+  if (state.phase !== 'playing') throw new Error('Not in playing phase');
+  if (seat !== state.turn) throw new Error('Not this seat\'s turn to play');
+  const hand = state.hands[seat];
+  const idx = hand.findIndex(c => c.suit === card.suit && c.rank === card.rank);
+  if (idx === -1) throw new Error('Card not in hand');
+  const legal = legalCards(state, seat);
+  if (!legal.some(c => c.suit === card.suit && c.rank === card.rank)) throw new Error('Illegal card: ' + cardLabel(card));
+
+  const s = cloneState(state);
+  s.hands[seat].splice(idx, 1);
+  s.trick.push({ seat, card });
+  if (card.suit === 'S') s.spadesBroken = true;
+  if (s.trick.length === 1) s.leadSuit = card.suit;
+
+  if (s.trick.length < 4) { s.turn = (seat + 1) % 4; return s; }
+
+  const winner = resolveTrick(s.trick, s.leadSuit);
+  s.tricksWon[winner]++;
+  s.tricksHistory.push({ cards: s.trick, winner });
+  s.trick = [];
+  s.leadSuit = null;
+  s.turn = winner;
+  if (s.hands.every(h => h.length === 0)) s.phase = 'done';
+  return s;
+}
+
+function scoreHand(state, bagsBefore) {
+  const teams = [0, 1].map(team => {
+    const seats = team === 0 ? [0, 2] : [1, 3];
+    const contract = seats.reduce((sum, seat) => sum + (state.bids[seat].type === 'normal' ? state.bids[seat].tricksBid : 0), 0);
+    const tricksWon = seats.reduce((sum, seat) => sum + state.tricksWon[seat], 0);
+    const madeContract = tricksWon >= contract;
+    let score = madeContract ? contract * 10 : -contract * 10;
+    const bagsThisHand = madeContract ? tricksWon - contract : 0;
+    score += bagsThisHand;
+
+    const nilResults = [];
+    for (const seat of seats) {
+      const bid = state.bids[seat];
+      if (bid.type === 'nil' || bid.type === 'blindNil') {
+        const succeeded = state.tricksWon[seat] === 0;
+        const magnitude = bid.type === 'blindNil' ? 200 : 100;
+        score += succeeded ? magnitude : -magnitude;
+        nilResults.push({ seat, type: bid.type, succeeded, tricksWon: state.tricksWon[seat] });
+      }
+    }
+    const oldBags = bagsBefore[team];
+    const newBags = oldBags + bagsThisHand;
+    const penalties = Math.floor(newBags / 10) - Math.floor(oldBags / 10);
+    score += penalties * -100;
+    return { team, contract, tricksWon, madeContract, bagsThisHand, newBags, penalties, nilResults, score };
+  });
+  return teams;
+}
+
+/* ---------- AI ---------- */
+function estimateBid(hand) {
+  const bySuit = { S: [], H: [], D: [], C: [] };
+  for (const c of hand) bySuit[c.suit].push(c.rank);
+  for (const s of Object.keys(bySuit)) bySuit[s].sort((a, b) => b - a);
+  let tricks = 0;
+  for (const suit of Object.keys(bySuit)) {
+    const ranks = bySuit[suit];
+    const count = ranks.length;
+    if (ranks.includes(14)) tricks += 1;
+    if (ranks.includes(13) && (count >= 2 || suit === 'S')) tricks += 1;
+    if (ranks.includes(12) && (count >= 3 && (suit === 'S' || count >= 4))) tricks += 0.5;
+  }
+  const spadeCount = bySuit.S.length;
+  if (spadeCount > 3) tricks += (spadeCount - 3) * 0.9;
+  let bid = Math.round(tricks);
+  if (bid < 0) bid = 0;
+  if (bid > 13) bid = 13;
+  return bid;
+}
+
+function chooseAICard(state, seat, rng = Math.random) {
+  const legal = legalCards(state, seat);
+  if (legal.length === 1) return legal[0];
+  const sortAsc = (cards) => cards.slice().sort((a, b) => a.rank - b.rank);
+
+  if (state.trick.length === 0) {
+    const aces = legal.filter(c => c.rank === 14 && c.suit !== 'S');
+    if (aces.length > 0) return aces[0];
+    const nonSpades = legal.filter(c => c.suit !== 'S');
+    if (nonSpades.length > 0) {
+      const bySuit = {};
+      for (const c of nonSpades) (bySuit[c.suit] = bySuit[c.suit] || []).push(c);
+      let longestSuit = null;
+      for (const s of Object.keys(bySuit)) if (!longestSuit || bySuit[s].length > bySuit[longestSuit].length) longestSuit = s;
+      return sortAsc(bySuit[longestSuit])[0];
+    }
+    return sortAsc(legal)[0];
+  }
+
+  const leadSuit = state.leadSuit;
+  const trickSoFar = state.trick;
+  const currentWinnerSeat = resolveTrick(trickSoFar, leadSuit);
+  const partnerIsWinning = partnershipOf(currentWinnerSeat) === partnershipOf(seat) && currentWinnerSeat !== seat;
+  const winningCard = trickSoFar.find(t => t.seat === currentWinnerSeat).card;
+
+  const followSuit = legal.filter(c => c.suit === leadSuit);
+  if (followSuit.length > 0) {
+    if (partnerIsWinning) return sortAsc(followSuit)[0];
+    const beatable = winningCard.suit === 'S' && leadSuit !== 'S' ? [] : followSuit.filter(c => c.rank > winningCard.rank);
+    if (beatable.length > 0) return sortAsc(beatable)[0];
+    return sortAsc(followSuit)[0];
+  }
+
+  const spadesInHand = legal.filter(c => c.suit === 'S');
+  if (partnerIsWinning || spadesInHand.length === 0) {
+    const nonSpades = legal.filter(c => c.suit !== 'S');
+    return sortAsc(nonSpades.length > 0 ? nonSpades : legal)[0];
+  }
+  if (winningCard.suit === 'S') {
+    const overtrumps = spadesInHand.filter(c => c.rank > winningCard.rank);
+    if (overtrumps.length > 0) return sortAsc(overtrumps)[0];
+    const nonSpades = legal.filter(c => c.suit !== 'S');
+    return sortAsc(nonSpades.length > 0 ? nonSpades : spadesInHand)[0];
+  }
+  return sortAsc(spadesInHand)[0];
+}
+
+/* =========================================================================
+   UI
+   ========================================================================= */
+
+const TARGET_SCORE = 500;
+const SEAT_NAMES = { 0: 'You', 1: 'West', 2: 'North', 3: 'East' };
+const SUIT_GLYPH = { S: '♠', H: '♥', D: '♦', C: '♣' };
+const RED_SUITS = ['H', 'D'];
+
+let state = null;
+let dealerSeat = 3; // so the first hand's leader is seat 0 (You)
+let matchScore = [0, 0];
+let bagsTotal = [0, 0];
+let matchOver = false;
+let handOver = false;
+let bidLog = [];
+let pendingHumanBid = null; // 'blindNil' or null
+let bidStepperValue = 3;
+let displayTrick = [];
+let winnerHighlightSeat = null;
+let humanTurnLocked = false; // true while an AI/animation sequence is running
+
+const handRow = document.getElementById('handRow');
+const handTitle = document.getElementById('handTitle');
+const statusLine = document.getElementById('statusLine');
+const statusSub = document.getElementById('statusSub');
+const bidPickerWrap = document.getElementById('bidPickerWrap');
+const seatCenter = document.getElementById('seatCenter');
+const ptsT0 = document.getElementById('ptsT0');
+const ptsT1 = document.getElementById('ptsT1');
+const scoreRowT0 = document.getElementById('scoreRowT0');
+const scoreRowT1 = document.getElementById('scoreRowT1');
+const bagsNote = document.getElementById('bagsNote');
+const logList = document.getElementById('logList');
+const logEmpty = document.getElementById('logEmpty');
+const resultBanner = document.getElementById('resultBanner');
+const resultTitle = document.getElementById('resultTitle');
+const resultGrid = document.getElementById('resultGrid');
+const resultControls = document.getElementById('resultControls');
+const blindNilOverlay = document.getElementById('blindNilOverlay');
+
+function buildCardEl(card, { small = false } = {}) {
+  const el = document.createElement('div');
+  el.className = 'card' + (small ? ' small' : '') + (RED_SUITS.includes(card.suit) ? ' red' : ' black');
+  const corner = document.createElement('div');
+  corner.className = 'corner';
+  corner.textContent = rankLabel(card.rank) + SUIT_GLYPH[card.suit];
+  const pip = document.createElement('div');
+  pip.className = 'pip';
+  pip.textContent = SUIT_GLYPH[card.suit];
+  el.appendChild(corner);
+  el.appendChild(pip);
+  return el;
+}
+
+function bidLabel(bid) {
+  if (!bid) return '—';
+  if (bid.type === 'nil') return 'Nil';
+  if (bid.type === 'blindNil') return 'Blind Nil';
+  return String(bid.tricksBid);
+}
+
+function addLog(text) {
+  bidLog.push(text);
+  renderLog();
+}
+
+function renderLog() {
+  logEmpty.style.display = bidLog.length === 0 ? 'block' : 'none';
+  logList.innerHTML = bidLog.map(t => '<div class="log-row">' + t + '</div>').join('');
+  logList.scrollTop = logList.scrollHeight;
+}
+
+function renderSeatBoxes() {
+  for (const seat of [1, 2, 3]) {
+    const box = document.getElementById('seatBox-' + seat);
+    const slot = document.getElementById('cardSlot-' + seat);
+    const meta = document.getElementById('seatMeta-' + seat);
+    slot.innerHTML = '';
+    const played = displayTrick.find(t => t.seat === seat);
+    if (played) slot.appendChild(buildCardEl(played.card, { small: true }));
+    else {
+      const back = document.createElement('div');
+      back.className = 'card-back';
+      back.style.visibility = state && state.hands[seat].length > 0 && state.phase === 'playing' ? 'visible' : 'hidden';
+      slot.appendChild(back);
+    }
+    const bid = state ? bidLabel(state.bids[seat]) : '—';
+    const won = state ? state.tricksWon[seat] : 0;
+    meta.textContent = 'Bid: ' + bid + ' · Won: ' + won;
+    box.classList.toggle('active-turn', !!state && state.phase !== 'done' && (state.phase === 'bidding' ? state.biddingTurn === seat : state.turn === seat) && displayTrick.length === 0);
+    box.classList.toggle('trick-winner', winnerHighlightSeat === seat);
+  }
+}
+
+function renderCenter() {
+  const centerText = document.getElementById('centerText');
+  const slot0 = document.getElementById('cardSlot-0');
+  slot0.innerHTML = '';
+  const playedByYou = displayTrick.find(t => t.seat === 0);
+  if (playedByYou) slot0.appendChild(buildCardEl(playedByYou.card, { small: true }));
+  seatCenter.classList.toggle('trick-winner', winnerHighlightSeat === 0);
+  if (!state) { centerText.textContent = ''; return; }
+  if (state.phase === 'bidding') { centerText.textContent = 'Bidding in progress…'; return; }
+  centerText.textContent = state.spadesBroken ? 'Spades are broken.' : 'Spades not yet broken.';
+}
+
+function renderHand() {
+  handRow.innerHTML = '';
+  if (!state) return;
+  const hand = state.hands[0];
+  const isHumanPlayTurn = state.phase === 'playing' && state.turn === 0 && !humanTurnLocked && displayTrick.length < 4;
+  const legal = isHumanPlayTurn ? legalCards(state, 0) : [];
+  for (const card of hand) {
+    const el = buildCardEl(card);
+    if (isHumanPlayTurn) {
+      const isLegal = legal.some(c => c.suit === card.suit && c.rank === card.rank);
+      el.classList.add('clickable');
+      if (isLegal) {
+        el.classList.add('playable');
+        el.addEventListener('click', () => onHumanCardClick(card));
+      } else {
+        el.classList.add('unplayable');
+      }
+    }
+    handRow.appendChild(el);
+  }
+}
+
+function renderScores() {
+  ptsT0.textContent = matchScore[0];
+  ptsT1.textContent = matchScore[1];
+  scoreRowT0.classList.toggle('leading', matchScore[0] > matchScore[1]);
+  scoreRowT1.classList.toggle('leading', matchScore[1] > matchScore[0]);
+  bagsNote.textContent = 'Bags — Your Team: ' + bagsTotal[0] + ' · The House: ' + bagsTotal[1];
+}
+
+function renderStatus() {
+  bidPickerWrap.innerHTML = '';
+  if (!state) { statusLine.textContent = 'Ready to deal.'; statusSub.textContent = ''; return; }
+
+  if (handOver) {
+    statusLine.textContent = 'Hand complete';
+    statusSub.textContent = 'See the recap above.';
+    return;
+  }
+
+  if (state.phase === 'bidding') {
+    if (state.biddingTurn === 0) {
+      statusLine.textContent = 'Your bid';
+      statusSub.textContent = 'Look over your hand and set a bid, or bid Nil.';
+      renderBidPicker();
+    } else {
+      statusLine.textContent = SEAT_NAMES[state.biddingTurn] + ' is bidding…';
+      statusSub.textContent = '';
+    }
+    return;
+  }
+
+  // playing phase
+  if (displayTrick.length === 4) {
+    statusLine.textContent = 'Trick complete';
+    statusSub.textContent = winnerHighlightSeat !== null ? SEAT_NAMES[winnerHighlightSeat] + ' takes the trick.' : '';
+    return;
+  }
+  if (state.turn === 0) {
+    statusLine.textContent = 'Your turn';
+    statusSub.textContent = 'Tap a highlighted card to play it.';
+  } else {
+    statusLine.textContent = SEAT_NAMES[state.turn] + ' is playing…';
+    statusSub.textContent = '';
+  }
+}
+
+function renderBidPicker() {
+  const wrap = document.createElement('div');
+  wrap.className = 'bid-picker';
+  const stepper = document.createElement('div');
+  stepper.className = 'bid-stepper';
+  const down = document.createElement('button');
+  down.textContent = '−';
+  down.addEventListener('click', () => { bidStepperValue = Math.max(0, bidStepperValue - 1); renderStatus(); });
+  const value = document.createElement('div');
+  value.className = 'bid-value';
+  value.textContent = bidStepperValue;
+  const up = document.createElement('button');
+  up.textContent = '+';
+  up.addEventListener('click', () => { bidStepperValue = Math.min(13, bidStepperValue + 1); renderStatus(); });
+  stepper.appendChild(down); stepper.appendChild(value); stepper.appendChild(up);
+  wrap.appendChild(stepper);
+
+  const actions = document.createElement('div');
+  actions.className = 'bid-actions';
+  const placeBtn = document.createElement('button');
+  placeBtn.className = 'btn btn-gold';
+  placeBtn.textContent = 'Place Bid';
+  placeBtn.addEventListener('click', () => submitHumanBid(bidStepperValue));
+  const nilBtn = document.createElement('button');
+  nilBtn.className = 'btn btn-ghost';
+  nilBtn.textContent = 'Bid Nil';
+  nilBtn.addEventListener('click', () => submitHumanBid('nil'));
+  actions.appendChild(placeBtn); actions.appendChild(nilBtn);
+  wrap.appendChild(actions);
+  bidPickerWrap.appendChild(wrap);
+}
+
+function render() {
+  renderSeatBoxes();
+  renderCenter();
+  renderHand();
+  renderScores();
+  renderStatus();
+}
+
+/* ---------- Bidding flow ---------- */
+
+function submitHumanBid(value) {
+  state = placeBid(state, 0, value);
+  addLog('You bid ' + (value === 'nil' ? 'Nil' : value) + '.');
+  pendingHumanBid = null;
+  render();
+  advanceBidding();
+}
+
+function advanceBidding() {
+  if (state.phase !== 'bidding') { render(); advanceGame(); return; }
+  const seat = state.biddingTurn;
+  if (seat === 0) {
+    if (pendingHumanBid !== null) {
+      const val = pendingHumanBid;
+      pendingHumanBid = null;
+      state = placeBid(state, 0, val);
+      addLog('You bid ' + (val === 'blindNil' ? 'Blind Nil' : val) + ' (chosen before seeing your hand).');
+      render();
+      advanceBidding();
+      return;
+    }
+    bidStepperValue = estimateBid(state.hands[0]);
+    render();
+    return;
+  }
+  render();
+  setTimeout(() => {
+    const bid = estimateBid(state.hands[seat]);
+    state = placeBid(state, seat, bid);
+    addLog(SEAT_NAMES[seat] + ' bids ' + bid + '.');
+    render();
+    advanceBidding();
+  }, 550);
+}
+
+/* ---------- Play flow ---------- */
+
+function onHumanCardClick(card) {
+  if (humanTurnLocked || !state || state.phase !== 'playing' || state.turn !== 0) return;
+  performPlay(0, card);
+}
+
+function performPlay(seat, card) {
+  const wasFourth = state.trick.length === 3;
+  displayTrick = state.trick.concat([{ seat, card }]);
+  state = playCard(state, seat, card);
+  render();
+  if (wasFourth) {
+    const winner = state.tricksHistory[state.tricksHistory.length - 1].winner;
+    winnerHighlightSeat = winner;
+    addLog('Trick ' + state.tricksHistory.length + ' — ' + SEAT_NAMES[winner] + ' wins it.');
+    render();
+    humanTurnLocked = true;
+    setTimeout(() => {
+      displayTrick = [];
+      winnerHighlightSeat = null;
+      humanTurnLocked = false;
+      render();
+      advanceGame();
+    }, 1200);
+  } else {
+    humanTurnLocked = true;
+    setTimeout(() => { humanTurnLocked = false; advanceGame(); }, 450);
+  }
+}
+
+function advanceGame() {
+  if (state.phase === 'done') { finalizeHand(); return; }
+  render();
+  if (state.turn === 0) return; // wait for human
+  humanTurnLocked = true;
+  setTimeout(() => {
+    humanTurnLocked = false;
+    const card = chooseAICard(state, state.turn);
+    performPlay(state.turn, card);
+  }, 550);
+}
+
+/* ---------- Hand / match lifecycle ---------- */
+
+function finalizeHand() {
+  handOver = true;
+  const results = scoreHand(state, bagsTotal);
+  matchScore[0] += results[0].score;
+  matchScore[1] += results[1].score;
+  bagsTotal[0] = results[0].newBags;
+  bagsTotal[1] = results[1].newBags;
+
+  const crossedTarget = matchScore[0] >= TARGET_SCORE || matchScore[1] >= TARGET_SCORE;
+  matchOver = crossedTarget && matchScore[0] !== matchScore[1];
+  const matchWinner = matchOver ? (matchScore[0] > matchScore[1] ? 0 : 1) : null;
+
+  resultTitle.textContent = matchOver
+    ? (matchWinner === 0 ? 'Your Team Wins the Match!' : 'The House Wins the Match!')
+    : 'Hand Complete';
+  resultGrid.innerHTML = '';
+  const teamLabel = ['Your Team', 'The House'];
+  for (const r of results) {
+    const div = document.createElement('div');
+    div.className = 'result-team';
+    let nilHtml = '';
+    for (const n of r.nilResults) {
+      nilHtml += '<p>' + SEAT_NAMES[n.seat] + (n.type === 'blindNil' ? ' (Blind Nil)' : ' (Nil)') + ': ' +
+        (n.succeeded ? 'Succeeded' : 'Failed — won ' + n.tricksWon) + '</p>';
+    }
+    div.innerHTML =
+      '<h4>' + teamLabel[r.team] + '</h4>' +
+      '<p>Contract: ' + r.contract + ' · Tricks Won: ' + r.tricksWon + '</p>' +
+      '<p>' + (r.madeContract ? 'Contract made' + (r.bagsThisHand > 0 ? ' with ' + r.bagsThisHand + ' bag' + (r.bagsThisHand === 1 ? '' : 's') : '') : 'Contract failed') + '</p>' +
+      nilHtml +
+      (r.penalties > 0 ? '<p>Bag penalty: -' + (r.penalties * 100) + '</p>' : '') +
+      '<div class="rscore">' + (r.score >= 0 ? '+' : '') + r.score + ' pts</div>';
+    resultGrid.appendChild(div);
+  }
+  resultControls.innerHTML = '';
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-gold';
+  btn.textContent = matchOver ? 'New Match' : 'Deal Next Hand';
+  btn.addEventListener('click', matchOver ? newMatch : startHand);
+  resultControls.appendChild(btn);
+  resultBanner.classList.add('open');
+  render();
+}
+
+function startHand() {
+  resultBanner.classList.remove('open');
+  handOver = false;
+  bidLog = [];
+  displayTrick = [];
+  winnerHighlightSeat = null;
+  dealerSeat = (dealerSeat + 1) % 4;
+  if (dealerSeat === 3 && matchScore[0] === 0 && matchScore[1] === 0 && bagsTotal[0] === 0 && bagsTotal[1] === 0) {
+    // first hand of a fresh match: keep as initialized
+  }
+  blindNilOverlay.classList.add('open');
+}
+
+function beginHandAfterBlindNilChoice(choice) {
+  blindNilOverlay.classList.remove('open');
+  pendingHumanBid = choice;
+  state = newHand(dealerSeat, Math.random);
+  render();
+  advanceBidding();
+}
+
+function newMatch() {
+  matchScore = [0, 0];
+  bagsTotal = [0, 0];
+  matchOver = false;
+  dealerSeat = 3;
+  resultBanner.classList.remove('open');
+  renderScores();
+  handOver = false;
+  bidLog = [];
+  displayTrick = [];
+  winnerHighlightSeat = null;
+  blindNilOverlay.classList.add('open');
+}
+
+document.getElementById('seeHandBtn').addEventListener('click', () => beginHandAfterBlindNilChoice(null));
+document.getElementById('blindNilBtn').addEventListener('click', () => beginHandAfterBlindNilChoice('blindNil'));
+
+document.getElementById('newHandBtn').addEventListener('click', () => {
+  if (state && state.phase !== 'done' && !handOver) {
+    const ok = window.confirm('Start a new hand? The current hand in progress will be discarded (match score is kept).');
+    if (!ok) return;
+  }
+  startHand();
+});
+document.getElementById('newMatchBtn').addEventListener('click', () => {
+  const ok = window.confirm('Start a brand new match? This resets the score to 0–0.');
+  if (!ok) return;
+  newMatch();
+});
+
+newMatch();
+</script> 

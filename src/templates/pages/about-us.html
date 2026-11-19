@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% import "partials/macros.html" as m with context %}
+{% block content %}
+{% call m.page_hero('Members-only The Den Poker Lounge', 'Pull up a chair — you’re among friends.', image='The-Den-Poker-Lounge-Image-9', image_alt='Guests talking and laughing around a poker table', section=section, label='About The Den') %}
+  <p class="lede">the Den Poker Lounge is where serious action meets serious fun. We’re a player-first poker room built for big moments, bold plays, and a community that lives for the game. Our tournament lineup, specialty formats, and daily cash action are built to keep the energy high and the tables full.</p>
+  <div class="btn-row">
+    <a class="btn btn--gold" href="/membership/">Join the Club {{ icon('arrow') }}</a>
+    <a class="btn btn--ghost" href="/contact-us/">Get In Touch</a>
+  </div>
+{% endcall %}
+
+<section class="section" aria-labelledby="built-title">
+  <div class="container">
+    <div class="split">
+      <div class="reveal">
+        <div class="frame-stack">
+          <div class="frame frame--square frame--outline">{{ img('The-Den-Poker-Lounge-Image-7', 'Hands reaching across a black-and-gold table with cards and chip stacks', sizes='(max-width: 900px) 92vw, 45vw') }}</div>
+        </div>
+      </div>
+      <div class="reveal" style="--d:.1s">
+        <p class="eyebrow">Built by players</p>
+        <h2 id="built-title">Driven <em>by purpose.</em></h2>
+        <p class="lede">From creative promos to championship-style events, everything we run is designed to give players a premium, fast-moving, unforgettable experience. the Den Poker Lounge is led by an owner with an extensive poker background who is now fully immersed in the Texas poker scene, bringing a player-minded approach to every decision.</p>
+        <p>Supporting the action is a tight, well-coordinated team — including professional, friendly, and accurate dealers who keep the game moving and the experience top-tier.</p>
+        <div class="btn-row mt-2">
+          <a class="btn btn--ghost" href="/contact-us/">Get In Touch {{ icon('arrow') }}</a>
+          <a class="link-arrow" href="/our-team/">Meet the team {{ icon('arrow') }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt section--line" aria-labelledby="start-title">
+  <div class="container">
+    <div class="split split--top">
+      <div class="reveal">
+        <p class="eyebrow">Where it started</p>
+        <h2 id="start-title">Built by Players. <em>Driven by Purpose.</em></h2>
+      </div>
+      <div class="reveal" style="--d:.1s">
+        <p class="lede">the Den Poker Lounge Social was founded by a group of local poker lovers, game theory enthusiasts, and community-minded entrepreneurs who shared one simple vision: to create the most trusted, elevated poker club in Texas.</p>
+        <p>Tired of noisy, overcrowded cardrooms and inconsistent play environments, we set out to build a club that puts members first—offering fairness, comfort, and professionalism at every level. From game-night regulars to seasoned grinders, we’ve welcomed hundreds into a space where respect, integrity, and skill thrive.</p>
+        <p class="quote-line mt-2">{{ icon('suit-spade', 'gold') }} Player-first, always.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="apart-title">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <p class="eyebrow">Trust the room</p>
+        <h2 id="apart-title">What Sets <em>Us Apart</em></h2>
+      </div>
+      <p class="section-head__text">What sets the Den Poker Lounge apart is our home-game atmosphere paired with professionally run action — giving players the perfect mix of friendly tables, smooth operations, and high-energy poker every time they sit down.</p>
+    </div>
+    <div class="grid grid-4">
+      {% for ic, t, d in [
+        ('dollar', 'No Rake, No Nonsense', 'We follow Texas law with flat access and hourly seat fees—no house cut, ever.'),
+        ('award', 'Trained, Professional Staff', 'Our dealers and team are experienced, respectful, and committed to member satisfaction.'),
+        ('crown', 'Premium Atmosphere', 'Comfortable seating, clean design, big-screen TVs, and a calm, focused vibe.'),
+        ('users', 'Inclusive Community', 'We welcome players of all backgrounds, styles, and experience levels.')] %}
+      <article class="card card--lift reveal" style="--d:{{ loop.index0 * 0.08 }}s">
+        <span class="icon-badge">{{ icon(ic) }}</span>
+        <h3>{{ t }}</h3>
+        <p>{{ d }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

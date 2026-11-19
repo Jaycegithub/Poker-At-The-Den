@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% import "partials/macros.html" as m with context %}
+{% set team = [
+  {'id': 'jamie-kempf', 'name': 'Jamie Kempf', 'roles': ['Co-Founder', 'Owner', 'Assistant General Manager'],
+   'img': 'Jamie-Kempf', 'img2': 'Jamie-Kempf-Poker',
+   'bio': [
+    'Jamie Kempf is a Co-Founder, Owner, and Assistant General Manager of The Den Poker Lounge. An entrepreneur, wife, and mother of three, Jamie has always believed in taking chances, working hard, and building something meaningful. She is especially proud of the life she has built alongside her husband of 15 years and their family, who remain at the center of everything she does.',
+    'Her professional journey has taken her from outside sales to teaching and ultimately entrepreneurship, where she has helped build and operate multiple businesses. At The Den, Jamie combines that experience with a people-first leadership style, helping guide day-to-day operations while creating a welcoming environment centered on exceptional service, community, and the member experience.',
+    'Outside of business, Jamie enjoys singing, spending time on the golf course, and, most of all, playing poker. Her genuine love for the game helped inspire the creation of The Den—a place built around competition, strategy, friendships, and community. For Jamie, The Den is more than a business venture; it is a vision brought to life and a place she hopes members will truly feel at home.']},
+  {'id': 'marjorie-bradford', 'name': 'Marjorie Bradford', 'roles': ['Co-Founder', 'Owner', 'Director of Compliance'],
+   'img': 'Marjorie-Bradford', 'img2': 'Marjorie-Bradford-pokerr',
+   'bio': [
+    'Marjorie Bradford is a Co-Founder, Owner, and Director of Compliance at The Den Poker Lounge. Known for her honesty, transparency, and attention to detail, Marjorie believes the details matter and that doing things right the first time is always worth the extra effort. She has built her career around taking care of people, communicating clearly, and earning trust through consistency and integrity.',
+    'Her professional background in real estate has strengthened her ability to manage complex details, solve problems, and guide people through important decisions with confidence and care. At The Den, Marjorie brings that same discipline to compliance, policies, procedures, and responsible business practices, helping ensure the organization operates with consistency, integrity, and a strong commitment to its members.',
+    'Marjorie also loves the social side of poker—the conversations, personalities, competition, laughter, and friendships that develop around the table. She believes a great poker lounge should be more than a place to play; it should be somewhere people genuinely enjoy spending time and feel like they belong. For Marjorie, The Den is about great poker, great people, and creating a community built on trust and respect.']},
+  {'id': 'rick-bradford', 'name': 'Rick Bradford', 'roles': ['Co-Founder', 'Director of Operations'],
+   'img': 'Rick-Bradford', 'img2': 'Rick-Bradford-Poker',
+   'bio': [
+    'Rick Bradford is a Co-Founder and Director of Operations at The Den Poker Lounge, a lifelong Texan, and a longtime Rockwall County resident who has called the Royse City–Fate–Rockwall area home for more than 24 years. A businessman, real estate brokerage owner, avid hunter, golfer, and poker enthusiast, Rick has spent much of his career building businesses, relationships, and experiences centered around people.',
+    'For Rick, poker has always been about more than the cards. It is about the competition, the conversation, the laughter, and the friendships that develop around the table. His background in business, sales, and real estate has taught him the value of treating people right, delivering on promises, and creating an environment people want to return to. At The Den, Rick brings that same mindset to operations, helping shape a comfortable, well-run atmosphere where members feel welcome and connected.',
+    'The Den is a natural extension of Rick’s belief that the best places are built around community. Whether someone is a seasoned regular, returning to the game, or playing in a poker room for the first time, Rick wants The Den to feel like a place where people know your name, enjoy themselves, and make new friends along the way. When he is not working or playing poker, you will usually find him hunting, golfing, traveling, or spending time with family and friends.']},
+  {'id': 'quaint-kempf', 'name': 'Quaint Kempf', 'roles': ['Co-Founder', 'Director of Security'],
+   'img': 'Quaint-Kempf', 'img2': 'Quaint-Kempf-Poker',
+   'bio': [
+    'Quaint Kempf is a Co-Founder and Director of Security at The Den Poker Lounge, a local entrepreneur, and the owner of multiple businesses in the Rockwall area. A proud father, Quaint values family, responsibility, and building businesses that have a positive impact on the people and communities around them.',
+    'At The Den, Quaint oversees security operations and helps establish the standards and procedures designed to protect members, guests, staff, and the club itself. His leadership style is calm, professional, and focused on preparation, awareness, and respect, helping ensure The Den remains a safe and welcoming environment where members can simply relax and enjoy themselves.',
+    'As a Co-Founder, Quaint is also deeply invested in the larger vision of The Den as a community, not just a poker room. He believes people should feel comfortable, respected, and looked after from the moment they walk through the door. For Quaint, creating that sense of security and belonging is an important part of what makes The Den special.']},
+  {'id': 'gregg-bothwell', 'name': 'Gregg Bothwell', 'roles': ['Co-Founder', 'Director of Talent Operations'],
+   'img': 'Gregg-Bothwell', 'img2': 'Gregg-Bothwell-Poker',
+   'bio': [
+    'Gregg Bothwell is a Co-Founder and Director of Talent Operations at The Den Poker Lounge. With deep experience across the restaurant, vending, and customer service industries, Gregg has spent much of his career working with people, building teams, and creating environments where both employees and customers feel valued.',
+    'At The Den, Gregg brings that experience to talent operations, helping shape the culture, team, and service standards that define the member experience. He believes great businesses are built by great people, and his focus is on creating a team that is professional, welcoming, and genuinely passionate about taking care of members.',
+    'Gregg also has a deep appreciation for the game of poker and all the nuances that make it unique. From the strategy and competition to the personalities and relationships around the table, he loves what the game brings out in people. As a Co-Founder, Gregg wants to share that passion with everyone who walks through the doors of The Den and help create a place where both longtime players and newcomers can enjoy everything poker has to offer.']},
+] %}
+{% block content %}
+{% call m.page_hero('The Den Poker Lounge', 'Meet the Team Behind The Den', section=section, label='Our Team') %}
+  <p class="lede">The Den Poker Lounge was built around a simple idea: create a place where great poker, great people, and genuine community come together.</p>
+  <p class="lede">Our leadership team brings experience from business, hospitality, operations, customer service, real estate, security, and entrepreneurship—all united by a shared vision for what The Den can become.</p>
+  <div class="btn-row">
+    <a class="btn btn--gold" href="/membership/">Become a Member {{ icon('arrow') }}</a>
+  </div>
+  <nav class="team-index" aria-label="Team members">
+    {% for p in team %}<a class="chip" href="#{{ p.id }}">{{ p.name }}</a>{% endfor %}
+  </nav>
+{% endcall %}
+
+<section class="section" style="padding-top:clamp(1rem, 2vw, 2rem)">
+  <div class="container">
+    {% for p in team %}
+    <article class="profile" id="{{ p.id }}">
+      <div class="profile__media reveal">
+        <div class="frame frame--portrait">{{ img(p.img, 'Portrait of ' ~ p.name, sizes='(max-width: 900px) 90vw, 38vw') }}</div>
+        <div class="profile__inset">{{ img(p.img2, p.name ~ ' at the poker table', sizes='(max-width: 900px) 42vw, 18vw') }}</div>
+      </div>
+      <div class="reveal" style="--d:.1s">
+        <p class="eyebrow">0{{ loop.index }} · Founding team</p>
+        <h2>{{ p.name }}</h2>
+        <p class="visually-hidden">{{ p.roles|join(' | ') }}</p>
+        <ul class="profile__role" aria-hidden="true">{% for r in p.roles %}<li>{{ r }}</li>{% endfor %}</ul>
+        <div class="profile__bio">{% for para in p.bio %}<p>{{ para }}</p>{% endfor %}</div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

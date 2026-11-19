@@ -1,0 +1,2590 @@
+
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&amp;display=swap" rel="stylesheet"/>
+<div class="dpl-icm">
+<style>
+/* =========================================================
+   THE DEN — ICM CHOP CALCULATOR
+   Elementor Global Typography Version
+   NO BORDER RADIUS
+   ========================================================= */
+
+.dpl-icm {
+    --dpl-bg: red;
+    --dpl-panel: white;
+    --dpl-panel-2: white;
+    --dpl-panel-3: white;
+
+    --dpl-gold: #C99A45;
+    --dpl-dark-gold: #8B642C;
+    --dpl-champagne: #E1C38B;
+
+    --dpl-ivory: #F2E6D4;
+
+    --dpl-border: rgba(201,154,69,0.16);
+    --dpl-border-strong: rgba(201,154,69,0.30);
+
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+
+    /* Elementor Text Typography */
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+    color: var(--e-global-color-text);
+
+    -webkit-font-smoothing: antialiased;
+
+    border-radius: 0 !important;
+}
+
+.dpl-icm *,
+.dpl-icm *::before,
+.dpl-icm *::after {
+    box-sizing: border-box;
+    border-radius: 0 !important;
+}
+
+.dpl-icm button,
+.dpl-icm input,
+.dpl-icm select {
+    border-radius: 0 !important;
+}
+
+.dpl-icm .dpl-wrap {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 46px 24px 54px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.dpl-icm .dpl-header {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 22px;
+
+    padding-bottom: 30px;
+    margin-bottom: 34px;
+
+    border-bottom: 1px solid var(--dpl-border-strong);
+}
+
+.dpl-icm .dpl-header::after {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+
+    width: 72px;
+    height: 2px;
+
+    background: var(--dpl-gold);
+}
+
+.dpl-icm .dpl-logo-plate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 auto;
+
+    min-width: 82px;
+    min-height: 58px;
+
+    padding: 8px 13px;
+
+    background: var(--dpl-ivory);
+    border: 1px solid rgba(242,230,212,0.25);
+
+    border-radius: 0 !important;
+}
+
+.dpl-icm .dpl-logo {
+    display: block;
+
+    width: auto;
+    height: 38px;
+    max-width: 150px;
+}
+
+.dpl-icm .dpl-eyebrow {
+    margin: 0 0 6px;
+
+    /* Elementor Text Typography */
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.3;
+
+    color: var(--dpl-gold);
+
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   HEADINGS
+   ========================================================= */
+
+.dpl-icm h1,
+.dpl-icm h2,
+.dpl-icm h3,
+.dpl-icm .dpl-section-title,
+.dpl-icm .dpl-result-name {
+    /* Elementor Heading Typography */
+    font-family: var(--e-global-typography-a7460eb-font-family), Sans-serif;
+    font-weight: var(--e-global-typography-a7460eb-font-weight);
+    line-height: var(--e-global-typography-a7460eb-line-height);
+    letter-spacing: var(--e-global-typography-a7460eb-letter-spacing);
+
+    color: var(--e-global-color-primary);
+}
+
+.dpl-icm h1 {
+    margin: 0;
+
+    font-size: var(--e-global-typography-a7460eb-font-size);
+}
+
+
+/* =========================================================
+   HEADER DESCRIPTION
+   ========================================================= */
+
+.dpl-icm .dpl-sub {
+    max-width: 52ch;
+
+    margin-top: 8px;
+
+    /* Elementor Text Typography */
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+
+    color: var(--e-global-color-text);
+
+    opacity: 0.70;
+}
+
+
+/* =========================================================
+   SECTIONS
+   ========================================================= */
+
+.dpl-icm .dpl-section {
+    margin-bottom: 28px;
+}
+
+.dpl-icm .dpl-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+    margin-bottom: 12px;
+}
+
+.dpl-icm .dpl-section-title {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    font-size: var(--e-global-typography-a7460eb-font-size);
+}
+
+.dpl-icm .dpl-section-title svg {
+    width: 17px;
+    height: 17px;
+
+    flex: 0 0 auto;
+
+    color: var(--dpl-gold);
+}
+
+
+/* =========================================================
+   ADD BUTTONS
+   ========================================================= */
+
+.dpl-icm .dpl-add-link {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 8px 0;
+
+    background: transparent;
+    border: 0;
+
+    /* Elementor Button Typography */
+    font-family: var(--e-global-typography-7c7e1b0-font-family), Sans-serif;
+    font-size: var(--e-global-typography-7c7e1b0-font-size);
+    font-weight: var(--e-global-typography-7c7e1b0-font-weight);
+    text-transform: var(--e-global-typography-7c7e1b0-text-transform);
+    line-height: var(--e-global-typography-7c7e1b0-line-height);
+    letter-spacing: var(--e-global-typography-7c7e1b0-letter-spacing);
+
+    color: var(--e-global-color-primary);
+
+    cursor: pointer;
+
+    border-radius: 0 !important;
+
+    transition:
+        color 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.dpl-icm .dpl-add-link:hover {
+    color: var(--e-global-color-accent);
+}
+
+.dpl-icm .dpl-add-link:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+
+/* =========================================================
+   PANELS
+   ========================================================= */
+
+.dpl-icm .dpl-panel {
+    position: relative;
+
+    padding: 17px 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--dpl-panel),
+            var(--dpl-panel-2)
+        );
+
+    border: 1px solid var(--dpl-border);
+    border-top: 2px solid var(--dpl-gold);
+
+    border-radius: 0 !important;
+}
+
+.dpl-icm .dpl-panel::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    right: 0;
+
+    width: 80px;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            to left,
+            var(--dpl-champagne),
+            transparent
+        );
+
+    opacity: 0.35;
+}
+
+
+/* =========================================================
+   ROWS
+   ========================================================= */
+
+.dpl-icm .dpl-row {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    min-height: 50px;
+
+    padding: 7px 0;
+
+    border-bottom: 1px solid var(--dpl-border);
+}
+
+.dpl-icm .dpl-row:last-child {
+    border-bottom: 0;
+}
+
+.dpl-icm .dpl-seat {
+    width: 28px;
+    flex: 0 0 28px;
+
+    /* Elementor Text Typography */
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+
+    color: var(--dpl-gold);
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.dpl-icm input[type="text"],
+.dpl-icm input[type="number"] {
+    appearance: none;
+    -webkit-appearance: none;
+
+    min-height: 42px;
+
+    margin: 0;
+
+    padding: 9px 11px;
+
+    background: var(--dpl-panel-3);
+
+    border: 1px solid var(--dpl-border-strong);
+
+    /* Elementor Text Typography */
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+
+    color: var(--e-global-color-text);
+
+    outline: none;
+
+    border-radius: 0 !important;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.dpl-icm input[type="text"]::placeholder,
+.dpl-icm input[type="number"]::placeholder {
+    color: var(--e-global-color-text);
+    opacity: 0.35;
+}
+
+.dpl-icm input[type="text"]:hover,
+.dpl-icm input[type="number"]:hover {
+    border-color: var(--dpl-gold);
+}
+
+.dpl-icm input[type="text"]:focus,
+.dpl-icm input[type="number"]:focus {
+    border-color: var(--dpl-gold);
+
+    box-shadow:
+        0 0 0 1px rgba(201,154,69,0.10);
+}
+
+.dpl-icm .dpl-name-input {
+    flex: 1.5;
+    min-width: 0;
+}
+
+.dpl-icm .dpl-num-input {
+    flex: 1;
+    min-width: 0;
+
+    text-align: right;
+}
+
+
+/* =========================================================
+   REMOVE BUTTON
+   ========================================================= */
+
+.dpl-icm .dpl-remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 30px;
+    height: 36px;
+
+    flex: 0 0 30px;
+
+    padding: 0;
+
+    background: transparent;
+    border: 0;
+
+    /* Elementor Button Typography */
+    font-family: var(--e-global-typography-7c7e1b0-font-family), Sans-serif;
+    font-size: var(--e-global-typography-7c7e1b0-font-size);
+    font-weight: var(--e-global-typography-7c7e1b0-font-weight);
+    line-height: 1;
+
+    color: var(--dpl-ivory);
+
+    opacity: 0.45;
+
+    cursor: pointer;
+
+    border-radius: 0 !important;
+}
+
+.dpl-icm .dpl-remove:hover {
+    color: var(--e-global-color-accent);
+    opacity: 1;
+}
+
+
+/* =========================================================
+   TOKE / TIP
+   ========================================================= */
+
+.dpl-icm .dpl-toke-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 18px;
+
+    margin-top: 15px;
+    padding-top: 17px;
+
+    border-top: 1px dashed var(--dpl-border-strong);
+}
+
+.dpl-icm .dpl-toke-label {
+    /* Elementor Text Typography */
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+
+    color: var(--e-global-color-text);
+}
+
+.dpl-icm .dpl-toke-hint {
+    display: block;
+
+    max-width: 40ch;
+
+    margin-top: 4px;
+
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: calc(var(--e-global-typography-text-font-size) * 0.82);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: 1.5;
+
+    color: var(--e-global-color-text);
+
+    opacity: 0.55;
+}
+
+.dpl-icm .dpl-toke-controls {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    flex: 0 0 auto;
+}
+
+.dpl-icm .dpl-toke-controls input {
+    width: 90px;
+
+    text-align: right;
+}
+
+
+/* =========================================================
+   $ / % TOGGLE
+   ========================================================= */
+
+.dpl-icm .dpl-mode-toggle {
+    display: flex;
+
+    overflow: hidden;
+
+    border: 1px solid var(--dpl-border-strong);
+
+    border-radius: 0 !important;
+}
+
+.dpl-icm .dpl-mode-btn {
+    width: 36px;
+    height: 42px;
+
+    padding: 0;
+
+    background: var(--dpl-panel-3);
+
+    border: 0;
+
+    /* Elementor Button Typography */
+    font-family: var(--e-global-typography-7c7e1b0-font-family), Sans-serif;
+    font-size: var(--e-global-typography-7c7e1b0-font-size);
+    font-weight: var(--e-global-typography-7c7e1b0-font-weight);
+    line-height: var(--e-global-typography-7c7e1b0-line-height);
+
+    color: var(--e-global-color-primary);
+
+    cursor: pointer;
+
+    border-radius: 0 !important;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.dpl-icm .dpl-mode-btn + .dpl-mode-btn {
+    border-left: 1px solid var(--dpl-border-strong);
+}
+
+.dpl-icm .dpl-mode-btn:hover {
+    color: var(--e-global-color-accent);
+}
+
+.dpl-icm .dpl-mode-btn.active {
+    background: var(--e-global-color-accent);
+
+    color: var(--e-global-color-primary);
+
+    border-radius: 0 !important;
+}
+
+
+/* =========================================================
+   PRIZE POOL
+   ========================================================= */
+
+.dpl-icm .dpl-pool-strip {
+    position: relative;
+
+    margin: 0 0 30px;
+
+    padding: 17px 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(201,154,69,0.08),
+            rgba(201,154,69,0.025)
+        );
+
+    border: 1px solid var(--dpl-border);
+    border-left: 2px solid var(--dpl-gold);
+
+    border-radius: 0 !important;
+}
+
+.dpl-icm .dpl-pool-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 4px 0;
+
+    /* Elementor Text Typography */
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+
+    color: var(--e-global-color-text);
+
+    opacity: 0.70;
+}
+
+.dpl-icm .dpl-pool-line-val {
+    color: var(--e-global-color-text);
+
+    font-weight: 700;
+
+    text-align: right;
+
+    opacity: 1;
+}
+
+.dpl-icm .dpl-pool-line-val.dpl-neg {
+    color: var(--dpl-dark-gold);
+}
+
+.dpl-icm .dpl-pool-final {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-top: 8px;
+    padding-top: 12px;
+
+    border-top: 1px solid var(--dpl-border);
+
+    /* Elementor Text Typography */
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+
+    color: var(--e-global-color-text);
+}
+
+.dpl-icm .dpl-pool-final-val {
+    /* Elementor Heading Typography */
+    font-family: var(--e-global-typography-a7460eb-font-family), Sans-serif;
+    font-size: var(--e-global-typography-a7460eb-font-size);
+    font-weight: var(--e-global-typography-a7460eb-font-weight);
+    line-height: var(--e-global-typography-a7460eb-line-height);
+    letter-spacing: var(--e-global-typography-a7460eb-letter-spacing);
+
+    color: var(--e-global-color-primary);
+}
+
+
+/* =========================================================
+   SELECT
+   ========================================================= */
+
+.dpl-icm select {
+    appearance: none;
+    -webkit-appearance: none;
+
+    width: 100%;
+    min-height: 44px;
+
+    margin: 0;
+    padding: 10px 42px 10px 13px;
+
+    background-color: var(--dpl-panel-3);
+
+    background-image:
+        linear-gradient(
+            45deg,
+            transparent 50%,
+            var(--dpl-gold) 50%
+        ),
+        linear-gradient(
+            135deg,
+            var(--dpl-gold) 50%,
+            transparent 50%
+        );
+
+    background-position:
+        calc(100% - 17px) 19px,
+        calc(100% - 12px) 19px;
+
+    background-size:
+        5px 5px,
+        5px 5px;
+
+    background-repeat: no-repeat;
+
+    border: 1px solid var(--dpl-border-strong);
+
+    /* Elementor Text Typography */
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+
+    color: var(--e-global-color-text);
+
+    outline: none;
+
+    cursor: pointer;
+
+    border-radius: 0 !important;
+}
+
+.dpl-icm select:focus {
+    border-color: var(--dpl-gold);
+}
+
+.dpl-icm .dpl-model-note {
+    margin-top: 10px;
+
+    /* Elementor Text Typography */
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+
+    color: var(--e-global-color-text);
+
+    opacity: 0.60;
+}
+
+
+/* =========================================================
+   RESULTS
+   ========================================================= */
+
+.dpl-icm .dpl-result-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 18px;
+
+    min-height: 65px;
+
+    padding: 12px 0;
+
+    border-bottom: 1px solid var(--dpl-border);
+}
+
+.dpl-icm .dpl-result-row:last-child {
+    border-bottom: 0;
+}
+
+.dpl-icm .dpl-result-name {
+    font-size:var( --e-global-typography-e951c9e-font-size );
+}
+
+.dpl-icm .dpl-result-meta {
+    margin-top: 4px;
+
+    /* Elementor Text Typography */
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+
+    color: var(--e-global-color-text);
+
+    opacity: 0.55;
+}
+
+.dpl-icm .dpl-result-amt {
+    flex: 0 0 auto;
+
+    /* Elementor Heading Typography */
+    font-family: var(--e-global-typography-a7460eb-font-family), Sans-serif;
+    font-size: var(--e-global-typography-a7460eb-font-size);
+    font-weight: var(--e-global-typography-a7460eb-font-weight);
+    line-height: var(--e-global-typography-a7460eb-line-height);
+    letter-spacing: var(--e-global-typography-a7460eb-letter-spacing);
+
+    color: var(--e-global-color-primary);
+
+    text-align: right;
+    white-space: nowrap;
+}
+
+.dpl-icm .dpl-summary-line {
+    margin-top: 13px;
+    padding-top: 11px;
+
+    border-top: 1px solid var(--dpl-border);
+
+    /* Elementor Text Typography */
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+
+    color: var(--e-global-color-text);
+
+    opacity: 0.45;
+
+    text-align: right;
+}
+
+.dpl-icm .dpl-empty {
+    padding: 20px 0;
+
+    /* Elementor Text Typography */
+    font-family: var(--e-global-typography-text-font-family), Sans-serif;
+    font-size: var(--e-global-typography-text-font-size);
+    font-weight: var(--e-global-typography-text-font-weight);
+    line-height: var(--e-global-typography-text-line-height);
+
+    color: var(--e-global-color-text);
+
+    opacity: 0.60;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .dpl-icm .dpl-wrap {
+        padding: 32px 16px 40px;
+    }
+
+    .dpl-icm .dpl-header {
+        align-items: flex-start;
+        gap: 15px;
+
+        padding-bottom: 24px;
+        margin-bottom: 28px;
+    }
+
+    .dpl-icm .dpl-logo-plate {
+        min-width: 68px;
+        min-height: 50px;
+
+        padding: 7px 9px;
+    }
+
+    .dpl-icm .dpl-logo {
+        height: 30px;
+        max-width: 105px;
+    }
+
+    .dpl-icm h1 {
+        font-size: var(--e-global-typography-a7460eb-font-size);
+    }
+
+    .dpl-icm .dpl-sub {
+        font-size: var(--e-global-typography-text-font-size);
+    }
+
+    .dpl-icm .dpl-section {
+        margin-bottom: 24px;
+    }
+
+    .dpl-icm .dpl-panel {
+        padding: 14px;
+    }
+
+    .dpl-icm .dpl-row {
+        gap: 6px;
+    }
+
+    .dpl-icm .dpl-seat {
+        width: 22px;
+        flex-basis: 22px;
+    }
+
+    .dpl-icm input[type="text"],
+    .dpl-icm input[type="number"] {
+        min-height: 40px;
+        padding: 7px 8px;
+
+        font-size: var(--e-global-typography-text-font-size);
+    }
+
+    .dpl-icm .dpl-remove {
+        width: 27px;
+        flex-basis: 27px;
+    }
+
+    .dpl-icm .dpl-toke-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .dpl-icm .dpl-toke-controls {
+        width: 100%;
+    }
+
+    .dpl-icm .dpl-toke-controls input {
+        flex: 1;
+        width: auto;
+    }
+
+    .dpl-icm .dpl-mode-btn {
+        width: 42px;
+    }
+
+    .dpl-icm .dpl-pool-strip {
+        padding: 15px;
+    }
+
+    .dpl-icm .dpl-result-row {
+        gap: 10px;
+        min-height: 62px;
+    }
+
+    .dpl-icm .dpl-result-name {
+        font-size: var(--e-global-typography-a7460eb-font-size);
+    }
+
+    .dpl-icm .dpl-result-meta {
+        font-size: var(--e-global-typography-text-font-size);
+    }
+
+    .dpl-icm .dpl-result-amt {
+        font-size: var(--e-global-typography-a7460eb-font-size);
+    }
+}
+
+
+@media (max-width: 380px) {
+
+    .dpl-icm .dpl-wrap {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .dpl-icm .dpl-header {
+        gap: 11px;
+    }
+
+    .dpl-icm .dpl-logo-plate {
+        min-width: 58px;
+        padding: 6px;
+    }
+
+    .dpl-icm .dpl-logo {
+        max-width: 88px;
+    }
+
+    .dpl-icm h1 {
+        font-size: var(--e-global-typography-a7460eb-font-size);
+    }
+
+    .dpl-icm .dpl-section-title {
+        font-size: var(--e-global-typography-a7460eb-font-size);
+    }
+
+}
+
+</style>
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
+<div class="dpl-wrap">
+<!-- =====================================================
+         PLAYERS
+         ===================================================== -->
+<div class="dpl-section">
+<div class="dpl-section-head">
+<div class="dpl-section-title">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="9"></circle>
+<circle cx="12" cy="12" r="4.2"></circle>
+<path d="M12 3v3M12 18v3M3 12h3M18 12h3"></path>
+</svg>
+
+                Players
+
+            </div>
+<button class="dpl-add-link" id="dpl-icm-add-player" type="button">
+                + Add Player
+            </button>
+</div>
+<div class="dpl-panel" id="dpl-icm-players"></div>
+</div>
+<!-- =====================================================
+         PAYOUTS
+         ===================================================== -->
+<div class="dpl-section">
+<div class="dpl-section-head">
+<div class="dpl-section-title">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" viewbox="0 0 24 24">
+<rect height="12" width="18" x="3" y="6"></rect>
+<path d="M3 10h18"></path>
+</svg>
+
+                Payouts Remaining
+
+            </div>
+<button class="dpl-add-link" id="dpl-icm-add-payout" type="button">
+                + Add Place
+            </button>
+</div>
+<div class="dpl-panel">
+<div id="dpl-icm-payouts"></div>
+<div class="dpl-toke-row">
+<div class="dpl-toke-label">
+
+                    Staff Toke / Tip
+
+                    <span class="dpl-toke-hint">
+                        Deducted off the top before the chop.
+                        Leave blank if the table isn't tipping out of the pool.
+                    </span>
+</div>
+<div class="dpl-toke-controls">
+<input aria-label="Staff toke or tip" id="dpl-icm-toke" inputmode="decimal" placeholder="0" type="text"/>
+<div class="dpl-mode-toggle">
+<button aria-label="Cash amount" class="dpl-mode-btn active" id="dpl-icm-mode-cash" type="button">
+                            $
+                        </button>
+<button aria-label="Percentage" class="dpl-mode-btn" id="dpl-icm-mode-percent" type="button">
+                            %
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- =====================================================
+         PRIZE POOL
+         ===================================================== -->
+<div class="dpl-pool-strip" id="dpl-icm-pool-strip"></div>
+<!-- =====================================================
+         CHOP MODEL
+         ===================================================== -->
+<div class="dpl-section">
+<div class="dpl-section-head">
+<div class="dpl-section-title">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" viewbox="0 0 24 24">
+<path d="M4 19V9M12 19V5M20 19v-7"></path>
+</svg>
+
+                Chop Model
+
+            </div>
+</div>
+<div class="dpl-panel">
+<select aria-label="Chop model" id="dpl-icm-model"></select>
+<div class="dpl-model-note" id="dpl-icm-model-note"></div>
+</div>
+</div>
+<!-- =====================================================
+         RESULTS
+         ===================================================== -->
+<div class="dpl-section">
+<div class="dpl-section-head">
+<div class="dpl-section-title" id="dpl-icm-results-title">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" viewbox="0 0 24 24">
+<path d="M12 3l2.4 5.3 5.8.6-4.3 3.9 1.2 5.7L12 15.9l-5.1 2.6 1.2-5.7-4.3-.6Z"></path>
+</svg>
+
+                Fair Chop
+
+            </div>
+</div>
+<div class="dpl-panel" id="dpl-icm-results"></div>
+</div>
+</div>
+<script>
+
+(function(){
+
+"use strict";
+
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+var players = [
+    {
+        name: "Player 1",
+        chips: 500000
+    },
+    {
+        name: "Player 2",
+        chips: 300000
+    },
+    {
+        name: "Player 3",
+        chips: 200000
+    }
+];
+
+
+var payouts = [
+    6000,
+    4000,
+    2500
+];
+
+
+var tokeRaw = "";
+
+var tokeMode = "cash";
+
+var model = "icm";
+
+
+/* =========================================================
+   MODELS
+   ========================================================= */
+
+var MODELS = {
+
+    icm: {
+        label: "Fair Chop (ICM)",
+        note: "Each player's exact equity based on finishing-order probability. The standard for a fair deal."
+    },
+
+    chip: {
+        label: "Chip Chop (Linear)",
+        note: "Splits the pool exactly by chip percentage — ignores payout structure and finishing odds entirely."
+    },
+
+    half: {
+        label: "Half-ICM",
+        note: "Average of ICM and chip chop — a common compromise when a big stack wants more than pure ICM gives."
+    },
+
+    guarantee: {
+        label: "Save-a-Guarantee",
+        note: "Locks in everyone's current min-cash first, then splits what's left by chip percentage."
+    }
+
+};
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+function money(n){
+
+    var sign = n < 0 ? "-" : "";
+
+    return sign +
+        "$" +
+        Math.abs(
+            Math.round(n)
+        ).toLocaleString("en-US");
+
+}
+
+
+function escapeHtml(s){
+
+    return String(s).replace(
+        /[&<>"']/g,
+        function(c){
+
+            return {
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                "\"": "&quot;",
+                "'": "&#39;"
+            }[c];
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ICM
+   ========================================================= */
+
+function computeICM(chips, payoutArr){
+
+    var n = chips.length;
+
+    var total = 0;
+
+    var i;
+
+
+    for(i = 0; i < n; i++){
+
+        total += chips[i];
+
+    }
+
+
+    if(total <= 0){
+
+        return chips.map(function(){
+
+            return 0;
+
+        });
+
+    }
+
+
+    var k = payoutArr.length;
+
+    var maxSize =
+        Math.min(k - 1, n - 1);
+
+    var numSubsets =
+        1 << n;
+
+
+    var sumChips =
+        new Float64Array(numSubsets);
+
+    var popcount =
+        new Int8Array(numSubsets);
+
+
+    for(
+        var s = 1;
+        s < numSubsets;
+        s++
+    ){
+
+        var lsb =
+            s & (-s);
+
+        var idx =
+            Math.log2(lsb) | 0;
+
+        sumChips[s] =
+            sumChips[s ^ lsb] +
+            chips[idx];
+
+        popcount[s] =
+            popcount[s >> 1] +
+            (s & 1);
+
+    }
+
+
+    var buckets = [];
+
+
+    for(
+        i = 0;
+        i <= maxSize;
+        i++
+    ){
+
+        buckets.push([]);
+
+    }
+
+
+    for(
+        s = 1;
+        s < numSubsets;
+        s++
+    ){
+
+        var pc =
+            popcount[s];
+
+        if(pc <= maxSize){
+
+            buckets[pc].push(s);
+
+        }
+
+    }
+
+
+    var D =
+        new Float64Array(numSubsets);
+
+    D[0] = 1;
+
+
+    for(
+        var size = 1;
+        size <= maxSize;
+        size++
+    ){
+
+        var bucket =
+            buckets[size];
+
+
+        for(
+            var bi = 0;
+            bi < bucket.length;
+            bi++
+        ){
+
+            s =
+                bucket[bi];
+
+            var d = 0;
+
+            var rem = s;
+
+
+            while(rem){
+
+                lsb =
+                    rem & (-rem);
+
+                var j =
+                    Math.log2(lsb) | 0;
+
+                var sPrev =
+                    s ^ lsb;
+
+                var denom =
+                    total -
+                    sumChips[sPrev];
+
+
+                if(denom > 0){
+
+                    d +=
+                        D[sPrev] *
+                        chips[j] /
+                        denom;
+
+                }
+
+
+                rem ^= lsb;
+
+            }
+
+
+            D[s] = d;
+
+        }
+
+    }
+
+
+    var equity =
+        new Float64Array(n);
+
+
+    for(
+        size = 0;
+        size <= maxSize;
+        size++
+    ){
+
+        if(
+            size >= payoutArr.length
+        ){
+
+            continue;
+
+        }
+
+
+        var pay =
+            payoutArr[size];
+
+
+        if(pay === 0){
+
+            continue;
+
+        }
+
+
+        var subsetsThisSize =
+            size === 0
+                ? [0]
+                : buckets[size];
+
+
+        for(
+            bi = 0;
+            bi < subsetsThisSize.length;
+            bi++
+        ){
+
+            s =
+                subsetsThisSize[bi];
+
+            var dVal =
+                D[s];
+
+
+            if(dVal === 0){
+
+                continue;
+
+            }
+
+
+            denom =
+                total -
+                sumChips[s];
+
+
+            if(denom <= 0){
+
+                continue;
+
+            }
+
+
+            for(
+                i = 0;
+                i < n;
+                i++
+            ){
+
+                if(
+                    s & (1 << i)
+                ){
+
+                    continue;
+
+                }
+
+
+                equity[i] +=
+                    dVal *
+                    chips[i] /
+                    denom *
+                    pay;
+
+            }
+
+        }
+
+    }
+
+
+    return Array.prototype.slice.call(
+        equity
+    );
+
+}
+
+
+/* =========================================================
+   CHIP CHOP
+   ========================================================= */
+
+function computeChipChop(
+    chips,
+    payoutArr
+){
+
+    var total = 0;
+
+    var pool = 0;
+
+    var i;
+
+
+    for(
+        i = 0;
+        i < chips.length;
+        i++
+    ){
+
+        total += chips[i];
+
+    }
+
+
+    for(
+        i = 0;
+        i < payoutArr.length;
+        i++
+    ){
+
+        pool +=
+            payoutArr[i] || 0;
+
+    }
+
+
+    if(total <= 0){
+
+        return chips.map(function(){
+
+            return 0;
+
+        });
+
+    }
+
+
+    return chips.map(function(c){
+
+        return (
+            c / total
+        ) * pool;
+
+    });
+
+}
+
+
+/* =========================================================
+   HALF ICM
+   ========================================================= */
+
+function computeHalfICM(
+    chips,
+    payoutArr
+){
+
+    var icm =
+        computeICM(
+            chips,
+            payoutArr
+        );
+
+    var chip =
+        computeChipChop(
+            chips,
+            payoutArr
+        );
+
+
+    return icm.map(
+        function(e, i){
+
+            return (
+                e + chip[i]
+            ) / 2;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   GUARANTEE
+   ========================================================= */
+
+function computeGuaranteeSplit(
+    chips,
+    payoutArr
+){
+
+    var n =
+        chips.length;
+
+    var i;
+
+    var pool = 0;
+
+
+    for(
+        i = 0;
+        i < payoutArr.length;
+        i++
+    ){
+
+        pool +=
+            payoutArr[i] || 0;
+
+    }
+
+
+    var nonZero =
+        payoutArr.filter(
+            function(p){
+
+                return p > 0;
+
+            }
+        );
+
+
+    var guarantee =
+        nonZero.length
+            ? Math.min.apply(
+                null,
+                nonZero
+            )
+            : 0;
+
+
+    var totalGuarantee =
+        guarantee * n;
+
+
+    var totalChips = 0;
+
+
+    for(
+        i = 0;
+        i < chips.length;
+        i++
+    ){
+
+        totalChips +=
+            chips[i];
+
+    }
+
+
+    if(
+        pool <= 0 ||
+        totalGuarantee >= pool ||
+        totalChips <= 0
+    ){
+
+        return computeICM(
+            chips,
+            payoutArr
+        );
+
+    }
+
+
+    var remainder =
+        pool -
+        totalGuarantee;
+
+
+    return chips.map(
+        function(c){
+
+            return guarantee +
+                (
+                    c /
+                    totalChips
+                ) *
+                remainder;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CHOP
+   ========================================================= */
+
+function computeChop(
+    m,
+    chips,
+    payoutArr
+){
+
+    if(m === "chip"){
+
+        return computeChipChop(
+            chips,
+            payoutArr
+        );
+
+    }
+
+
+    if(m === "half"){
+
+        return computeHalfICM(
+            chips,
+            payoutArr
+        );
+
+    }
+
+
+    if(m === "guarantee"){
+
+        return computeGuaranteeSplit(
+            chips,
+            payoutArr
+        );
+
+    }
+
+
+    return computeICM(
+        chips,
+        payoutArr
+    );
+
+}
+
+
+/* =========================================================
+   RENDER
+   ========================================================= */
+
+function renderAll(){
+
+    renderPlayers();
+
+    renderPayouts();
+
+    renderModelSelect();
+
+    computeAndRenderResults();
+
+}
+
+
+/* =========================================================
+   PLAYERS
+   ========================================================= */
+
+function renderPlayers(){
+
+    var el =
+        document.getElementById(
+            "dpl-icm-players"
+        );
+
+
+    var html =
+        players.map(
+            function(p, i){
+
+                return (
+
+                    '<div class="dpl-row">' +
+
+                        '<span class="dpl-seat">' +
+                            (i + 1) +
+                        '</span>' +
+
+                        '<input' +
+                            ' type="text"' +
+                            ' class="dpl-name-input"' +
+                            ' data-player-field="name"' +
+                            ' data-idx="' + i + '"' +
+                            ' value="' +
+                                escapeHtml(p.name) +
+                            '"' +
+                            ' aria-label="Player name"' +
+                        '>' +
+
+                        '<input' +
+                            ' type="number"' +
+                            ' class="dpl-num-input"' +
+                            ' data-player-field="chips"' +
+                            ' data-idx="' + i + '"' +
+                            ' value="' + p.chips + '"' +
+                            ' min="0"' +
+                            ' aria-label="Player chips"' +
+                        '>' +
+
+                        '<button' +
+                            ' type="button"' +
+                            ' class="dpl-remove"' +
+                            ' data-remove-player="' + i + '"' +
+                            ' aria-label="Remove player"' +
+                        '>&times;</button>' +
+
+                    '</div>'
+
+                );
+
+            }
+        ).join("");
+
+
+    el.innerHTML =
+        html;
+
+
+    document.getElementById(
+        "dpl-icm-add-player"
+    ).disabled =
+        players.length >= 9;
+
+
+    Array.prototype.forEach.call(
+
+        el.querySelectorAll(
+            "[data-player-field]"
+        ),
+
+        function(inp){
+
+            inp.addEventListener(
+                "input",
+                function(){
+
+                    var idx =
+                        +inp.getAttribute(
+                            "data-idx"
+                        );
+
+
+                    var field =
+                        inp.getAttribute(
+                            "data-player-field"
+                        );
+
+
+                    players[idx][field] =
+                        field === "chips"
+                            ? (
+                                parseFloat(
+                                    inp.value
+                                ) || 0
+                            )
+                            : inp.value;
+
+
+                    computeAndRenderResults();
+
+                }
+            );
+
+        }
+    );
+
+
+    Array.prototype.forEach.call(
+
+        el.querySelectorAll(
+            "[data-remove-player]"
+        ),
+
+        function(btn){
+
+            btn.addEventListener(
+                "click",
+                function(){
+
+                    if(
+                        players.length <= 1
+                    ){
+
+                        return;
+
+                    }
+
+
+                    players.splice(
+                        +btn.getAttribute(
+                            "data-remove-player"
+                        ),
+                        1
+                    );
+
+
+                    renderAll();
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   PAYOUTS
+   ========================================================= */
+
+function renderPayouts(){
+
+    var el =
+        document.getElementById(
+            "dpl-icm-payouts"
+        );
+
+
+    var ordinals = [
+        "1st",
+        "2nd",
+        "3rd",
+        "4th",
+        "5th",
+        "6th",
+        "7th",
+        "8th",
+        "9th"
+    ];
+
+
+    var html =
+        payouts.map(
+            function(amt, i){
+
+                return (
+
+                    '<div class="dpl-row">' +
+
+                        '<span class="dpl-seat">' +
+                            (
+                                ordinals[i] ||
+                                (i + 1) + "th"
+                            ) +
+                        '</span>' +
+
+                        '<input' +
+                            ' type="number"' +
+                            ' class="dpl-num-input"' +
+                            ' data-payout-idx="' + i + '"' +
+                            ' value="' + amt + '"' +
+                            ' min="0"' +
+                            ' aria-label="Payout"' +
+                        '>' +
+
+                        '<button' +
+                            ' type="button"' +
+                            ' class="dpl-remove"' +
+                            ' data-remove-payout="' + i + '"' +
+                            ' aria-label="Remove payout"' +
+                        '>&times;</button>' +
+
+                    '</div>'
+
+                );
+
+            }
+        ).join("");
+
+
+    el.innerHTML =
+        html;
+
+
+    document.getElementById(
+        "dpl-icm-add-payout"
+    ).disabled =
+        payouts.length >= 9;
+
+
+    Array.prototype.forEach.call(
+
+        el.querySelectorAll(
+            "[data-payout-idx]"
+        ),
+
+        function(inp){
+
+            inp.addEventListener(
+                "input",
+                function(){
+
+                    payouts[
+                        +inp.getAttribute(
+                            "data-payout-idx"
+                        )
+                    ] =
+                        parseFloat(
+                            inp.value
+                        ) || 0;
+
+
+                    computeAndRenderResults();
+
+                }
+            );
+
+        }
+    );
+
+
+    Array.prototype.forEach.call(
+
+        el.querySelectorAll(
+            "[data-remove-payout]"
+        ),
+
+        function(btn){
+
+            btn.addEventListener(
+                "click",
+                function(){
+
+                    if(
+                        payouts.length <= 1
+                    ){
+
+                        return;
+
+                    }
+
+
+                    payouts.splice(
+                        +btn.getAttribute(
+                            "data-remove-payout"
+                        ),
+                        1
+                    );
+
+
+                    renderAll();
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   MODEL SELECT
+   ========================================================= */
+
+function renderModelSelect(){
+
+    var sel =
+        document.getElementById(
+            "dpl-icm-model"
+        );
+
+
+    sel.innerHTML =
+        Object.keys(MODELS)
+            .map(
+                function(key){
+
+                    return (
+
+                        '<option value="' +
+                            key +
+                        '"' +
+                        (
+                            model === key
+                                ? " selected"
+                                : ""
+                        ) +
+                        '>' +
+                            MODELS[key].label +
+                        '</option>'
+
+                    );
+
+                }
+            )
+            .join("");
+
+
+    document.getElementById(
+        "dpl-icm-model-note"
+    ).textContent =
+        MODELS[model].note;
+
+
+    sel.onchange =
+        function(){
+
+            model =
+                sel.value;
+
+            computeAndRenderResults();
+
+        };
+
+}
+
+
+/* =========================================================
+   CALCULATE RESULTS
+   ========================================================= */
+
+function computeAndRenderResults(){
+
+    var chips =
+        players.map(
+            function(p){
+
+                return Math.max(
+                    0,
+                    p.chips || 0
+                );
+
+            }
+        );
+
+
+    var totalChips =
+        chips.reduce(
+            function(a, b){
+
+                return a + b;
+
+            },
+            0
+        );
+
+
+    var grossPool =
+        payouts.reduce(
+            function(a, b){
+
+                return a + (b || 0);
+
+            },
+            0
+        );
+
+
+    var tokeNum =
+        parseFloat(tokeRaw) || 0;
+
+
+    var tokeAmount =
+        tokeMode === "percent"
+            ? grossPool *
+              (tokeNum / 100)
+            : tokeNum;
+
+
+    var toke =
+        Math.max(
+            0,
+            Math.min(
+                tokeAmount,
+                grossPool
+            )
+        );
+
+
+    var pool =
+        grossPool - toke;
+
+
+    var scaledPayouts =
+        grossPool > 0
+            ? payouts.map(
+                function(p){
+
+                    return p *
+                        (
+                            pool /
+                            grossPool
+                        );
+
+                }
+            )
+            : payouts;
+
+
+    var equity =
+        players.map(
+            function(){
+
+                return 0;
+
+            }
+        );
+
+
+    if(
+        totalChips > 0 &&
+        pool > 0 &&
+        players.length > 0
+    ){
+
+        equity =
+            computeChop(
+                model,
+                chips,
+                scaledPayouts
+            );
+
+    }
+
+
+    /* POOL */
+
+    var poolEl =
+        document.getElementById(
+            "dpl-icm-pool-strip"
+        );
+
+
+    var poolHtml =
+
+        '<div class="dpl-pool-line">' +
+
+            '<span>Gross Prize Pool</span>' +
+
+            '<span class="dpl-pool-line-val">' +
+                money(grossPool) +
+            '</span>' +
+
+        '</div>';
+
+
+    if(toke > 0){
+
+        var tokeLabel =
+            "Staff Toke / Tip" +
+            (
+                tokeMode === "percent"
+                    ? " (" + tokeNum + "%)"
+                    : ""
+            );
+
+
+        poolHtml +=
+
+            '<div class="dpl-pool-line">' +
+
+                '<span>' +
+                    tokeLabel +
+                '</span>' +
+
+                '<span class="dpl-pool-line-val dpl-neg">' +
+                    '&minus;' +
+                    money(toke) +
+                '</span>' +
+
+            '</div>';
+
+    }
+
+
+    poolHtml +=
+
+        '<div class="dpl-pool-final">' +
+
+            '<span>Splitting</span>' +
+
+            '<span class="dpl-pool-final-val">' +
+                money(pool) +
+            '</span>' +
+
+        '</div>';
+
+
+    poolEl.innerHTML =
+        poolHtml;
+
+
+    /* RESULTS TITLE */
+
+    document.getElementById(
+        "dpl-icm-results-title"
+    ).innerHTML =
+
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">' +
+            '<path d="M12 3l2.4 5.3 5.8.6-4.3 3.9 1.2 5.7L12 15.9l-5.1 2.6 1.2-5.7-4.3-3.9 5.8-.6Z"/>' +
+        '</svg>' +
+
+        MODELS[model].label;
+
+
+    /* RESULTS */
+
+    var resultsEl =
+        document.getElementById(
+            "dpl-icm-results"
+        );
+
+
+    if(players.length === 0){
+
+        resultsEl.innerHTML =
+            '<div class="dpl-empty">' +
+                'Add at least one player.' +
+            '</div>';
+
+        return;
+
+    }
+
+
+    var rows =
+        players.map(
+            function(p, i){
+
+                var chipShare =
+                    totalChips > 0
+                        ? chips[i] /
+                          totalChips
+                        : 0;
+
+
+                var evenSplit =
+                    chipShare *
+                    pool;
+
+
+                var val =
+                    equity[i] || 0;
+
+
+                var delta =
+                    val -
+                    evenSplit;
+
+
+                var deltaTxt =
+                    model === "chip"
+                        ? ""
+                        :
+                        (
+                            " &middot; vs chip chop " +
+                            (
+                                delta >= 0
+                                    ? "+"
+                                    : "&minus;"
+                            ) +
+                            money(
+                                Math.abs(delta)
+                            )
+                        );
+
+
+                return (
+
+                    '<div class="dpl-result-row">' +
+
+                        '<div>' +
+
+                            '<div class="dpl-result-name">' +
+                                escapeHtml(
+                                    p.name ||
+                                    (
+                                        "Player " +
+                                        (i + 1)
+                                    )
+                                ) +
+                            '</div>' +
+
+                            '<div class="dpl-result-meta">' +
+
+                                chips[i].toLocaleString(
+                                    "en-US"
+                                ) +
+
+                                ' chips &middot; ' +
+
+                                (
+                                    chipShare * 100
+                                ).toFixed(1) +
+
+                                '% of chips' +
+
+                                deltaTxt +
+
+                            '</div>' +
+
+                        '</div>' +
+
+                        '<div class="dpl-result-amt">' +
+                            money(val) +
+                        '</div>' +
+
+                    '</div>'
+
+                );
+
+            }
+        ).join("");
+
+
+    var equitySum =
+        equity.reduce(
+            function(a, b){
+
+                return a + (b || 0);
+
+            },
+            0
+        );
+
+
+    var summary =
+        pool > 0
+            ?
+
+            '<div class="dpl-summary-line">' +
+
+                'Equities sum to ' +
+
+                money(equitySum) +
+
+                ' of ' +
+
+                money(pool) +
+
+                ' pool' +
+
+            '</div>'
+
+            : "";
+
+
+    resultsEl.innerHTML =
+        rows +
+        summary;
+
+}
+
+
+/* =========================================================
+   ADD PLAYER
+   ========================================================= */
+
+document.getElementById(
+    "dpl-icm-add-player"
+).addEventListener(
+    "click",
+    function(){
+
+        if(
+            players.length >= 9
+        ){
+
+            return;
+
+        }
+
+
+        players.push({
+
+            name:
+                "Player " +
+                (
+                    players.length + 1
+                ),
+
+            chips: 0
+
+        });
+
+
+        renderAll();
+
+    }
+);
+
+
+/* =========================================================
+   ADD PAYOUT
+   ========================================================= */
+
+document.getElementById(
+    "dpl-icm-add-payout"
+).addEventListener(
+    "click",
+    function(){
+
+        if(
+            payouts.length >= 9
+        ){
+
+            return;
+
+        }
+
+
+        payouts.push(0);
+
+        renderAll();
+
+    }
+);
+
+
+/* =========================================================
+   TOKE
+   ========================================================= */
+
+var tokeInput =
+    document.getElementById(
+        "dpl-icm-toke"
+    );
+
+
+tokeInput.addEventListener(
+    "input",
+    function(){
+
+        var v =
+            tokeInput.value.replace(
+                /[^0-9.]/g,
+                ""
+            );
+
+
+        var firstDot =
+            v.indexOf(".");
+
+
+        if(firstDot !== -1){
+
+            v =
+                v.slice(
+                    0,
+                    firstDot + 1
+                ) +
+
+                v.slice(
+                    firstDot + 1
+                ).replace(
+                    /\./g,
+                    ""
+                );
+
+        }
+
+
+        tokeRaw = v;
+
+        computeAndRenderResults();
+
+    }
+);
+
+
+/* =========================================================
+   TOKE MODE
+   ========================================================= */
+
+function setTokeMode(m){
+
+    tokeMode = m;
+
+
+    document.getElementById(
+        "dpl-icm-mode-cash"
+    ).classList.toggle(
+        "active",
+        m === "cash"
+    );
+
+
+    document.getElementById(
+        "dpl-icm-mode-percent"
+    ).classList.toggle(
+        "active",
+        m === "percent"
+    );
+
+
+    computeAndRenderResults();
+
+}
+
+
+document.getElementById(
+    "dpl-icm-mode-cash"
+).addEventListener(
+    "click",
+    function(){
+
+        setTokeMode("cash");
+
+    }
+);
+
+
+document.getElementById(
+    "dpl-icm-mode-percent"
+).addEventListener(
+    "click",
+    function(){
+
+        setTokeMode("percent");
+
+    }
+);
+
+
+/* =========================================================
+   INIT
+   ========================================================= */
+
+renderAll();
+
+})();
+
+</script>
+</div> 
