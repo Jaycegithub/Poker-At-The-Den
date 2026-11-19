@@ -1,58 +1,77 @@
 {% extends "base.html" %}
 {% import "partials/macros.html" as m with context %}
 {% block head %}
-<link rel="preload" as="image" href="/assets/img/The-Den-Poker-Lounge-Image-8-1456.webp" imagesrcset="/assets/img/The-Den-Poker-Lounge-Image-8-480.webp 480w, /assets/img/The-Den-Poker-Lounge-Image-8-960.webp 960w, /assets/img/The-Den-Poker-Lounge-Image-8-1456.webp 1456w" imagesizes="100vw">
+<link rel="preload" as="image" href="/assets/img/stock-poker-hands-960.webp">
 <link rel="stylesheet" href="/assets/css/home.css">
 {% endblock %}
 {% block cta %}{% endblock %}
 {% block content %}
 
-{# ================= HERO — the table ================= #}
+{# ================= HERO — a hand being dealt ================= #}
 <section class="h-hero" aria-labelledby="hero-title">
-  <div class="h-hero__media">{{ img('The-Den-Poker-Lounge-Image-8', 'Guests gathered around poker tables in a dark, wood-panelled lounge', sizes='100vw', eager=True) }}</div>
-  <div class="h-hero__rail" aria-hidden="true"><span></span></div>
-  <div class="container h-hero__inner">
-    <div class="h-suits" aria-hidden="true">{{ icon('suit-spade') }}{{ icon('suit-heart') }}{{ icon('suit-club') }}{{ icon('suit-diamond') }}</div>
-    <p class="h-kicker">A private social club in Rowlett</p>
-    <h1 id="hero-title">Welcome, <span class="foil">grab a seat.</span></h1>
-    <p class="h-hero__lede">The Den is a private social club built for games, conversation, connection, and community. Play a hand, meet someone new, make a business connection, watch the game, or simply pull up a chair.</p>
-    <div class="btn-row h-hero__cta">
-      <a class="btn btn--gold" href="/membership/">Become A Member {{ icon('arrow') }}</a>
-      <a class="btn btn--ghost" href="/contact-us/">See What’s Happening</a>
+  <div class="h-hero__bg" aria-hidden="true"></div>
+  <div class="container h-hero__grid">
+    <div class="h-hero__copy">
+      <p class="h-pill">{{ icon('suit-spade') }} A private social club in Rowlett</p>
+      <h1 id="hero-title">Welcome, <span class="foil">grab a seat.</span></h1>
+      <p class="h-hero__lede">The Den is a private social club built for games, conversation, connection, and community. Play a hand, meet someone new, make a business connection, watch the game, or simply pull up a chair.</p>
+      <div class="btn-row">
+        <a class="btn btn--gold" href="/membership/">Become A Member {{ icon('arrow') }}</a>
+        <a class="btn btn--ghost" href="/contact-us/">See What’s Happening</a>
+      </div>
+      <p class="h-hero__loc">{{ icon('pin') }} located in Rowlett, 20 min east of downtown Dallas</p>
+    </div>
+
+    <div class="h-deal" data-tilt aria-hidden="true">
+      <figure class="h-deal__card h-deal__card--1">
+        {{ img('stock-laughing-table', '', sizes='(max-width: 900px) 45vw, 22vw', eager=True) }}
+        <span class="h-deal__idx">A{{ icon('suit-heart') }}</span>
+      </figure>
+      <figure class="h-deal__card h-deal__card--2">
+        {{ img('stock-poker-hands', '', sizes='(max-width: 900px) 50vw, 26vw', eager=True) }}
+        <span class="h-deal__idx">K{{ icon('suit-spade') }}</span>
+      </figure>
+      <figure class="h-deal__card h-deal__card--3">
+        {{ img('stock-chips-white', '', sizes='(max-width: 900px) 45vw, 22vw', eager=True) }}
+        <span class="h-deal__idx">Q{{ icon('suit-diamond') }}</span>
+      </figure>
+      <div class="h-deal__chip"><span>Open<br>7 Days</span></div>
+      <div class="h-deal__tag">{{ icon('suit-spade') }} No Limit Hold’em</div>
     </div>
   </div>
   <div class="container">
     <ul class="h-strip" aria-label="At a glance">
       <li>{{ icon('lock') }}<span>Private social club</span></li>
-      <li>{{ icon('pin') }}<span>located in Rowlett, 20 min east of downtown Dallas</span></li>
+      <li>{{ icon('cards') }}<span>Poker · Chess · Dominoes · Spades</span></li>
       <li>{{ icon('clock') }}<span>{{ site.hours }}</span></li>
       <li>{{ icon('phone') }}<a href="{{ site.phone_href }}">{{ site.phone }}</a></li>
     </ul>
   </div>
 </section>
 
-{# ================= WHAT IS THE DEN ================= #}
+{# ================= WHAT IS THE DEN — three panels ================= #}
 <section class="section h-intro" aria-labelledby="intro-title">
   <div class="container">
     <p class="eyebrow reveal">What is The Den?</p>
-    <h2 id="intro-title" class="h-statement reveal">
-      <span>Your club.</span>
-      <span class="foil">Your people.</span>
-      <span>Your seat.</span>
+    <h2 id="intro-title" class="h-panels reveal">
+      {% for label, image, pos, suit in [('Your club.', 'stock-lounge', '50% 60%', 'suit-club'), ('Your people.', 'stock-friends-cards', '50% 40%', 'suit-heart'), ('Your seat.', 'stock-lounge-chair', '45% 60%', 'suit-spade')] %}
+      <span class="h-panel{% if loop.first %} is-open{% endif %}" tabindex="0">
+        <span class="h-panel__img" style="--pos:{{ pos }}">{{ img(image, '', sizes='(max-width: 900px) 92vw, 50vw') }}</span>
+        <span class="h-panel__idx" aria-hidden="true">{{ icon(suit) }}</span>
+        <span class="h-panel__label">{{ label }}</span>
+      </span>
+      {% endfor %}
     </h2>
-    <div class="h-intro__grid">
-      <div class="h-oval reveal">
-        <div class="h-oval__frame">{{ img('The-Den-Poker-Lounge-Image-7', 'Hands, cards and chip stacks on a black-and-gold table seen from above', sizes='(max-width: 900px) 92vw, 46vw') }}</div>
-      </div>
-      <div class="h-intro__text reveal">
+    <div class="h-intro__row">
+      <div class="reveal">
         <p class="lede">The Den is where serious action meets serious fun. It is a private social club for people who want more from their week: more games, more conversation, more ways to connect, and more reasons to come back.</p>
-        <figure class="h-quote">
-          <span class="h-quote__mark" aria-hidden="true">{{ icon('suit-spade') }}</span>
-          <blockquote>Come for the cards. Stay because it feels like your table has been waiting on you.</blockquote>
-          <figcaption>The Den, Rowlett</figcaption>
-        </figure>
-        <a class="btn btn--ghost" href="/about-us/">Meet the Club {{ icon('arrow') }}</a>
+        <a class="btn btn--ghost mt-1" href="/about-us/">Meet the Club {{ icon('arrow') }}</a>
       </div>
+      <figure class="h-quote reveal">
+        <span class="h-quote__mark" aria-hidden="true">{{ icon('suit-spade') }}</span>
+        <blockquote>Come for the cards. Stay because it feels like your table has been waiting on you.</blockquote>
+        <figcaption>The Den, Rowlett</figcaption>
+      </figure>
     </div>
   </div>
 </section>
@@ -72,7 +91,7 @@
       ('Connect', 'suit-heart', 'Meet your people.', 'A place for new faces, familiar faces, and the conversations that turn a room into a community.'),
       ('Business', 'suit-diamond', 'Bring your work here.', 'Meet a client, catch up with a colleague, or host a working session in a setting with room to think.'),
       ('Socialize', 'suit-club', 'Stay for the evening.', 'Watch parties, mixers, member events, and a calendar built around having a reason to come back.')] %}
-    <article class="h-card" role="listitem" style="--i:{{ loop.index0 }}">
+    <article class="h-card is-dark" role="listitem" style="--i:{{ loop.index0 }}">
       <div class="h-card__face">
         <span class="h-card__corner" aria-hidden="true">{{ word[0] }}{{ icon(suit) }}</span>
         <span class="h-card__corner h-card__corner--br" aria-hidden="true">{{ word[0] }}{{ icon(suit) }}</span>
@@ -95,8 +114,8 @@
     </div>
     <div class="h-bento">
       <a class="h-tile h-tile--lead reveal" href="/poker/">
-        <div class="h-tile__media">{{ img('The-Den-Poker-Lounge-Image-6', 'Black-and-gold poker chips stacked beside playing cards', sizes='(max-width: 900px) 92vw, 55vw') }}</div>
-        <div class="h-tile__body">
+        <div class="h-tile__media">{{ img('stock-poker-night', 'Friends playing poker with chips and cards at a wooden table', sizes='(max-width: 900px) 92vw, 55vw') }}</div>
+        <div class="h-tile__body is-dark">
           <p class="h-tile__kicker">{{ icon('suit-spade') }} Poker</p>
           <h3>Poker</h3>
           <p>The classic action that keeps the tables full and the room alive.</p>
@@ -104,9 +123,9 @@
         </div>
       </a>
       {% for href, title, text, image, alt, ic in [
-        ('/chess/', 'Chess', 'Slow down, think ahead, and find a different kind of competition.', 'The-Den-Poker-Lounge-1-1', 'A focused player seated at a table in a dimly lit lounge', 'knight'),
-        ('/dominoes/', 'Dominoes', 'A familiar table, a little strategy, and plenty of room for conversation.', 'The-Den-Poker-Lounge-10', 'A player in a dark cap studying the table', 'domino'),
-        ('/spades/', 'Spades', 'Bring your partner, find your table, and stay for another hand.', 'The-Den-Poker-Lounge-5-1', 'A player resting her chin on her hand while considering her next move', 'cards')] %}
+        ('/chess/', 'Chess', 'Slow down, think ahead, and find a different kind of competition.', 'stock-chess', 'Two players moving pieces on a chessboard, seen from above', 'knight'),
+        ('/dominoes/', 'Dominoes', 'A familiar table, a little strategy, and plenty of room for conversation.', 'stock-dominoes', 'Wooden dominoes laid out on a table', 'domino'),
+        ('/spades/', 'Spades', 'Bring your partner, find your table, and stay for another hand.', 'stock-spades', 'Playing cards including the jack of spades beside poker chips', 'cards')] %}
       <a class="h-tile reveal" href="{{ href }}">
         <div class="h-tile__media">{{ img(image, alt, sizes='(max-width: 900px) 40vw, 18vw') }}</div>
         <div class="h-tile__body">
@@ -123,7 +142,7 @@
 
 {# ================= SOCIAL — ticker + layout ================= #}
 <section class="h-social" aria-labelledby="social-title">
-  <div class="h-ticker" aria-hidden="true">
+  <div class="h-ticker is-dark" aria-hidden="true">
     <div class="h-ticker__track">
       {% for _ in range(2) %}
       {% for t in ['New member meet & greets', 'Singles socials', 'Member mixers', 'Watch parties', 'Trivia', 'Community nights', 'Private gatherings'] %}
@@ -136,8 +155,8 @@
     <div class="container">
       <div class="split">
         <div class="h-photos reveal">
-          <div class="h-photo h-photo--a">{{ img('The-Den-Poker-Lounge-9-1', 'A guest seated at the table during an evening at the club', sizes='(max-width: 900px) 55vw, 24vw') }}</div>
-          <div class="h-photo h-photo--b">{{ img('The-Den-Poker-Lounge-7-1', 'A smiling guest in a cream jacket at the poker table', sizes='(max-width: 900px) 55vw, 24vw') }}</div>
+          <div class="h-photo h-photo--a">{{ img('stock-watch-party', 'Friends cheering together while watching a game on TV', sizes='(max-width: 900px) 60vw, 28vw') }}</div>
+          <div class="h-photo h-photo--b">{{ img('stock-social-table', 'Friends talking and playing cards around a table in a warm, dim room', sizes='(max-width: 900px) 60vw, 28vw') }}</div>
         </div>
         <div class="reveal">
           <p class="eyebrow">Social &amp; events</p>
@@ -157,8 +176,8 @@
 </section>
 
 {# ================= POKER — feature band ================= #}
-<section class="h-poker" aria-labelledby="poker-title">
-  <div class="h-poker__media">{{ img('The-Den-Poker-Lounge-Image-11', 'An empty poker table with leather chairs, chip stacks and The Den crest on the felt', sizes='100vw') }}</div>
+<section class="h-poker is-dark" aria-labelledby="poker-title">
+  <div class="h-poker__media">{{ img('stock-poker-hands', 'Players’ hands with chips and cards on a green poker table', sizes='100vw') }}</div>
   <div class="container h-poker__inner">
     <div class="h-poker__panel reveal">
       <p class="eyebrow">Poker at The Den</p>
@@ -185,7 +204,7 @@
         <div class="btn-row mt-1"><a class="btn btn--gold" href="/contact-us/">Plan a visit {{ icon('arrow') }}</a><a class="link-arrow" href="/networking/">Networking at The Den {{ icon('arrow') }}</a></div>
       </div>
     </div>
-    <div class="h-biz__banner reveal">{{ img('The-Den-Poker-Lounge-Image-9', 'Professionals in conversation around a table in a private lounge', sizes='(max-width: 1300px) 92vw, 1240px') }}</div>
+    <div class="h-biz__banner reveal">{{ img('stock-business', 'Colleagues talking over glasses of wine at a table in a brick-walled lounge', sizes='(max-width: 1300px) 92vw, 1240px') }}</div>
     <div class="h-biz__cards">
       {% for ic, title, text in [('briefcase','Client meetings','A comfortable setting for conversations that matter.'),('handshake','Networking nights','Meet professionals, entrepreneurs, and new connections.'),('users','Small gatherings','Bring your team together without losing the room’s energy.')] %}
       <article class="card reveal">
@@ -199,7 +218,7 @@
 </section>
 
 {# ================= MEMBERSHIP — the card ================= #}
-<section class="section section--alt h-member" aria-labelledby="member-title">
+<section class="section h-member is-dark" aria-labelledby="member-title">
   <div class="container">
     <div class="h-member__grid">
       <div class="h-mcard-wrap reveal" aria-hidden="true">
@@ -283,7 +302,7 @@
 </section>
 
 {# ================= FINAL CTA — your seat ================= #}
-<section class="h-seat" aria-labelledby="seat-title">
+<section class="h-seat is-dark" aria-labelledby="seat-title">
   <div class="container">
     <div class="h-seat__table">
       <div class="h-seat__felt" aria-hidden="true">

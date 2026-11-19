@@ -101,6 +101,28 @@
     els.forEach(function (el) { el.classList.add("is-in"); });
   }
 
+  /* Hero: dealt cards follow the pointer slightly */
+  var deal = document.querySelector("[data-tilt]");
+  if (deal && window.matchMedia("(hover: hover) and (prefers-reduced-motion: no-preference)").matches) {
+    var hero = deal.closest("section") || deal;
+    hero.addEventListener("mousemove", function (e) {
+      var r = hero.getBoundingClientRect();
+      deal.style.setProperty("--mx", ((e.clientX - r.left) / r.width - 0.5).toFixed(3) * 2);
+      deal.style.setProperty("--my", ((e.clientY - r.top) / r.height - 0.5).toFixed(3) * 2);
+    });
+    hero.addEventListener("mouseleave", function () { deal.style.setProperty("--mx", 0); deal.style.setProperty("--my", 0); });
+  }
+
+  /* Intro panels: tap / keyboard opens a panel */
+  document.querySelectorAll(".h-panel").forEach(function (p) {
+    function open() {
+      document.querySelectorAll(".h-panel.is-open").forEach(function (o) { o.classList.remove("is-open"); });
+      p.classList.add("is-open");
+    }
+    p.addEventListener("click", open);
+    p.addEventListener("focus", open);
+  });
+
   /* Elementor Pro form endpoint (same fields, IDs and handler as the live site).
      Works when served from pokerattheden.com; elsewhere it falls back to phone/email. */
   document.querySelectorAll("form[data-elementor-form]").forEach(function (form) {

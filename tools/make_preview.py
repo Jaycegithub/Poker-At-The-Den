@@ -59,11 +59,11 @@ extra = """
 <style>
   .site-header { top: env(safe-area-inset-top, 0px); }
   .map-static { position: relative; width: 100%; height: 100%; min-height: 280px; overflow: hidden;
-    background: radial-gradient(circle at 55% 45%, rgba(198,161,91,.16), transparent 40%), #151515; }
+    background: radial-gradient(circle at 55% 45%, rgba(176,138,62,.18), transparent 40%), #f3f0e9; }
   .map-static__grid { position: absolute; inset: -20%; transform: rotate(-24deg);
-    background-image: linear-gradient(rgba(255,255,255,.06) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(18,18,18,.08) 2px, transparent 2px), linear-gradient(90deg, rgba(18,18,18,.05) 1px, transparent 1px);
     background-size: 120px 90px, 70px 70px; }
-  .map-static__grid::after { content: ""; position: absolute; left: 0; right: 0; top: 48%; height: 10px; background: rgba(198,161,91,.22); }
+  .map-static__grid::after { content: ""; position: absolute; left: 0; right: 0; top: 48%; height: 10px; background: rgba(176,138,62,.35); }
   .map-static__pin { position: absolute; left: 58%; top: 42%; transform: translate(-50%, -100%); width: 46px; height: 46px; border-radius: 50%;
     display: grid; place-items: center; background: #c6a15b; color: #0b0b0b; box-shadow: 0 0 0 10px rgba(198,161,91,.18), 0 10px 30px rgba(0,0,0,.6); }
   .map-static__pin .icon { width: 22px; height: 22px; }
