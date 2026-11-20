@@ -2,14 +2,14 @@
 {% import "partials/macros.html" as m with context %}
 {% import "partials/cards.html" as c with context %}
 {% block head %}
-<link rel="preload" as="image" href="/assets/img/bear-light-400.webp">
+<link rel="preload" as="image" href="/assets/img/ali-800.webp" imagesrcset="/assets/img/ali-480.webp 480w, /assets/img/ali-800.webp 800w, /assets/img/ali-1325.webp 1325w" imagesizes="(max-width: 900px) 92vw, 46vw">
 <link rel="stylesheet" href="/assets/css/home.css">
 {% endblock %}
 {% block cta %}{% endblock %}
 {% block content %}
 
-{# ================= HERO — the table rail with bear chips (option C) ================= #}
-{{ c.hero_c() }}
+{# ================= HERO — Ali in front of a giant poker chip ================= #}
+{{ c.hero_ali() }}
 
 {# ================= WHAT IS THE DEN — club / people / seat ================= #}
 <section class="section h-intro is-dark has-bear has-bear--light" aria-labelledby="intro-title" data-lines>

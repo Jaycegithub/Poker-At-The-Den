@@ -461,7 +461,8 @@ main > section.is-dark + .h-social { box-shadow: inset 0 1px 0 rgba(198,161,91,.
 .h-ticket-wrap { position: relative; max-width: 1040px; margin-inline: auto; }
 .h-ticket__stub--ali { align-content: end; padding-bottom: 2.2rem; gap: .4rem; }
 .h-ticket__bear { width: 46%; max-width: 130px; height: auto; filter: drop-shadow(0 10px 20px rgba(0,0,0,.6)); }
-.h-ali--ticket { position: absolute; z-index: 2; width: clamp(250px, 26vw, 360px); right: clamp(-50px, -2vw, -10px); bottom: 74px; filter: drop-shadow(0 20px 30px rgba(0,0,0,.35)); }
+.h-ali--ticket { position: absolute; z-index: 2; width: clamp(280px, 27vw, 380px); right: clamp(-60px, -3vw, -10px); bottom: 104px; filter: drop-shadow(0 20px 30px rgba(0,0,0,.35)); }
+.h-invite { padding-top: clamp(7rem, 5rem + 6vw, 11rem); }
 @media (max-width: 760px) {
   .h-ticket-wrap:has(.h-ali) { padding-top: 150px; }
   .h-ali--ticket { width: 210px; right: 50%; transform: translateX(50%); bottom: auto; top: 0; }
@@ -469,3 +470,69 @@ main > section.is-dark + .h-social { box-shadow: inset 0 1px 0 rgba(198,161,91,.
   .h-ticket__stub { padding-top: 1.4rem; }
 }
 @media (prefers-reduced-motion: reduce) { .h-ali--hero { animation: none; } }
+
+/* ---------- Final hero: Ali in front of a giant poker chip ---------- */
+.h-hero--ali { padding-top: calc(var(--header-h) + clamp(1.5rem, 1rem + 3vw, 4rem)); }
+.h-hero--ali .h-hero__bg { background:
+    radial-gradient(42% 60% at 75% 50%, rgba(176,138,62,.22), transparent 70%),
+    radial-gradient(40% 50% at 5% 95%, rgba(176,138,62,.08), transparent 70%), var(--bg); }
+.h-ali-grid { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: clamp(1.5rem, 1rem + 3vw, 4rem); }
+.h-hero--ali h1 { font-size: clamp(2.6rem, 1.3rem + 4.4vw, 5.4rem); }
+.h-proof { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem 1.2rem; margin-top: 1.8rem; padding-top: 1.6rem; border-top: 1px solid var(--line); }
+.h-proof a { color: var(--text); font-weight: 600; }
+.h-hero--ali { padding-bottom: clamp(3rem, 2rem + 3vw, 5rem); }
+.h-hero--ali .h-hero__loc { margin-top: 1.4rem; }
+.h-proof li { display: flex; align-items: center; gap: .8rem; font-size: .95rem; color: var(--text-2); }
+.h-proof__chip { width: 34px; height: 34px; flex: none; border-radius: 50%; display: grid; place-items: center; color: #f1d99d;
+  background: radial-gradient(circle, #141414 0 58%, transparent 59%), repeating-conic-gradient(#c6a15b 0 20deg, #141414 20deg 40deg); box-shadow: 0 6px 12px -6px rgba(0,0,0,.5); }
+.h-proof__chip .icon { width: 13px; height: 13px; }
+
+.h-stage-ali { --mx: 0; --my: 0; position: relative; width: 100%; max-width: 680px; margin-inline: auto; aspect-ratio: 1 / .98; }
+/* giant chip backdrop */
+.h-bigchip { position: absolute; left: 50%; top: 50%; width: 86%; aspect-ratio: 1; transform: translate(-50%, -46%); border-radius: 50%;
+  box-shadow: 0 60px 100px -40px rgba(30,22,8,.75), 0 0 0 1px rgba(176,138,62,.5); animation: bigIn 1.2s var(--ease) backwards; }
+@keyframes bigIn { from { transform: translate(-50%, -46%) scale(.85) rotate(-40deg); opacity: 0; } }
+.h-bigchip__edge { position: absolute; inset: 0; border-radius: 50%; animation: spin 60s linear infinite;
+  background: radial-gradient(circle, transparent 0 66%, rgba(0,0,0,.4) 66.5% 67.5%, transparent 68%), repeating-conic-gradient(#c6a15b 0 11deg, #141414 11deg 22deg, #f5f3ef 22deg 26deg, #141414 26deg 36deg); }
+@keyframes spin { to { transform: rotate(360deg); } }
+.h-bigchip__core { position: absolute; inset: 15%; border-radius: 50%; display: grid; place-items: center;
+  background: radial-gradient(circle at 40% 30%, #2a2723, #0f0f0e 70%); box-shadow: inset 0 0 0 10px #121212, inset 0 0 0 12px rgba(198,161,91,.55), inset 0 0 60px rgba(0,0,0,.8); }
+.h-bigchip__core::before { content: ""; position: absolute; inset: 9%; border-radius: 50%; border: 2px dashed rgba(217,189,131,.4); }
+.h-bigchip__core img { width: 46%; height: auto; opacity: .16; }
+.h-stage-ali__glow { position: absolute; left: 50%; top: 40%; width: 70%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(circle, rgba(241,217,157,.35), transparent 65%); filter: blur(10px); }
+/* Ali */
+.h-ali-img { position: absolute; z-index: 3; left: 50%; bottom: 0; width: 100%; transform: translateX(-50%) translate(calc(var(--mx) * -6px), calc(var(--my) * -4px));
+  animation: aliRise 1.1s var(--ease) .25s backwards; transition: transform .5s var(--ease); }
+.h-ali-img img { width: 100%; height: auto; filter: drop-shadow(0 30px 40px rgba(30,22,8,.45)); }
+@keyframes aliRise { from { transform: translateX(-50%) translateY(60px) scale(.94); opacity: 0; } }
+/* flying cards and chips */
+.h-fly { position: absolute; z-index: 2; animation: floaty 6s ease-in-out infinite; transition: translate .5s var(--ease); }
+.h-fly.pc { --w: clamp(70px, 7vw, 104px); }
+.h-fly--card1 { left: 2%; top: 16%; rotate: -18deg; translate: calc(var(--mx) * 14px) calc(var(--my) * 10px); animation-delay: -1s; }
+.h-fly--card2 { left: 12%; top: 4%; rotate: -6deg; translate: calc(var(--mx) * 10px) calc(var(--my) * 8px); animation-delay: -3s; z-index: 1; }
+.h-fly--chip1, .h-fly--chip2, .h-fly--chip3 { width: clamp(52px, 5vw, 74px); aspect-ratio: 1; }
+.h-fly .h-coin__face img { width: 56%; }
+.h-fly--chip1 { right: 6%; bottom: 6%; translate: calc(var(--mx) * 18px) calc(var(--my) * 12px); animation-delay: -2s; }
+.h-fly--chip2 { left: 0; bottom: 24%; translate: calc(var(--mx) * -16px) calc(var(--my) * 12px); animation-delay: -4s; z-index: 4; }
+.h-fly--chip3 { right: 0; bottom: 30%; width: clamp(44px, 4vw, 60px); translate: calc(var(--mx) * 20px) calc(var(--my) * -12px); animation-delay: -5s; z-index: 4; }
+@keyframes floaty { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-12px) rotate(6deg); } }
+.h-stage-ali__badge { right: 1%; top: 4%; width: clamp(84px, 8vw, 110px); z-index: 4; }
+.h-bubble { position: absolute; z-index: 5; left: 4%; top: 44%; padding: .8rem 1.15rem; border-radius: 16px 16px 16px 4px; background: #fff; border: 1px solid var(--line-gold);
+  box-shadow: 0 20px 40px -18px rgba(40,30,10,.5); font-family: var(--font-display); font-weight: 700; font-size: clamp(.95rem, .85rem + .4vw, 1.2rem); letter-spacing: .04em; color: var(--ink);
+  animation: bubbleIn .6s var(--ease) 1.3s backwards; }
+.h-bubble::after { content: ""; position: absolute; left: 18px; bottom: -9px; width: 16px; height: 16px; background: #fff; border-right: 1px solid var(--line-gold); border-bottom: 1px solid var(--line-gold); transform: rotate(45deg); }
+@keyframes bubbleIn { from { transform: scale(.6) translateY(10px); opacity: 0; } }
+@media (max-width: 900px) {
+  .h-ali-grid { grid-template-columns: 1fr; }
+  .h-stage-ali { max-width: 460px; order: -1; margin-top: -.5rem; }
+  .h-hero--ali { padding-top: calc(var(--header-h) + 1rem); }
+}
+@media (max-width: 480px) { .h-proof { grid-template-columns: 1fr; } .h-stage-ali { max-width: 340px; } }
+@media (max-width: 600px) {
+  .h-bubble { top: 38%; left: 0; font-size: .85rem; padding: .6rem .85rem; }
+  .h-stage-ali__badge { width: 70px; right: 0; top: 2%; } .h-stage-ali__badge span { font-size: .58rem; }
+  .h-fly--card1 { left: -2%; } .h-fly--card2 { left: 8%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .h-bigchip, .h-bigchip__edge, .h-ali-img, .h-fly, .h-bubble { animation: none !important; }
+}
