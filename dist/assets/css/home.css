@@ -601,7 +601,7 @@ main > section.is-dark + .h-social { box-shadow: inset 0 1px 0 rgba(198,161,91,.
     linear-gradient(180deg, #0a0a0a 0%, #121110 100%); }
 .h-hero--ali .h-hero__bg::after { opacity: .35; background-image: radial-gradient(circle at center, rgba(198,161,91,.5) 1px, transparent 1.5px); }
 .h-hero--ali .h-pill { background: rgba(198,161,91,.1); }
-.h-hero--ali .btn--ghost { --b-bd: rgba(255,255,255,.28); }
+
 .h-hero--ali .h-proof { border-top-color: rgba(255,255,255,.12); }
 .h-hero--ali .h-ali-img img { filter: drop-shadow(0 20px 40px rgba(0,0,0,.6)); }
 .h-hero--ali .h-bigchip { box-shadow: 0 0 0 1px rgba(198,161,91,.6), 0 0 120px rgba(198,161,91,.25); }
@@ -616,3 +616,17 @@ main > section.is-dark + .h-social { box-shadow: inset 0 1px 0 rgba(198,161,91,.
 /* Club cards on black: lift them off the background */
 .h-hand-sec .h-card__face { background: radial-gradient(120% 80% at 50% 0%, rgba(198,161,91,.2), transparent 60%), repeating-linear-gradient(45deg, rgba(255,255,255,.02) 0 2px, transparent 2px 6px), #1a1917;
   box-shadow: 0 34px 60px -26px rgba(0,0,0,.9), 0 0 0 1px rgba(198,161,91,.45), inset 0 0 0 7px #1a1917, inset 0 0 0 8px rgba(198,161,91,.35); }
+
+/* ---------- Closing CTA as a VIP invitation card (no coupon notches) ---------- */
+.h-ticket { -webkit-mask: none !important; mask: none !important; border-radius: 24px; }
+.h-ticket__stub, .h-ticket__stub--ali { border-left: 0 !important; border-top: 0 !important; }
+.h-ticket::before { inset: 14px; border-radius: 14px; border-color: rgba(198,161,91,.4); }
+.h-ticket::after { content: ""; position: absolute; inset: 26px; pointer-events: none; --c: #c6a15b; --l: 34px;
+  background:
+    linear-gradient(var(--c), var(--c)) top left / var(--l) 2px no-repeat, linear-gradient(var(--c), var(--c)) top left / 2px var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--l) 2px no-repeat, linear-gradient(var(--c), var(--c)) top right / 2px var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--l) 2px no-repeat, linear-gradient(var(--c), var(--c)) bottom left / 2px var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--l) 2px no-repeat, linear-gradient(var(--c), var(--c)) bottom right / 2px var(--l) no-repeat; }
+.h-ticket__main { position: relative; z-index: 1; }
+.h-ticket__main .eyebrow::after { content: ""; }
+.h-ali--ticket { bottom: 15px; }
