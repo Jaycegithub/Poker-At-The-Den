@@ -536,3 +536,31 @@ main > section.is-dark + .h-social { box-shadow: inset 0 1px 0 rgba(198,161,91,.
 @media (prefers-reduced-motion: reduce) {
   .h-bigchip, .h-bigchip__edge, .h-ali-img, .h-fly, .h-bubble { animation: none !important; }
 }
+
+/* ---------- Full-body Ali: standing on the black band ---------- */
+.h-hero--ali { padding-bottom: 0; }
+.h-hero--ali .h-hero__copy { padding-bottom: clamp(3rem, 2rem + 3vw, 5rem); align-self: center; }
+.h-ali-grid { align-items: end; }
+.h-stage-ali { aspect-ratio: 1 / 1.04; max-width: 620px; align-self: end; }
+.h-ali-img { width: 72%; bottom: 0; }
+.h-ali-img img { filter: drop-shadow(0 10px 30px rgba(30,22,8,.35)); }
+.h-bigchip { width: 92%; top: 44%; }
+.h-bubble { left: 0; top: 30%; }
+.h-stage-ali__badge { right: 2%; top: 8%; }
+.h-fly--chip1 { right: 4%; bottom: 14%; }
+.h-fly--chip2 { left: 4%; bottom: 10%; }
+.h-fly--chip3 { right: 0; bottom: 42%; }
+@media (max-width: 900px) {
+  .h-stage-ali { order: 0; margin-top: 0; max-width: 420px; }
+  .h-hero--ali .h-hero__copy { padding-bottom: 1rem; }
+}
+@media (max-width: 480px) { .h-stage-ali { max-width: 340px; } }
+
+/* Ticket: Ali stands inside the stub */
+.h-ticket__stub--ali { align-content: start; padding-top: 2.4rem; }
+.h-ali--ticket { width: clamp(170px, 18vw, 230px); right: clamp(28px, 3vw, 40px); bottom: 13px; filter: drop-shadow(0 16px 24px rgba(0,0,0,.45)); }
+@media (max-width: 760px) {
+  .h-ticket-wrap:has(.h-ali) { padding-top: 210px; }
+  .h-ali--ticket { width: 180px; right: 50%; transform: translateX(50%); top: 0; bottom: auto; }
+  .h-ticket__stub--ali { padding-top: 1.4rem; }
+}

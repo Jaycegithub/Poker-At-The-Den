@@ -43,4 +43,4 @@ Option A shows by default; the others are rendered `hidden`. Once one is chosen,
 
 ## The bear
 - The crest is cut from the club logo (`bear-dark-*` for light backgrounds, `bear-light-*` for dark). It's used on the hero chips, the hero pill, card backs, the gold seals above centred headings, faint watermarks in five bands, the events ticker and the closing ticket stub.
-- **Ali, the mascot**, is the club's own artwork (supplied by the client), stored as `src/assets/img/ali.webp` with `ali-480/800/1325` sizes. He appears in the hero, in front of a giant rotating poker chip, and on the closing ticket stub. `build.py`'s `mascot()` adds him to the ticket whenever the file exists.
+- **Ali, the mascot**, is the club's own full-body artwork, supplied by the client. It came as an RGB image with a checkerboard painted in where the transparency should be. `tools/cutout_checkerboard.py` removes that checkerboard while keeping the white lettering and the cards. The cutout master is `assets-src/ali-full.png`; the web copies are `src/assets/img/ali-480/800/964.webp`. Ali stands at the bottom of the hero, touching the black band below, and inside the closing ticket's stub.

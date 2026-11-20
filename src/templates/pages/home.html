@@ -2,7 +2,7 @@
 {% import "partials/macros.html" as m with context %}
 {% import "partials/cards.html" as c with context %}
 {% block head %}
-<link rel="preload" as="image" href="/assets/img/ali-800.webp" imagesrcset="/assets/img/ali-480.webp 480w, /assets/img/ali-800.webp 800w, /assets/img/ali-1325.webp 1325w" imagesizes="(max-width: 900px) 92vw, 46vw">
+<link rel="preload" as="image" href="/assets/img/ali-800.webp" imagesrcset="/assets/img/ali-480.webp 480w, /assets/img/ali-800.webp 800w, /assets/img/ali-964.webp 964w" imagesizes="(max-width: 900px) 80vw, 34vw">
 <link rel="stylesheet" href="/assets/css/home.css">
 {% endblock %}
 {% block cta %}{% endblock %}
@@ -282,12 +282,14 @@
           </div>
         </div>
         <div class="h-ticket__stub{% if mascot %} h-ticket__stub--ali{% endif %}" aria-hidden="true">
+          {% if mascot %}<span class="h-ticket__label">Members only</span>
+          <span class="h-ticket__small">Rowlett · Texas</span>{% endif %}
           {% if not mascot %}
           <img src="/assets/img/bear-light-400.webp" width="400" height="400" alt="" loading="lazy" class="h-ticket__bear">
           <span class="h-ticket__suits">{{ icon('suit-spade') }}{{ icon('suit-heart') }}{{ icon('suit-club') }}{{ icon('suit-diamond') }}</span>
-          {% endif %}
           <span class="h-ticket__label">Members only</span>
           <span class="h-ticket__small">Rowlett · Texas</span>
+          {% endif %}
         </div>
       </div>
       {% if mascot %}<img class="h-ali h-ali--ticket" src="{{ mascot }}" alt="Ali, The Den’s bear mascot" loading="lazy">{% endif %}
