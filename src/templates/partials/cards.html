@@ -1,0 +1,102 @@
+{# Real playing cards built in HTML/CSS, plus the homepage hero options. #}
+
+{% macro pcard(rank, suit, cls='', style='') %}
+<div class="pc{% if suit in ('heart', 'diamond') %} pc--red{% endif %} {{ cls }}"{% if style %} style="{{ style }}"{% endif %}>
+  <span class="pc__idx"><b>{{ rank }}</b>{{ icon('suit-' ~ suit) }}</span>
+  <span class="pc__idx pc__idx--br"><b>{{ rank }}</b>{{ icon('suit-' ~ suit) }}</span>
+  {% if rank == 'A' %}
+  <span class="pc__pip">{{ icon('suit-' ~ suit) }}</span>
+  {% else %}
+  <span class="pc__court"><b>{{ rank }}</b>{{ icon('suit-' ~ suit) }}</span>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{% macro pback(cls='', style='') %}
+<div class="pc pc--back {{ cls }}"{% if style %} style="{{ style }}"{% endif %}><span class="pc__mono">{{ icon('suit-spade') }}</span></div>
+{% endmacro %}
+
+{% macro hero_copy(id, centered=False) %}
+<div class="h-hero__copy{% if centered %} h-hero__copy--center{% endif %}">
+  <p class="h-pill">{{ icon('suit-spade') }} A private social club in Rowlett</p>
+  <h1 id="{{ id }}">Welcome, <span class="foil">grab a seat.</span></h1>
+  <p class="h-hero__lede">The Den is a private social club built for games, conversation, connection, and community. Play a hand, meet someone new, make a business connection, watch the game, or simply pull up a chair.</p>
+  <div class="btn-row">
+    <a class="btn btn--gold" href="/membership/">Become A Member {{ icon('arrow') }}</a>
+    <a class="btn btn--ghost" href="/contact-us/">See What’s Happening</a>
+  </div>
+  <p class="h-hero__loc">{{ icon('pin') }} located in Rowlett, 20 min east of downtown Dallas</p>
+</div>
+{% endmacro %}
+
+{% macro hero_strip() %}
+<div class="container">
+  <ul class="h-strip" aria-label="At a glance">
+    <li>{{ icon('lock') }}<span>Private social club</span></li>
+    <li>{{ icon('cards') }}<span>Poker · Chess · Dominoes · Spades</span></li>
+    <li>{{ icon('clock') }}<span>{{ site.hours }}</span></li>
+    <li>{{ icon('phone') }}<a href="{{ site.phone_href }}">{{ site.phone }}</a></li>
+  </ul>
+</div>
+{% endmacro %}
+
+{# ---------- Option A: a fan of real playing cards ---------- #}
+{% macro hero_a(hidden=False) %}
+<section class="h-hero h-hero--a" data-hero="a" aria-labelledby="hero-title-a"{% if hidden %} hidden{% endif %}>
+  <div class="h-hero__bg" aria-hidden="true"></div>
+  <div class="container h-hero__grid">
+    {{ hero_copy('hero-title-a') }}
+    <div class="h-fan" data-tilt aria-hidden="true">
+      {{ pback('h-fan__card h-fan__card--back') }}
+      {{ pcard('K', 'heart', 'h-fan__card h-fan__card--1') }}
+      {{ pcard('Q', 'diamond', 'h-fan__card h-fan__card--3') }}
+      {{ pcard('A', 'spade', 'h-fan__card h-fan__card--2') }}
+      <div class="h-chipbadge"><span>Open<br>7 Days</span></div>
+      <div class="h-tag">{{ icon('suit-spade') }} No Limit Hold’em</div>
+    </div>
+  </div>
+  {{ hero_strip() }}
+</section>
+{% endmacro %}
+
+{# ---------- Option B: one photo in a gold arch ---------- #}
+{% macro hero_b(hidden=False) %}
+<section class="h-hero h-hero--b" data-hero="b" aria-labelledby="hero-title-b"{% if hidden %} hidden{% endif %}>
+  <div class="h-hero__bg" aria-hidden="true"></div>
+  <div class="container h-hero__grid">
+    {{ hero_copy('hero-title-b') }}
+    <div class="h-arch" aria-hidden="true">
+      <div class="h-arch__ring"></div>
+      <div class="h-arch__frame">{{ img('The-Den-Poker-Lounge-Image-7', '', sizes='(max-width: 900px) 80vw, 34vw', eager=True) }}</div>
+      {{ pcard('A', 'spade', 'h-arch__card') }}
+      <div class="h-chipbadge h-arch__chip"><span>Open<br>7 Days</span></div>
+      <div class="h-tag h-arch__tag">{{ icon('suit-spade') }} No Limit Hold’em</div>
+    </div>
+  </div>
+  {{ hero_strip() }}
+</section>
+{% endmacro %}
+
+{# ---------- Option C: the flop, turn and river ---------- #}
+{% macro hero_c(hidden=False) %}
+<section class="h-hero h-hero--c" data-hero="c" aria-labelledby="hero-title-c"{% if hidden %} hidden{% endif %}>
+  <div class="h-hero__bg" aria-hidden="true"></div>
+  <div class="container">
+    {{ hero_copy('hero-title-c', centered=True) }}
+    <div class="h-flop" aria-hidden="true">
+      <div class="h-flop__rail">
+        {% for r in ['A', 'K', 'Q', 'J', '10'] %}
+        <div class="h-flip" style="--n:{{ loop.index0 }}">
+          <div class="h-flip__inner">
+            {{ pcard(r, 'spade', 'h-flip__face') }}
+            {{ pback('h-flip__back') }}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="h-flop__labels"><span class="is-flop">The Flop</span><span>The Turn</span><span>The River</span></div>
+    </div>
+  </div>
+  {{ hero_strip() }}
+</section>
+{% endmacro %}

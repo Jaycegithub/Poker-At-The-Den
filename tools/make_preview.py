@@ -71,13 +71,21 @@ extra = """
     bottom: calc(16px + env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; gap: .6rem;
     padding: .55rem 1rem; border-radius: 999px; background: rgba(11,11,11,.92); border: 1px solid rgba(198,161,91,.5);
     color: #f5f3ef; font: 600 .72rem/1.3 "Manrope", system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase;
-    box-shadow: 0 10px 30px rgba(0,0,0,.6); white-space: nowrap; max-width: calc(100% - 32px); overflow: hidden; text-overflow: ellipsis; }
+    box-shadow: 0 10px 30px rgba(0,0,0,.6); flex-wrap: wrap; justify-content: center; max-width: calc(100% - 32px); }
+  .preview-pill .pp-label { color: #a5a5a5; }
+  .preview-pill button { font: inherit; letter-spacing: inherit; text-transform: inherit; color: #f5f3ef; background: transparent; border: 1px solid rgba(198,161,91,.45); border-radius: 999px; padding: .4rem .75rem; cursor: pointer; }
+  .preview-pill button[aria-pressed="true"] { background: #c6a15b; color: #0b0b0b; border-color: #c6a15b; }
+  .preview-pill button:focus-visible { outline: 2px solid #ecd193; outline-offset: 2px; }
   .preview-pill b { color: #c6a15b; font-weight: 700; }
-  @media (max-width: 700px) { .preview-pill { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); font-size: .64rem; } }
+  @media (max-width: 700px) { .preview-pill { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); font-size: .6rem; gap: .4rem; padding: .5rem .7rem; border-radius: 16px; } .preview-pill .pp-label { display: none; } }
 </style>
 <script>window.DEN_PREVIEW = true;</script>
 """
-pill = '<div class="preview-pill" role="note"><b>Design preview</b> Homepage concept · not the live site</div>'
+pill = ('<div class="preview-pill" role="group" aria-label="Design preview: choose a hero option" data-hero-switch>'
+        '<b>Design preview</b><span class="pp-label">Hero option</span>'
+        '<button type="button" value="a" aria-pressed="true">A · Cards</button>'
+        '<button type="button" value="b" aria-pressed="false">B · Arch</button>'
+        '<button type="button" value="c" aria-pressed="false">C · Flop</button></div>')
 
 body_html = body.decode_contents()
 page = "\n".join(keep_head) + extra + body_html + pill

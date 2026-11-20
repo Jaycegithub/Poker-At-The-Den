@@ -113,15 +113,43 @@
     hero.addEventListener("mouseleave", function () { deal.style.setProperty("--mx", 0); deal.style.setProperty("--my", 0); });
   }
 
-  /* Intro panels: tap / keyboard opens a panel */
-  document.querySelectorAll(".h-panel").forEach(function (p) {
-    function open() {
-      document.querySelectorAll(".h-panel.is-open").forEach(function (o) { o.classList.remove("is-open"); });
-      p.classList.add("is-open");
+  /* Intro: club / people / seat lines drive the photo stage, and cycle on their own */
+  var linesSec = document.querySelector("[data-lines]");
+  if (linesSec) {
+    var lines = linesSec.querySelectorAll(".h-line");
+    var slides = linesSec.querySelectorAll(".h-stage__img");
+    var dots = linesSec.querySelectorAll(".h-stage__dots span");
+    var current = 0, timer = null;
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function show(i) {
+      current = i;
+      [lines, slides, dots].forEach(function (set) {
+        set.forEach(function (el, k) { el.classList.toggle("is-active", k === i); });
+      });
     }
-    p.addEventListener("click", open);
-    p.addEventListener("focus", open);
-  });
+    function play() { if (!reduce && !timer) timer = setInterval(function () { show((current + 1) % lines.length); }, 3600); }
+    function stop() { clearInterval(timer); timer = null; }
+    lines.forEach(function (el, i) {
+      el.addEventListener("mouseenter", function () { stop(); show(i); });
+      el.addEventListener("focus", function () { stop(); show(i); });
+      el.addEventListener("click", function () { stop(); show(i); });
+    });
+    linesSec.querySelector(".h-lines").addEventListener("mouseleave", play);
+    play();
+  }
+
+  /* Design review: switch between hero options */
+  var switcher = document.querySelector("[data-hero-switch]");
+  if (switcher) {
+    switcher.querySelectorAll("button").forEach(function (b) {
+      b.addEventListener("click", function () {
+        document.querySelectorAll("[data-hero]").forEach(function (h) { h.hidden = h.getAttribute("data-hero") !== b.value; });
+        switcher.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+        try { localStorage.setItem("den-hero", b.value); } catch (e) {}
+      });
+    });
+    try { var saved = localStorage.getItem("den-hero"); if (saved) { var btn = switcher.querySelector('button[value="' + saved + '"]'); if (btn) btn.click(); } } catch (e) {}
+  }
 
   /* Elementor Pro form endpoint (same fields, IDs and handler as the live site).
      Works when served from pokerattheden.com; elsewhere it falls back to phone/email. */
