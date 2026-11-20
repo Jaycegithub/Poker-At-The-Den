@@ -593,3 +593,26 @@ main > section.is-dark + .h-social { box-shadow: inset 0 1px 0 rgba(198,161,91,.
   .h-ali--ticket { width: 220px; height: auto; max-width: none; right: 50%; transform: translateX(50%); top: 0; bottom: auto; }
 }
 @media (min-width: 761px) and (max-width: 1000px) { .h-ali--ticket { max-width: 40%; } }
+
+/* ---------- Dark hero (with the floating glass nav) ---------- */
+.h-hero--ali .h-hero__bg { background:
+    radial-gradient(45% 65% at 72% 55%, rgba(198,161,91,.26), transparent 70%),
+    radial-gradient(35% 45% at 10% 100%, rgba(198,161,91,.1), transparent 70%),
+    linear-gradient(180deg, #0a0a0a 0%, #121110 100%); }
+.h-hero--ali .h-hero__bg::after { opacity: .35; background-image: radial-gradient(circle at center, rgba(198,161,91,.5) 1px, transparent 1.5px); }
+.h-hero--ali .h-pill { background: rgba(198,161,91,.1); }
+.h-hero--ali .btn--ghost { --b-bd: rgba(255,255,255,.28); }
+.h-hero--ali .h-proof { border-top-color: rgba(255,255,255,.12); }
+.h-hero--ali .h-ali-img img { filter: drop-shadow(0 20px 40px rgba(0,0,0,.6)); }
+.h-hero--ali .h-bigchip { box-shadow: 0 0 0 1px rgba(198,161,91,.6), 0 0 120px rgba(198,161,91,.25); }
+
+/* Intro on white: inactive lines in muted ink */
+.h-line { color: color-mix(in srgb, var(--text) 22%, transparent); }
+.h-line:hover:not(.is-active) { color: color-mix(in srgb, var(--text) 55%, transparent); }
+.h-quote--card { color-scheme: dark; }
+.h-quote--card blockquote { color: #f5f3ef; }
+.h-quote--card figcaption { color: #d9bd83; }
+
+/* Club cards on black: lift them off the background */
+.h-hand-sec .h-card__face { background: radial-gradient(120% 80% at 50% 0%, rgba(198,161,91,.2), transparent 60%), repeating-linear-gradient(45deg, rgba(255,255,255,.02) 0 2px, transparent 2px 6px), #1a1917;
+  box-shadow: 0 34px 60px -26px rgba(0,0,0,.9), 0 0 0 1px rgba(198,161,91,.45), inset 0 0 0 7px #1a1917, inset 0 0 0 8px rgba(198,161,91,.35); }

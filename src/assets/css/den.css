@@ -47,7 +47,7 @@
   --radius: 4px;
   --radius-lg: 10px;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
-  --header-h: 84px;
+  --header-h: 104px;
   color-scheme: dark;
 
   /* Elementor global variables consumed by the original HTML widgets
@@ -856,3 +856,32 @@ body.drawer-open { overflow: hidden; }
 .hub a.card .link-arrow { margin-top: 1rem; align-self: flex-start; }
 @media (max-width: 900px) { .hub { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 560px) { .hub { grid-template-columns: 1fr; } }
+
+/* ---------- Floating glass navigation bar ---------- */
+.site-header.is-dark { background: transparent !important; border: 0; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+  height: auto; inset: 14px 0 auto 0; padding-inline: max(14px, env(safe-area-inset-left, 0px)); color-scheme: dark; }
+.site-header.is-dark::before { display: none; }
+.site-header.is-dark.is-scrolled { --header-h: 104px; background: transparent !important; box-shadow: none; }
+.site-header.is-dark .site-header__inner {
+  max-width: 1440px; height: 76px; margin-inline: auto; padding: 0 .7rem 0 1.4rem; border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05)); border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(18px) saturate(150%); -webkit-backdrop-filter: blur(18px) saturate(150%);
+  box-shadow: 0 24px 50px -28px rgba(0,0,0,.75), inset 0 1px 0 rgba(255,255,255,.14);
+  transition: background .4s var(--ease), height .4s var(--ease), border-color .4s var(--ease);
+}
+.site-header.is-dark.is-scrolled .site-header__inner { height: 66px; background: rgba(16,15,14,.82); border-color: rgba(198,161,91,.3); }
+.site-header.is-dark .brand img { width: 170px; }
+.site-header.is-dark.is-scrolled .brand img { width: 150px; }
+.site-header.is-dark .nav__link { text-transform: none; letter-spacing: .01em; font-size: .95rem; font-weight: 500; color: rgba(245,243,239,.86); }
+.site-header.is-dark .nav__link:hover, .site-header.is-dark .nav__item:focus-within > .nav__link, .site-header.is-dark .nav__link[aria-current="page"], .site-header.is-dark .nav__item.is-current > .nav__link { color: #ecd193; }
+.site-header.is-dark .nav__link::after { bottom: .25rem; }
+.site-header.is-dark .header-cta { border-radius: 999px; min-height: 52px; padding: .85rem 1.5rem; font-size: .76rem; margin-left: 1rem; }
+.site-header.is-dark .header-cta svg { width: 16px; height: 16px; }
+.site-header.is-dark .nav-toggle { border-color: rgba(255,255,255,.2); border-radius: 12px; color: #f5f3ef; }
+.site-header.is-dark .dropdown { background: rgba(18,17,16,.96); backdrop-filter: blur(16px); border-radius: 14px; border-top-width: 1px; border-color: rgba(198,161,91,.35); top: calc(100% + 14px); }
+.site-header.is-dark .dropdown::before { top: -18px; height: 18px; }
+.site-header.is-dark .dropdown a { color: rgba(245,243,239,.82); }
+.site-header.is-dark .dropdown .sub a { color: rgba(245,243,239,.58); }
+@media (max-width: 1180px) { .site-header.is-dark .nav__link { font-size: .88rem; padding-inline: .5rem; } .site-header.is-dark .header-cta { margin-left: .4rem; padding-inline: 1.1rem; } }
+@media (max-width: 1080px) { .site-header.is-dark .site-header__inner { height: 66px; padding-left: 1rem; } .site-header.is-dark .brand img { width: 140px; } :root { --header-h: 92px; } }
+.drawer__panel.is-dark { background: #121110; border-left-color: rgba(198,161,91,.3); }
