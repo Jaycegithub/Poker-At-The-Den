@@ -280,10 +280,9 @@
             <a class="btn btn--gold" href="/join-now/">Become a Member {{ icon('arrow') }}</a>
             <a class="btn btn--ghost" href="/contact-us/">Contact the room</a>
           </div>
+          {% if mascot %}<p class="h-ticket__members"><span class="h-ticket__label">Members only</span><span class="h-ticket__small">Rowlett · Texas</span></p>{% endif %}
         </div>
         <div class="h-ticket__stub{% if mascot %} h-ticket__stub--ali{% endif %}" aria-hidden="true">
-          {% if mascot %}<span class="h-ticket__label">Members only</span>
-          <span class="h-ticket__small">Rowlett · Texas</span>{% endif %}
           {% if not mascot %}
           <img src="/assets/img/bear-light-400.webp" width="400" height="400" alt="" loading="lazy" class="h-ticket__bear">
           <span class="h-ticket__suits">{{ icon('suit-spade') }}{{ icon('suit-heart') }}{{ icon('suit-club') }}{{ icon('suit-diamond') }}</span>
