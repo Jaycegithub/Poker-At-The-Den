@@ -240,3 +240,18 @@ b.append(f'<g filter="url(#shadow)"><circle cx="510" cy="420" r="50" fill="{INK}
          f'<text x="510" y="442" font-family="{SERIF}" font-weight="700" font-size="26" fill="{IVORY}" text-anchor="middle">4</text></g>')
 b.append(chip_stack(130, 430, 4, GOLD, INK, rx=30, ry=10, step=6))
 write("art-spades.svg", svg(W, H, "".join(b), "A fanned hand of spades from ten to ace beside a bid marker"))
+
+# 6. Chip stacks on a transparent background (for laying on felt)
+W, H = 320, 230
+b = [chip_stack(70, 190, 7, "#1b1b1b", GOLD, rx=44, ry=14, step=9),
+     chip_stack(165, 205, 11, GOLD, INK, rx=46, ry=15, step=9),
+     chip_stack(258, 192, 5, IVORY, INK, rx=44, ry=14, step=9)]
+write("art-chips.svg", svg(W, H, "".join(b), "Three stacks of poker chips"))
+
+# 7. Dealer button
+W, H = 140, 140
+b = [f'<g filter="url(#shadow)"><circle cx="70" cy="64" r="56" fill="#d9d2c2"/><circle cx="70" cy="58" r="56" fill="url(#ivory)" stroke="{GOLD}" stroke-width="3"/>',
+     f'<circle cx="70" cy="58" r="44" fill="none" stroke="{GOLD}" stroke-opacity=".6" stroke-dasharray="4 5"/>',
+     f'<text x="70" y="70" font-family="{SERIF}" font-weight="700" font-size="34" fill="{INK}" text-anchor="middle">D</text>',
+     f'<text x="70" y="88" font-family="{SERIF}" font-size="9" letter-spacing="3" fill="{GOLD_D}" text-anchor="middle">DEALER</text></g>']
+write("art-dealer.svg", svg(W, H, "".join(b), "The dealer button"))

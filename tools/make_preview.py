@@ -85,7 +85,10 @@ pill = ('<div class="preview-pill" role="group" aria-label="Design preview: choo
         '<b>Design preview</b><span class="pp-label">Hero option</span>'
         '<button type="button" value="a" aria-pressed="true">A · Cards</button>'
         '<button type="button" value="b" aria-pressed="false">B · Arch</button>'
-        '<button type="button" value="c" aria-pressed="false">C · Flop</button></div>')
+        '<button type="button" value="c" aria-pressed="false">C · Flop</button>'
+        '<button type="button" value="d" aria-pressed="false">D · Table</button>'
+        '<button type="button" value="e" aria-pressed="false">E · Broadcast</button>'
+        '<button type="button" value="f" aria-pressed="false">F · Pocket Aces</button></div>')
 
 body_html = body.decode_contents()
 page = "\n".join(keep_head) + extra + body_html + pill

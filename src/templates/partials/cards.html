@@ -100,3 +100,81 @@
   {{ hero_strip() }}
 </section>
 {% endmacro %}
+
+{# ---------- Option D: the hero is a poker table seen from above ---------- #}
+{% macro hero_d(hidden=False) %}
+<section class="h-hero h-hero--d" data-hero="d" aria-labelledby="hero-title-d"{% if hidden %} hidden{% endif %}>
+  <div class="h-hero__bg" aria-hidden="true"></div>
+  <div class="container">
+    <div class="h-table">
+      <div class="h-table__seats" aria-hidden="true">
+        {% for s in seats %}<span style="left:{{ s[0] }}%;top:{{ s[1] }}%"></span>{% endfor %}
+      </div>
+      <div class="h-table__felt is-dark">
+        <div class="h-table__board" aria-hidden="true">
+          {% for r, su in [('A', 'spade'), ('K', 'heart'), ('Q', 'diamond')] %}{{ pcard(r, su, 'h-table__card') }}{% endfor %}
+          {{ pback('h-table__card') }}{{ pback('h-table__card') }}
+        </div>
+        <p class="h-pill">{{ icon('suit-spade') }} A private social club in Rowlett</p>
+        <h1 id="hero-title-d">Welcome, <span class="foil">grab a seat.</span></h1>
+        <p class="h-hero__lede">The Den is a private social club built for games, conversation, connection, and community. Play a hand, meet someone new, make a business connection, watch the game, or simply pull up a chair.</p>
+        <div class="btn-row">
+          <a class="btn btn--gold" href="/membership/">Become A Member {{ icon('arrow') }}</a>
+          <a class="btn btn--ghost" href="/contact-us/">See What’s Happening</a>
+        </div>
+        <p class="h-hero__loc">{{ icon('pin') }} located in Rowlett, 20 min east of downtown Dallas</p>
+        {{ art('art-chips', '', 'h-table__chips') }}
+        {{ art('art-dealer', '', 'h-table__dealer') }}
+      </div>
+    </div>
+  </div>
+  {{ hero_strip() }}
+</section>
+{% endmacro %}
+
+{# ---------- Option E: club photo with a TV-broadcast poker overlay ---------- #}
+{% macro hero_e(hidden=False) %}
+<section class="h-hero h-hero--e is-dark" data-hero="e" aria-labelledby="hero-title-e"{% if hidden %} hidden{% endif %}>
+  <div class="h-hero--e__media" aria-hidden="true">{{ img('The-Den-Poker-Lounge-Image-7', '', sizes='100vw', eager=True) }}</div>
+  <div class="container h-hero--e__inner">
+    {{ hero_copy('hero-title-e') }}
+    <div class="h-bcast" aria-hidden="true">
+      <div class="h-bcast__live"><span></span>Live at The Den</div>
+      <div class="h-bcast__bar">
+        <div class="h-bcast__cards">{{ pcard('A', 'spade', 'h-bcast__card') }}{{ pcard('K', 'spade', 'h-bcast__card') }}</div>
+        <div class="h-bcast__info">
+          <span class="h-bcast__game">No Limit Hold’em</span>
+          <span class="h-bcast__sub">Tournaments · Live action</span>
+        </div>
+        <div class="h-bcast__seat">Seat open<b>Yours</b></div>
+      </div>
+    </div>
+  </div>
+  {{ hero_strip() }}
+</section>
+{% endmacro %}
+
+{# ---------- Option F: pocket aces revealed on the felt ---------- #}
+{% macro hero_f(hidden=False) %}
+<section class="h-hero h-hero--f" data-hero="f" aria-labelledby="hero-title-f"{% if hidden %} hidden{% endif %}>
+  <div class="h-hero__bg" aria-hidden="true"></div>
+  <div class="container h-hero__grid">
+    {{ hero_copy('hero-title-f') }}
+    <div class="h-pocket" aria-hidden="true">
+      <div class="h-pocket__felt">
+        <div class="h-pocket__cards">
+          {% for su in ['spade', 'heart'] %}
+          <div class="h-flip h-pocket__flip" style="--n:{{ loop.index0 }}">
+            <div class="h-flip__inner">{{ pcard('A', su, 'h-flip__face') }}{{ pback('h-flip__back') }}</div>
+          </div>
+          {% endfor %}
+        </div>
+        <p class="h-pocket__label">Pocket Aces</p>
+        {{ art('art-chips', '', 'h-pocket__chips') }}
+        {{ art('art-dealer', '', 'h-pocket__dealer') }}
+      </div>
+    </div>
+  </div>
+  {{ hero_strip() }}
+</section>
+{% endmacro %}

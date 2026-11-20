@@ -117,6 +117,80 @@
 .h-flop__labels span { padding-top: .7rem; border-top: 1px solid var(--line-gold); }
 @media (max-width: 600px) { .h-flop__rail { border-radius: 28px; border-width: 6px; } .h-flop__labels { font-size: .58rem; letter-spacing: .14em; } }
 
+/* Option D: the hero is the table */
+.h-hero--d { padding-top: calc(var(--header-h) + clamp(1.5rem, 1rem + 2vw, 3rem)); }
+.h-table { position: relative; max-width: 1180px; margin-inline: auto; padding: clamp(18px, 2.4vw, 34px); }
+.h-table__seats span { position: absolute; z-index: 0; width: clamp(34px, 4vw, 54px); aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 35% 30%, #3a3833, #151515); box-shadow: 0 10px 20px -8px rgba(0,0,0,.6); border: 1px solid rgba(198,161,91,.35); }
+.h-table__seats { position: absolute; inset: 0; }
+.h-table__felt { position: relative; z-index: 1; border-radius: 50% / 50%; padding: clamp(3rem, 2rem + 4vw, 5.5rem) clamp(2rem, 1rem + 8vw, 10rem) clamp(4rem, 3rem + 4vw, 6rem);
+  display: grid; justify-items: center; text-align: center;
+  background: radial-gradient(ellipse at 50% 35%, #1f1d19 0%, #0e0e0d 70%) !important;
+  border: clamp(12px, 1.6vw, 22px) solid #1d1712; box-shadow: 0 0 0 1px rgba(217,189,131,.6), inset 0 0 0 1px rgba(217,189,131,.4), inset 0 0 120px rgba(0,0,0,.8), 0 60px 100px -50px rgba(30,22,8,.75); }
+.h-table__felt::before { content: ""; position: absolute; inset: 7% 6%; border-radius: 50%; border: 1px dashed rgba(217,189,131,.25); pointer-events: none; }
+.h-table__board { display: flex; gap: clamp(.35rem, .2rem + .6vw, .7rem); margin-bottom: 1.6rem; }
+.h-table__card { --w: clamp(48px, 4.6vw, 70px); box-shadow: 0 14px 24px -10px rgba(0,0,0,.8); }
+.h-table__card:nth-child(n+4) { opacity: .9; }
+.h-table__felt .h-pill { margin-bottom: 1.2rem; }
+.h-table__felt h1 { font-size: clamp(2.2rem, 1.2rem + 3.8vw, 4.6rem); font-weight: 600; line-height: 1.04; margin: 0 0 1.1rem; }
+.h-table__felt h1 .foil { display: block; }
+.h-table__felt .h-hero__lede { max-width: 58ch; margin-inline: auto; margin-bottom: 1.8rem; color: var(--text-2); }
+.h-table__felt .btn-row { justify-content: center; }
+.h-table__felt .h-hero__loc { justify-content: center; margin-top: 1.3rem; }
+.h-table__chips { position: absolute; width: clamp(110px, 12vw, 170px); height: auto; left: 9%; bottom: 16%; }
+.h-table__dealer { position: absolute; width: clamp(54px, 5vw, 76px); height: auto; right: 12%; bottom: 20%; transform: rotate(-12deg); }
+@media (max-width: 900px) {
+  .h-table__felt { border-radius: 40px; padding: 2.5rem 1.4rem 6.5rem; }
+  .h-table__felt::before { border-radius: 26px; inset: 14px; }
+  .h-table__seats { display: none; }
+  .h-table__chips { left: 50%; transform: translateX(-60%); bottom: 1.2rem; width: 120px; }
+  .h-table__dealer { right: 1.4rem; bottom: 1.6rem; width: 54px; }
+}
+
+/* Option E: club photo + broadcast overlay */
+.h-hero--e { padding-bottom: clamp(2rem, 1.5rem + 2vw, 3rem); }
+.h-hero--e__media { position: absolute; inset: 0; z-index: -2; }
+.h-hero--e__media img { width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; }
+.h-hero--e::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(11,11,11,.97) 0%, rgba(11,11,11,.88) 38%, rgba(11,11,11,.35) 70%, rgba(11,11,11,.55) 100%), linear-gradient(0deg, rgba(11,11,11,.85), transparent 35%); }
+.h-hero--e__inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); gap: 2rem 4rem; align-items: end; min-height: clamp(460px, 52vw, 640px); }
+.h-hero--e .h-hero__copy { align-self: center; }
+.h-hero--e .h-strip { background: rgba(21,21,21,.85); backdrop-filter: blur(10px); }
+.h-bcast { align-self: end; justify-self: end; width: min(520px, 100%); }
+.h-bcast__live { display: inline-flex; align-items: center; gap: .5rem; padding: .4rem .8rem; margin-bottom: .6rem; border-radius: 6px; background: #a3313a; color: #fff;
+  font-size: .68rem; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; }
+.h-bcast__live span { width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: hBlink 1.4s ease-in-out infinite; }
+@keyframes hBlink { 50% { opacity: .25; } }
+.h-bcast__bar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 1.1rem; padding: .9rem 1rem; border-radius: 14px;
+  background: linear-gradient(180deg, rgba(25,24,21,.94), rgba(11,11,11,.94)); border: 1px solid rgba(198,161,91,.55); box-shadow: 0 30px 60px -20px rgba(0,0,0,.9); }
+.h-bcast__cards { display: flex; gap: .35rem; }
+.h-bcast__card { --w: clamp(52px, 4.6vw, 66px); }
+.h-bcast__card:nth-child(2) { transform: rotate(6deg) translateY(2px); }
+.h-bcast__game { display: block; font-family: var(--font-display); font-weight: 700; font-size: clamp(1rem, .9rem + .5vw, 1.3rem); letter-spacing: .04em; color: #f5f3ef; }
+.h-bcast__sub { display: block; font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #a5a5a5; margin-top: .25rem; }
+.h-bcast__seat { display: grid; justify-items: center; padding: .6rem .9rem; border-radius: 10px; background: linear-gradient(135deg, #e2c483, #b08a3e); color: #0b0b0b;
+  font-size: .62rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
+.h-bcast__seat b { font-family: var(--font-display); font-size: 1.1rem; letter-spacing: .06em; }
+@media (max-width: 900px) { .h-hero--e__inner { grid-template-columns: 1fr; min-height: 0; } .h-bcast { justify-self: stretch; } }
+@media (max-width: 480px) { .h-bcast__bar { grid-template-columns: auto minmax(0, 1fr); } .h-bcast__seat { grid-column: 1 / -1; grid-auto-flow: column; gap: .6rem; justify-content: center; align-items: baseline; } }
+
+/* Option F: pocket aces */
+.h-pocket { display: grid; place-items: center; }
+.h-pocket__felt { position: relative; width: min(520px, 100%); aspect-ratio: 1 / .92; border-radius: 40px; display: grid; place-items: center; align-content: center; gap: 1.2rem;
+  background: radial-gradient(ellipse at 50% 35%, #1f1d19 0%, #0e0e0d 75%); border: 14px solid #1d1712;
+  box-shadow: 0 0 0 1px rgba(217,189,131,.6), inset 0 0 0 1px rgba(217,189,131,.4), inset 0 0 100px rgba(0,0,0,.8), 0 60px 100px -50px rgba(30,22,8,.75); }
+.h-pocket__felt::before { content: ""; position: absolute; inset: 22px; border-radius: 24px; border: 1px dashed rgba(217,189,131,.25); }
+.h-pocket__cards { display: flex; gap: 1rem; margin-top: -2rem; }
+.h-pocket__flip { width: clamp(120px, 12vw, 170px); }
+.h-pocket__flip:nth-child(1) { transform: rotate(-8deg); }
+.h-pocket__flip:nth-child(2) { transform: rotate(7deg) translateY(10px); }
+.h-pocket__flip .h-flip__inner { animation-delay: calc(.6s + var(--n) * .35s); }
+.h-pocket__flip .pc { box-shadow: 0 30px 50px -20px rgba(0,0,0,.95); }
+.h-pocket__label { margin: 0; font-family: var(--font-display); font-size: clamp(1.1rem, .9rem + .8vw, 1.6rem); letter-spacing: .3em; text-transform: uppercase;
+  background: linear-gradient(100deg, #a88540, #f1d99d 35%, #c6a15b 60%, #ecd08f); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.h-pocket__chips { position: absolute; width: 30%; height: auto; left: 6%; bottom: 6%; }
+.h-pocket__dealer { position: absolute; width: 14%; height: auto; right: 5%; top: 5%; transform: rotate(14deg); }
+@media (max-width: 600px) { .h-pocket__dealer { top: auto; bottom: 6%; right: 7%; } }
+
 /* At-a-glance strip */
 .h-strip { list-style: none; margin-top: clamp(2.5rem, 1.5rem + 3vw, 4.5rem); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 14px; background: var(--card); box-shadow: var(--shadow); font-size: .9rem; color: var(--text-2); }
 .h-strip li { display: flex; align-items: center; justify-content: center; gap: .65rem; padding: 1.15rem 1rem; min-width: 0; text-align: center; }
@@ -338,7 +412,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .h-ticker__track, .h-mcard__sheen, .h-hero__copy > *, .h-fan__card, .h-chipbadge, .h-flip__inner { animation: none !important; }
+  .h-ticker__track, .h-mcard__sheen, .h-hero__copy > *, .h-fan__card, .h-chipbadge, .h-flip__inner, .h-bcast__live span { animation: none !important; }
   .h-stage__img { transition: none; }
 }
 
