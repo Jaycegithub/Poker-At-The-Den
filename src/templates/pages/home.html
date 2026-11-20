@@ -291,7 +291,7 @@
           {% endif %}
         </div>
       </div>
-      {% if mascot %}<img class="h-ali h-ali--ticket" src="{{ mascot }}" alt="Ali, The Den’s bear mascot" loading="lazy">{% endif %}
+      {% if mascot %}{{ img('ali', 'Ali, The Den’s bear mascot', sizes='(max-width: 760px) 220px, 30vw', cls='h-ali h-ali--ticket') }}{% endif %}
     </div>
   </div>
 </section>

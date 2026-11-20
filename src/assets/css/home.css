@@ -630,3 +630,4 @@ main > section.is-dark + .h-social { box-shadow: inset 0 1px 0 rgba(198,161,91,.
 .h-ticket__main { position: relative; z-index: 1; }
 .h-ticket__main .eyebrow::after { content: ""; }
 .h-ali--ticket { bottom: 15px; }
+@media (max-width: 760px) { .h-ticket-wrap:has(.h-ali) { padding-top: 282px; } .h-ticket-wrap:has(.h-ali) .h-ticket__main { padding-top: 2.6rem; } }
