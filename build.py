@@ -90,6 +90,40 @@ NAV = [
     ]},
 ]
 
+# Mega-menu presentation: an icon and a one-line description per destination.
+# Descriptions are each page's own headline or tagline from the live site.
+MENU_META = {
+    "/about-us/": ("home", "Pull up a chair — you’re among friends."),
+    "/our-team/": ("users", "Meet the Team Behind The Den"),
+    "/club-values-atmosphere/": ("shield", "Where poker meets integrity, comfort, and community."),
+    "/poker/": ("suit-spade", "Poker Has a Seat at The Den."),
+    "/chess/": ("knight", "Chess Has a Seat at The Den."),
+    "/dominoes/": ("domino", "Dominoes Has a Seat at The Den."),
+    "/spades/": ("cards", "Spades Has a Seat at The Den."),
+    "/tournaments/": ("trophy", "Daily Tournaments."),
+    None: ("flag", "For live games, waitlists, and authoritative schedule information"),
+    "/explore-rowlett/": ("map", "Make a Day of It."),
+    "/places-to-eat/": ("utensils", "Great Food. Without Leaving Your Seat."),
+    "/places-to-stay/": ("bed", "Stay Close. Play Longer."),
+    "/rowlett-community/": ("landmark", "Proudly Rowlett."),
+    "/membership/": ("crown", "Membership levels."),
+    "/why-join/": ("star", "Exclusive member perks."),
+    "/founders-membership-apply/": ("award", "Only fifty Founding Memberships will ever be issued."),
+    "/join-now/": ("user-plus", "Private Membership Application"),
+    "/faqs/": ("help", "Frequently Asked Questions."),
+    "/house-rules-etiquette/": ("doc", "Play with Respect. Compete with Integrity."),
+    "/contact-us/": ("phone", "Questions? Ready to Play?"),
+    "/community-events/": ("calendar", "Community Events at The Den"),
+    "/networking/": ("handshake", "Networking at The Den"),
+    "/private-gatherings/": ("glass", "Private Gatherings at The Den"),
+}
+# Featured card shown beside some menus (copy taken from the homepage).
+MENU_FEATURE = {
+    "The Club": ("Your club. Your people. Your seat.", "Meet the Club", "/about-us/"),
+    "Games": ("Come for the cards. Stay for the community.", "Poker at The Den", "/poker/"),
+    "Membership": ("One membership. Many ways to belong.", "Become a Member", "/join-now/"),
+}
+
 # ---------------------------------------------------------------------------
 # Pages: URL path -> template, breadcrumb section.
 # ---------------------------------------------------------------------------
@@ -196,7 +230,7 @@ def build():
         autoescape=select_autoescape(["html"]),
         trim_blocks=True, lstrip_blocks=True,
     )
-    env.globals.update(site=SITE, nav=NAV, seats=SEATS, img=img, art=art, mascot=mascot(), icon=icon, widget=widget, site_url=SITE_URL,
+    env.globals.update(site=SITE, nav=NAV, menu_meta=MENU_META, menu_feature=MENU_FEATURE, seats=SEATS, img=img, art=art, mascot=mascot(), icon=icon, widget=widget, site_url=SITE_URL,
                        build_date=date.today().isoformat())
 
     if os.path.isdir(DIST):

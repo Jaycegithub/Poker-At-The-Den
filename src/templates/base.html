@@ -50,17 +50,37 @@
         {% if item.children %}
         <li class="nav__item has-dropdown{% if cur %} is-current{% endif %}">
           <button class="nav__link" aria-expanded="false" aria-haspopup="true">{{ item.label }}{{ icon('chevron') }}</button>
-          <ul class="dropdown">
-            {% for c in item.children %}
-            <li>
-              {% if c.href %}<a href="{{ c.href }}"{% if c.href == path %} aria-current="page"{% endif %}>{{ c.label }}</a>
-              {% else %}<a class="is-pending" href="#" aria-disabled="true">{{ c.label }} <span class="dropdown__tag">Link pending</span></a>{% endif %}
-            </li>
-            {% for g in c.children or [] %}
-            <li class="sub"><a href="{{ g.href }}"{% if g.href == path %} aria-current="page"{% endif %}>{{ g.label }}</a></li>
-            {% endfor %}
-            {% endfor %}
-          </ul>
+          {% set rows = [] %}
+          {% if item.href and item.href not in item.children|map(attribute='href')|list %}{% set _ = rows.append({'label': item.label, 'href': item.href}) %}{% endif %}
+          {% for c in item.children %}{% set _ = rows.append(c) %}{% endfor %}
+          {% set feat = menu_feature.get(item.label) %}
+          <div class="mega{% if feat %} has-feature{% endif %}{% if rows|length > 4 %} is-wide{% endif %}{% if loop.index >= 6 %} mega--right{% endif %}">
+            <ul class="mega__list{% if rows|length > 3 %} is-2col{% endif %}">
+              {% for c in rows %}
+              {% set meta = menu_meta.get(c.href, ('arrow', '')) %}
+              <li class="mega__item">
+                {% if c.href %}
+                <a class="mega__link" href="{{ c.href }}"{% if c.href == path %} aria-current="page"{% endif %}>
+                {% else %}
+                <a class="mega__link is-pending" href="#" aria-disabled="true">
+                {% endif %}
+                  <span class="mega__icon">{{ icon(meta[0]) }}</span>
+                  <span class="mega__text"><span class="mega__title">{{ c.label }}{% if not c.href %} <span class="dropdown__tag">Link pending</span>{% endif %}</span><span class="mega__desc">{{ meta[1] }}</span></span>
+                </a>
+                {% if c.children %}
+                <div class="mega__pills">{% for g in c.children %}<a class="mega__pill" href="{{ g.href }}"{% if g.href == path %} aria-current="page"{% endif %}>{{ icon('play' if g.label.startswith('Play') else 'calc') }}{{ g.label }}</a>{% endfor %}</div>
+                {% endif %}
+              </li>
+              {% endfor %}
+            </ul>
+            {% if feat %}
+            <aside class="mega__feature">
+              <img src="/assets/img/bear-light-160.webp" width="160" height="160" alt="" loading="lazy">
+              <p class="mega__ftitle">{{ feat[0] }}</p>
+              <a class="btn btn--gold btn--sm" href="{{ feat[2] }}">{{ feat[1] }} {{ icon('arrow') }}</a>
+            </aside>
+            {% endif %}
+          </div>
         </li>
         {% else %}
         <li class="nav__item"><a class="nav__link" href="{{ item.href }}"{% if item.href == path %} aria-current="page"{% endif %}>{{ item.label }}</a></li>
@@ -87,6 +107,7 @@
         <li>
           <button aria-expanded="false" aria-controls="m-{{ loop.index }}">{{ item.label }}{{ icon('plus') }}</button>
           <ul id="m-{{ loop.index }}">
+            {% if item.href and item.href not in item.children|map(attribute='href')|list %}<li><a href="{{ item.href }}"{% if item.href == path %} aria-current="page"{% endif %}>{{ item.label }}</a></li>{% endif %}
             {% for c in item.children %}
             {% if c.href %}<li><a href="{{ c.href }}"{% if c.href == path %} aria-current="page"{% endif %}>{{ c.label }}</a></li>
             {% else %}<li><a href="#" aria-disabled="true" class="is-pending">{{ c.label }} <span class="dropdown__tag">Link pending</span></a></li>{% endif %}
