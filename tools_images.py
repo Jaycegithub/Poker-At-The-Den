@@ -34,3 +34,19 @@ for img, name in ((logo, "logo-dark"), (light, "logo-light")):
 # Social share image
 og = Image.open(os.path.join(src, "The-Den-Poker-Lounge-Image-8.webp")).convert("RGB")
 og.resize((1200, round(og.height * 1200 / og.width))).save(os.path.join(out, "og-default.jpg"), quality=82)
+
+# Bear emblem (the round crest from the logo): dark version for light backgrounds,
+# light version for dark backgrounds.
+def crop_emblem(img):
+    a = img.split()[-1]
+    left = a.crop((0, 0, int(img.width * 0.3), img.height))
+    bbox = left.getbbox()
+    return img.crop(bbox)
+
+for src_img, name in ((logo, "bear-dark"), (light, "bear-light")):
+    em = crop_emblem(src_img)
+    side = max(em.size)
+    sq = Image.new("RGBA", (side, side), (0, 0, 0, 0))
+    sq.paste(em, ((side - em.width) // 2, (side - em.height) // 2))
+    for w in (160, 400):
+        sq.resize((w, w), Image.LANCZOS).save(os.path.join(out, f"{name}-{w}.webp"), "WEBP", quality=92, method=6)

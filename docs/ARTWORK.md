@@ -40,3 +40,7 @@ The homepage carries six hero options while the design is in review:
 - F: pocket aces revealed on the felt
 
 Option A shows by default; the others are rendered `hidden`. Once one is chosen, delete the rest from `src/templates/pages/home.html` and `src/templates/partials/cards.html`.
+
+## The bear
+- The crest is cut from the club logo (`bear-dark-*` for light backgrounds, `bear-light-*` for dark). It's used on the hero chips, the hero pill, card backs, the gold seals above centred headings, faint watermarks in five bands, the events ticker and the closing ticket stub.
+- **Ali, the mascot**, appears on the club's Facebook posts as a rendered 3D bear (cap, sunglasses, hoodie, pocket aces). That style can't be reproduced in code, so the page has two spots reserved for the original artwork: the end of the hero's chip rail, and pointing out of the closing ticket. Save the artwork as `src/assets/img/ali.webp` or `ali.png`, ideally on a transparent background and at least 1500px tall, then rebuild. Ali appears automatically; `build.py`'s `mascot()` checks for the file.

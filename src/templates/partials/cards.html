@@ -13,12 +13,12 @@
 {% endmacro %}
 
 {% macro pback(cls='', style='') %}
-<div class="pc pc--back {{ cls }}"{% if style %} style="{{ style }}"{% endif %}><span class="pc__mono">{{ icon('suit-spade') }}</span></div>
+<div class="pc pc--back {{ cls }}"{% if style %} style="{{ style }}"{% endif %}><span class="pc__mono"><img src="/assets/img/bear-light-160.webp" width="160" height="160" alt=""></span></div>
 {% endmacro %}
 
 {% macro hero_copy(id, centered=False) %}
 <div class="h-hero__copy{% if centered %} h-hero__copy--center{% endif %}">
-  <p class="h-pill">{{ icon('suit-spade') }} A private social club in Rowlett</p>
+  <p class="h-pill"><img class="h-pill__bear" src="/assets/img/bear-dark-160.webp" width="160" height="160" alt=""> A private social club in Rowlett</p>
   <h1 id="{{ id }}">Welcome, <span class="foil">grab a seat.</span></h1>
   <p class="h-hero__lede">The Den is a private social club built for games, conversation, connection, and community. Play a hand, meet someone new, make a business connection, watch the game, or simply pull up a chair.</p>
   <div class="btn-row">
@@ -85,16 +85,16 @@
     {{ hero_copy('hero-title-c', centered=True) }}
     <div class="h-flop" aria-hidden="true">
       <div class="h-flop__rail">
-        {% for r in ['A', 'K', 'Q', 'J', '10'] %}
-        <div class="h-flip" style="--n:{{ loop.index0 }}">
-          <div class="h-flip__inner">
-            {{ pcard(r, 'spade', 'h-flip__face') }}
-            {{ pback('h-flip__back') }}
+        {% for tone in ['gold', 'ivory', 'gold', 'ivory', 'gold'] %}
+        <div class="h-coin h-coin--{{ tone }}" style="--n:{{ loop.index0 }}">
+          <div class="h-coin__inner">
+            <div class="h-coin__face"><img src="/assets/img/bear-light-400.webp" width="400" height="400" alt="" loading="eager"></div>
+            <div class="h-coin__face h-coin__face--back"><img src="/assets/img/bear-light-400.webp" width="400" height="400" alt=""></div>
           </div>
         </div>
         {% endfor %}
       </div>
-      <div class="h-flop__labels"><span class="is-flop">The Flop</span><span>The Turn</span><span>The River</span></div>
+      {% if mascot %}<img class="h-ali h-ali--hero" src="{{ mascot }}" alt="" loading="eager">{% endif %}
     </div>
   </div>
   {{ hero_strip() }}
@@ -115,7 +115,7 @@
           {% for r, su in [('A', 'spade'), ('K', 'heart'), ('Q', 'diamond')] %}{{ pcard(r, su, 'h-table__card') }}{% endfor %}
           {{ pback('h-table__card') }}{{ pback('h-table__card') }}
         </div>
-        <p class="h-pill">{{ icon('suit-spade') }} A private social club in Rowlett</p>
+        <p class="h-pill"><img class="h-pill__bear" src="/assets/img/bear-dark-160.webp" width="160" height="160" alt=""> A private social club in Rowlett</p>
         <h1 id="hero-title-d">Welcome, <span class="foil">grab a seat.</span></h1>
         <p class="h-hero__lede">The Den is a private social club built for games, conversation, connection, and community. Play a hand, meet someone new, make a business connection, watch the game, or simply pull up a chair.</p>
         <div class="btn-row">

@@ -2,22 +2,17 @@
 {% import "partials/macros.html" as m with context %}
 {% import "partials/cards.html" as c with context %}
 {% block head %}
-<link rel="preload" as="image" href="/assets/img/The-Den-Poker-Lounge-Image-7-960.webp">
+<link rel="preload" as="image" href="/assets/img/bear-light-400.webp">
 <link rel="stylesheet" href="/assets/css/home.css">
 {% endblock %}
 {% block cta %}{% endblock %}
 {% block content %}
 
-{# ================= HERO — three options for review (A shown by default) ================= #}
-{{ c.hero_a() }}
-{{ c.hero_b(hidden=True) }}
-{{ c.hero_c(hidden=True) }}
-{{ c.hero_d(hidden=True) }}
-{{ c.hero_e(hidden=True) }}
-{{ c.hero_f(hidden=True) }}
+{# ================= HERO — the table rail with bear chips (option C) ================= #}
+{{ c.hero_c() }}
 
 {# ================= WHAT IS THE DEN — club / people / seat ================= #}
-<section class="section h-intro is-dark" aria-labelledby="intro-title" data-lines>
+<section class="section h-intro is-dark has-bear has-bear--light" aria-labelledby="intro-title" data-lines>
   <div class="container h-intro__grid">
     <div class="h-intro__copy">
       <p class="eyebrow reveal">What is The Den?</p>
@@ -46,9 +41,10 @@
 </section>
 
 {# ================= FOUR WAYS IN — a hand of cards ================= #}
-<section class="section h-hand-sec" aria-labelledby="hand-title">
+<section class="section h-hand-sec has-bear has-bear--dark has-bear--left" aria-labelledby="hand-title">
   <div class="container">
     <div class="section-head section-head--center reveal">
+      <img class="bear-seal" src="/assets/img/bear-dark-160.webp" width="160" height="160" alt="" loading="lazy">
       <p class="eyebrow">The club in four words</p>
       <h2 id="hand-title">There’s more than <span class="foil">one way in.</span></h2>
       <p class="section-head__text">A good club gives you room to be exactly who you are—and a reason to come back as someone new.</p>
@@ -75,7 +71,7 @@
 </section>
 
 {# ================= GAMES — bento ================= #}
-<section class="section h-games is-dark" aria-labelledby="games-title">
+<section class="section h-games is-dark has-bear has-bear--light has-bear--left" aria-labelledby="games-title">
   <div class="container">
     <div class="section-head reveal">
       <h2 id="games-title">Come for the cards. <span class="foil">Stay for the community.</span></h2>
@@ -115,7 +111,7 @@
     <div class="h-ticker__track">
       {% for _ in range(2) %}
       {% for t in ['New member meet & greets', 'Singles socials', 'Member mixers', 'Watch parties', 'Trivia', 'Community nights', 'Private gatherings'] %}
-      <span>{{ t }}</span>{{ icon(['suit-spade','suit-heart','suit-diamond','suit-club'][loop.index0 % 4]) }}
+      <span>{{ t }}</span><img class="h-ticker__bear" src="/assets/img/bear-dark-160.webp" width="160" height="160" alt="">
       {% endfor %}
       {% endfor %}
     </div>
@@ -187,7 +183,7 @@
 </section>
 
 {# ================= MEMBERSHIP — the card ================= #}
-<section class="section h-member is-dark" aria-labelledby="member-title">
+<section class="section h-member is-dark has-bear has-bear--light" aria-labelledby="member-title">
   <div class="container">
     <div class="h-member__grid">
       <div class="h-mcard-wrap reveal" aria-hidden="true">
@@ -214,9 +210,10 @@
 </section>
 
 {# ================= VALUES — chips ================= #}
-<section class="section h-values" aria-labelledby="values-title">
+<section class="section h-values has-bear has-bear--dark" aria-labelledby="values-title">
   <div class="container">
     <div class="section-head section-head--center reveal">
+      <img class="bear-seal" src="/assets/img/bear-dark-160.webp" width="160" height="160" alt="" loading="lazy">
       <h2 id="values-title">A place <span class="foil">to belong.</span></h2>
       <p class="section-head__text">Integrity, hospitality, community, excellence, consistency, and growth shape how The Den shows up. The room works best when everyone has a reason to feel welcome.</p>
     </div>
@@ -273,22 +270,27 @@
 {# ================= FINAL CTA — the invitation ================= #}
 <section class="h-invite" aria-labelledby="seat-title">
   <div class="container">
-    <div class="h-ticket is-dark reveal">
-      <div class="h-ticket__main">
-        <p class="eyebrow">Your seat is waiting</p>
-        <h2 id="seat-title">There’s a seat <span class="foil">for you here.</span></h2>
-        <p>Become a member, find your next event, or simply come see what The Den feels like.</p>
-        <div class="btn-row">
-          <a class="btn btn--gold" href="/join-now/">Become a Member {{ icon('arrow') }}</a>
-          <a class="btn btn--ghost" href="/contact-us/">Contact the room</a>
+    <div class="h-ticket-wrap reveal">
+      <div class="h-ticket is-dark">
+        <div class="h-ticket__main">
+          <p class="eyebrow">Your seat is waiting</p>
+          <h2 id="seat-title">There’s a seat <span class="foil">for you here.</span></h2>
+          <p>Become a member, find your next event, or simply come see what The Den feels like.</p>
+          <div class="btn-row">
+            <a class="btn btn--gold" href="/join-now/">Become a Member {{ icon('arrow') }}</a>
+            <a class="btn btn--ghost" href="/contact-us/">Contact the room</a>
+          </div>
+        </div>
+        <div class="h-ticket__stub{% if mascot %} h-ticket__stub--ali{% endif %}" aria-hidden="true">
+          {% if not mascot %}
+          <img src="/assets/img/bear-light-400.webp" width="400" height="400" alt="" loading="lazy" class="h-ticket__bear">
+          <span class="h-ticket__suits">{{ icon('suit-spade') }}{{ icon('suit-heart') }}{{ icon('suit-club') }}{{ icon('suit-diamond') }}</span>
+          {% endif %}
+          <span class="h-ticket__label">Members only</span>
+          <span class="h-ticket__small">Rowlett · Texas</span>
         </div>
       </div>
-      <div class="h-ticket__stub" aria-hidden="true">
-        <img src="/assets/img/logo-light-360.webp" width="360" height="101" alt="" loading="lazy">
-        <span class="h-ticket__suits">{{ icon('suit-spade') }}{{ icon('suit-heart') }}{{ icon('suit-club') }}{{ icon('suit-diamond') }}</span>
-        <span class="h-ticket__label">Members only</span>
-        <span class="h-ticket__small">Rowlett · Texas</span>
-      </div>
+      {% if mascot %}<img class="h-ali h-ali--ticket" src="{{ mascot }}" alt="Ali, The Den’s bear mascot" loading="lazy">{% endif %}
     </div>
   </div>
 </section>

@@ -81,14 +81,7 @@ extra = """
 </style>
 <script>window.DEN_PREVIEW = true;</script>
 """
-pill = ('<div class="preview-pill" role="group" aria-label="Design preview: choose a hero option" data-hero-switch>'
-        '<b>Design preview</b><span class="pp-label">Hero option</span>'
-        '<button type="button" value="a" aria-pressed="true">A · Cards</button>'
-        '<button type="button" value="b" aria-pressed="false">B · Arch</button>'
-        '<button type="button" value="c" aria-pressed="false">C · Flop</button>'
-        '<button type="button" value="d" aria-pressed="false">D · Table</button>'
-        '<button type="button" value="e" aria-pressed="false">E · Broadcast</button>'
-        '<button type="button" value="f" aria-pressed="false">F · Pocket Aces</button></div>')
+pill = '<div class="preview-pill" role="note"><b>Design preview</b><span class="pp-label">Homepage concept · not the live site</span></div>'
 
 body_html = body.decode_contents()
 page = "\n".join(keep_head) + extra + body_html + pill
@@ -101,7 +94,7 @@ with open(os.path.join(out, "index.html"), "w", encoding="utf-8") as fh:
 
 # Copy every asset the page references
 refs = set(re.findall(r'assets/[A-Za-z0-9_./-]+\.(?:webp|png|jpg|svg|css|js)', page))
-refs |= {"assets/img/spade.svg", "assets/img/check.svg"}
+refs |= {"assets/img/spade.svg", "assets/img/check.svg", "assets/img/bear-light-400.webp", "assets/img/bear-dark-400.webp"}
 for r in sorted(refs):
     src = os.path.join(DIST, r)
     dst = os.path.join(out, r)

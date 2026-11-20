@@ -423,3 +423,49 @@ main > section.is-dark + .h-social { box-shadow: inset 0 1px 0 rgba(198,161,91,.
 .h-social + section.is-dark { box-shadow: none; }
 .h-contact { padding-top: 0; }
 .h-hand-sec { background: var(--bg); }
+
+/* ---------- Hero C: bear chips on the rail ---------- */
+.h-flop__rail { grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; }
+.h-coin { perspective: 900px; }
+.h-coin__inner { position: relative; aspect-ratio: 1; transform-style: preserve-3d; animation: coinIn 1s var(--ease) backwards; animation-delay: calc(.45s + var(--n) * .22s); transition: transform .8s var(--ease); }
+.h-coin:hover .h-coin__inner { transform: rotateY(180deg); }
+@keyframes coinIn { from { transform: translateY(-40px) rotateY(-540deg); opacity: 0; } }
+.h-coin__face { position: absolute; inset: 0; border-radius: 50%; display: grid; place-items: center; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  background: radial-gradient(circle, #141414 0 60%, transparent 61%), repeating-conic-gradient(var(--edge) 0 15deg, #141414 15deg 30deg);
+  box-shadow: 0 18px 30px -12px rgba(0,0,0,.9), 0 0 0 2px #0b0b0b, inset 0 0 0 3px rgba(0,0,0,.4); }
+.h-coin__face::before { content: ""; position: absolute; inset: 17%; border-radius: 50%; border: 1px dashed rgba(217,189,131,.55); }
+.h-coin__face img { width: 58%; height: auto; position: relative; }
+.h-coin__face--back { transform: rotateY(180deg); }
+.h-coin--gold { --edge: #c6a15b; }
+.h-coin--ivory { --edge: #f5f3ef; }
+
+/* ---------- The bear as a recurring trademark ---------- */
+.h-pill__bear { width: 22px; height: 22px; }
+.pc__mono::before { display: none; }
+.pc__mono img { position: relative; width: 52%; height: auto; }
+.bear-seal { display: block; width: 58px; height: 58px; margin: 0 auto 1.1rem; filter: drop-shadow(0 8px 16px rgba(40,30,10,.25)); }
+.h-ticker__bear { width: 30px; height: 30px; flex: none; }
+.has-bear { position: relative; overflow: hidden; isolation: isolate; }
+.has-bear::after { content: ""; position: absolute; z-index: -1; width: clamp(320px, 34vw, 520px); aspect-ratio: 1; right: -6%; bottom: -10%; pointer-events: none;
+  background: url("../img/bear-light-400.webp") center / contain no-repeat; opacity: .05; transform: rotate(-8deg); }
+.has-bear--dark::after { background-image: url("../img/bear-dark-400.webp"); opacity: .045; }
+.has-bear--left::after { right: auto; left: -6%; transform: rotate(8deg); }
+
+/* ---------- Ali, the mascot ---------- */
+.h-flop { position: relative; }
+.h-ali { display: block; height: auto; pointer-events: none; }
+.h-ali--hero { position: absolute; width: clamp(200px, 17vw, 260px); left: calc(100% - 30px); bottom: -10px; animation: aliIn 1s var(--ease) 1.4s backwards; }
+@keyframes aliIn { from { transform: translateX(40px) rotate(6deg); opacity: 0; } }
+@media (max-width: 1300px) { .h-ali--hero { display: none; } }
+
+.h-ticket-wrap { position: relative; max-width: 1040px; margin-inline: auto; }
+.h-ticket__stub--ali { align-content: end; padding-bottom: 2.2rem; gap: .4rem; }
+.h-ticket__bear { width: 46%; max-width: 130px; height: auto; filter: drop-shadow(0 10px 20px rgba(0,0,0,.6)); }
+.h-ali--ticket { position: absolute; z-index: 2; width: clamp(250px, 26vw, 360px); right: clamp(-50px, -2vw, -10px); bottom: 74px; filter: drop-shadow(0 20px 30px rgba(0,0,0,.35)); }
+@media (max-width: 760px) {
+  .h-ticket-wrap:has(.h-ali) { padding-top: 150px; }
+  .h-ali--ticket { width: 210px; right: 50%; transform: translateX(50%); bottom: auto; top: 0; }
+  .h-ticket { position: relative; }
+  .h-ticket__stub { padding-top: 1.4rem; }
+}
+@media (prefers-reduced-motion: reduce) { .h-ali--hero { animation: none; } }

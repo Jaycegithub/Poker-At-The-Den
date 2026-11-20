@@ -169,6 +169,15 @@ def art(name, alt="", cls="", eager=False):
                   + (' loading="eager"' if eager else ' loading="lazy"') + ' decoding="async"' + (f' class="{cls}"' if cls else "") + ">")
 
 
+def mascot():
+    """Path of Ali, the club's bear mascot, once the original artwork is added
+    as src/assets/img/ali.webp or ali.png (transparent background); else None."""
+    for ext in ("webp", "png"):
+        if os.path.exists(os.path.join(IMG_DIR, "ali." + ext)):
+            return "/assets/img/ali." + ext
+    return None
+
+
 def icon(name, cls=""):
     fill = name.startswith("suit-")
     c = "icon" + (" icon--fill" if fill else "") + (f" {cls}" if cls else "")
@@ -187,7 +196,7 @@ def build():
         autoescape=select_autoescape(["html"]),
         trim_blocks=True, lstrip_blocks=True,
     )
-    env.globals.update(site=SITE, nav=NAV, seats=SEATS, img=img, art=art, icon=icon, widget=widget, site_url=SITE_URL,
+    env.globals.update(site=SITE, nav=NAV, seats=SEATS, img=img, art=art, mascot=mascot(), icon=icon, widget=widget, site_url=SITE_URL,
                        build_date=date.today().isoformat())
 
     if os.path.isdir(DIST):
